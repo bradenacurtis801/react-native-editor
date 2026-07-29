@@ -1,0 +1,24 @@
+{
+	"$schema": "https://nitro.margelo.com/nitro.schema.json",
+	"cxxNamespace": ["editor"],
+	"ios": {
+		"iosModuleName": "ReactNativeEditor"
+	},
+	"android": {
+		"androidNamespace": ["editor"],
+		"androidCxxLibName": "ReactNativeEditor"
+	},
+	"autolinking": {
+		"Editor": {
+			"ios": {
+				"language": "swift",
+				"implementationClassName": "HybridEditor"
+			},
+			"android": {
+				"language": "kotlin",
+				"implementationClassName": "HybridEditor"
+			}
+		}
+	},
+	"ignorePaths": ["**/node_modules"]
+}

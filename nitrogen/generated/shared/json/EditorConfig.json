@@ -1,0 +1,17 @@
+{
+  "uiViewClassName": "Editor",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "text": true,
+    "language": true,
+    "editable": true,
+    "syntaxColorsJson": true,
+    "backgroundColor": true,
+    "textColor": true,
+    "fontSizePx": true,
+    "onChangeDirty": true,
+    "hybridRef": true
+  }
+}

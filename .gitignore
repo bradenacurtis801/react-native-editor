@@ -1,0 +1,14 @@
+node_modules/
+example_repos/
+example/
+.DS_Store
+
+# Codegen output IS committed so `npm install github:.../react-native-editor`
+# works without running codegen tools. Regenerate with: npm run nitro:codegen
+# nitrogen/generated/ — Nitro codegen (podspec autolinking + Swift specs)
+
+.claude*
+.bash*
+.zsh*
+.local*
+settings.json

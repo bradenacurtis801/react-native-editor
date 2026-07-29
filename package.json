@@ -1,0 +1,55 @@
+{
+	"name": "react-native-editor",
+	"version": "0.1.0",
+	"description": "Native code editor for React Native. iOS: Runestone (tree-sitter syntax highlighting). Android: falls back to a plain TextInput until a native backend lands.",
+	"keywords": [
+		"android",
+		"code-editor",
+		"ios",
+		"react-native",
+		"runestone",
+		"syntax-highlighting",
+		"tree-sitter"
+	],
+	"license": "MIT",
+	"source": "./src/index.ts",
+	"files": [
+		"ios",
+		"nitro",
+		"nitrogen",
+		"src",
+		"*.podspec",
+		"react-native.config.js",
+		"*.md",
+		"tsconfig*.json",
+		"LICENSE"
+	],
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"react-native": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"react-native": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./package.json": "./package.json"
+	},
+	"scripts": {
+		"nitro:codegen": "nitrogen"
+	},
+	"devDependencies": {
+		"@types/react": "~19.2.2",
+		"nitrogen": "0.35.9",
+		"react": "19.2.3",
+		"react-native": "0.85.3",
+		"react-native-nitro-modules": "0.35.9",
+		"typescript": "~6.0.3"
+	},
+	"peerDependencies": {
+		"react": ">=18.0.0",
+		"react-native": ">=0.73.0",
+		"react-native-nitro-modules": "*"
+	}
+}
