@@ -65,6 +65,198 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setFontSizePx(props->fontSizePx.value);
     props->fontSizePx.isDirty = false;
   }
+  if (props->showLineNumbers.isDirty) {
+    hybridView->setShowLineNumbers(props->showLineNumbers.value);
+    props->showLineNumbers.isDirty = false;
+  }
+  if (props->automaticScrollEnabled.isDirty) {
+    hybridView->setAutomaticScrollEnabled(props->automaticScrollEnabled.value);
+    props->automaticScrollEnabled.isDirty = false;
+  }
+  if (props->verticalOverscrollFactor.isDirty) {
+    hybridView->setVerticalOverscrollFactor(props->verticalOverscrollFactor.value);
+    props->verticalOverscrollFactor.isDirty = false;
+  }
+  if (props->horizontalOverscrollFactor.isDirty) {
+    hybridView->setHorizontalOverscrollFactor(props->horizontalOverscrollFactor.value);
+    props->horizontalOverscrollFactor.isDirty = false;
+  }
+  if (props->isSelectable.isDirty) {
+    hybridView->setIsSelectable(props->isSelectable.value);
+    props->isSelectable.isDirty = false;
+  }
+  if (props->autocorrectionType.isDirty) {
+    hybridView->setAutocorrectionType(props->autocorrectionType.value);
+    props->autocorrectionType.isDirty = false;
+  }
+  if (props->autocapitalizationType.isDirty) {
+    hybridView->setAutocapitalizationType(props->autocapitalizationType.value);
+    props->autocapitalizationType.isDirty = false;
+  }
+  if (props->smartQuotesType.isDirty) {
+    hybridView->setSmartQuotesType(props->smartQuotesType.value);
+    props->smartQuotesType.isDirty = false;
+  }
+  if (props->smartDashesType.isDirty) {
+    hybridView->setSmartDashesType(props->smartDashesType.value);
+    props->smartDashesType.isDirty = false;
+  }
+  if (props->smartInsertDeleteType.isDirty) {
+    hybridView->setSmartInsertDeleteType(props->smartInsertDeleteType.value);
+    props->smartInsertDeleteType.isDirty = false;
+  }
+  if (props->spellCheckingType.isDirty) {
+    hybridView->setSpellCheckingType(props->spellCheckingType.value);
+    props->spellCheckingType.isDirty = false;
+  }
+  if (props->keyboardType.isDirty) {
+    hybridView->setKeyboardType(props->keyboardType.value);
+    props->keyboardType.isDirty = false;
+  }
+  if (props->keyboardAppearance.isDirty) {
+    hybridView->setKeyboardAppearance(props->keyboardAppearance.value);
+    props->keyboardAppearance.isDirty = false;
+  }
+  if (props->returnKeyType.isDirty) {
+    hybridView->setReturnKeyType(props->returnKeyType.value);
+    props->returnKeyType.isDirty = false;
+  }
+  if (props->insertionPointColorHex.isDirty) {
+    hybridView->setInsertionPointColorHex(props->insertionPointColorHex.value);
+    props->insertionPointColorHex.isDirty = false;
+  }
+  if (props->selectionBarColorHex.isDirty) {
+    hybridView->setSelectionBarColorHex(props->selectionBarColorHex.value);
+    props->selectionBarColorHex.isDirty = false;
+  }
+  if (props->selectionHighlightColorHex.isDirty) {
+    hybridView->setSelectionHighlightColorHex(props->selectionHighlightColorHex.value);
+    props->selectionHighlightColorHex.isDirty = false;
+  }
+  if (props->showTabs.isDirty) {
+    hybridView->setShowTabs(props->showTabs.value);
+    props->showTabs.isDirty = false;
+  }
+  if (props->showSpaces.isDirty) {
+    hybridView->setShowSpaces(props->showSpaces.value);
+    props->showSpaces.isDirty = false;
+  }
+  if (props->showNonBreakingSpaces.isDirty) {
+    hybridView->setShowNonBreakingSpaces(props->showNonBreakingSpaces.value);
+    props->showNonBreakingSpaces.isDirty = false;
+  }
+  if (props->showLineBreaks.isDirty) {
+    hybridView->setShowLineBreaks(props->showLineBreaks.value);
+    props->showLineBreaks.isDirty = false;
+  }
+  if (props->showSoftLineBreaks.isDirty) {
+    hybridView->setShowSoftLineBreaks(props->showSoftLineBreaks.value);
+    props->showSoftLineBreaks.isDirty = false;
+  }
+  if (props->tabSymbol.isDirty) {
+    hybridView->setTabSymbol(props->tabSymbol.value);
+    props->tabSymbol.isDirty = false;
+  }
+  if (props->spaceSymbol.isDirty) {
+    hybridView->setSpaceSymbol(props->spaceSymbol.value);
+    props->spaceSymbol.isDirty = false;
+  }
+  if (props->nonBreakingSpaceSymbol.isDirty) {
+    hybridView->setNonBreakingSpaceSymbol(props->nonBreakingSpaceSymbol.value);
+    props->nonBreakingSpaceSymbol.isDirty = false;
+  }
+  if (props->lineBreakSymbol.isDirty) {
+    hybridView->setLineBreakSymbol(props->lineBreakSymbol.value);
+    props->lineBreakSymbol.isDirty = false;
+  }
+  if (props->softLineBreakSymbol.isDirty) {
+    hybridView->setSoftLineBreakSymbol(props->softLineBreakSymbol.value);
+    props->softLineBreakSymbol.isDirty = false;
+  }
+  if (props->invisibleCharactersColorHex.isDirty) {
+    hybridView->setInvisibleCharactersColorHex(props->invisibleCharactersColorHex.value);
+    props->invisibleCharactersColorHex.isDirty = false;
+  }
+  if (props->gutterLeadingPadding.isDirty) {
+    hybridView->setGutterLeadingPadding(props->gutterLeadingPadding.value);
+    props->gutterLeadingPadding.isDirty = false;
+  }
+  if (props->gutterTrailingPadding.isDirty) {
+    hybridView->setGutterTrailingPadding(props->gutterTrailingPadding.value);
+    props->gutterTrailingPadding.isDirty = false;
+  }
+  if (props->gutterMinimumCharacterCount.isDirty) {
+    hybridView->setGutterMinimumCharacterCount(props->gutterMinimumCharacterCount.value);
+    props->gutterMinimumCharacterCount.isDirty = false;
+  }
+  if (props->gutterBackgroundColorHex.isDirty) {
+    hybridView->setGutterBackgroundColorHex(props->gutterBackgroundColorHex.value);
+    props->gutterBackgroundColorHex.isDirty = false;
+  }
+  if (props->gutterHairlineColorHex.isDirty) {
+    hybridView->setGutterHairlineColorHex(props->gutterHairlineColorHex.value);
+    props->gutterHairlineColorHex.isDirty = false;
+  }
+  if (props->lineSelectionDisplayType.isDirty) {
+    hybridView->setLineSelectionDisplayType(props->lineSelectionDisplayType.value);
+    props->lineSelectionDisplayType.isDirty = false;
+  }
+  if (props->selectedLineBackgroundColorHex.isDirty) {
+    hybridView->setSelectedLineBackgroundColorHex(props->selectedLineBackgroundColorHex.value);
+    props->selectedLineBackgroundColorHex.isDirty = false;
+  }
+  if (props->selectedLinesGutterBackgroundColorHex.isDirty) {
+    hybridView->setSelectedLinesGutterBackgroundColorHex(props->selectedLinesGutterBackgroundColorHex.value);
+    props->selectedLinesGutterBackgroundColorHex.isDirty = false;
+  }
+  if (props->isLineWrappingEnabled.isDirty) {
+    hybridView->setIsLineWrappingEnabled(props->isLineWrappingEnabled.value);
+    props->isLineWrappingEnabled.isDirty = false;
+  }
+  if (props->lineBreakMode.isDirty) {
+    hybridView->setLineBreakMode(props->lineBreakMode.value);
+    props->lineBreakMode.isDirty = false;
+  }
+  if (props->kern.isDirty) {
+    hybridView->setKern(props->kern.value);
+    props->kern.isDirty = false;
+  }
+  if (props->lineHeightMultiplier.isDirty) {
+    hybridView->setLineHeightMultiplier(props->lineHeightMultiplier.value);
+    props->lineHeightMultiplier.isDirty = false;
+  }
+  if (props->showPageGuide.isDirty) {
+    hybridView->setShowPageGuide(props->showPageGuide.value);
+    props->showPageGuide.isDirty = false;
+  }
+  if (props->pageGuideColumn.isDirty) {
+    hybridView->setPageGuideColumn(props->pageGuideColumn.value);
+    props->pageGuideColumn.isDirty = false;
+  }
+  if (props->pageGuideHairlineColorHex.isDirty) {
+    hybridView->setPageGuideHairlineColorHex(props->pageGuideHairlineColorHex.value);
+    props->pageGuideHairlineColorHex.isDirty = false;
+  }
+  if (props->pageGuideBackgroundColorHex.isDirty) {
+    hybridView->setPageGuideBackgroundColorHex(props->pageGuideBackgroundColorHex.value);
+    props->pageGuideBackgroundColorHex.isDirty = false;
+  }
+  if (props->markedTextBackgroundColorHex.isDirty) {
+    hybridView->setMarkedTextBackgroundColorHex(props->markedTextBackgroundColorHex.value);
+    props->markedTextBackgroundColorHex.isDirty = false;
+  }
+  if (props->isFindInteractionEnabled.isDirty) {
+    hybridView->setIsFindInteractionEnabled(props->isFindInteractionEnabled.value);
+    props->isFindInteractionEnabled.isDirty = false;
+  }
+  if (props->lineEndings.isDirty) {
+    hybridView->setLineEndings(props->lineEndings.value);
+    props->lineEndings.isDirty = false;
+  }
+  if (props->showMenuAfterNavigatingToHighlightedRange.isDirty) {
+    hybridView->setShowMenuAfterNavigatingToHighlightedRange(props->showMenuAfterNavigatingToHighlightedRange.value);
+    props->showMenuAfterNavigatingToHighlightedRange.isDirty = false;
+  }
   if (props->onChangeDirty.isDirty) {
     hybridView->setOnChangeDirty(props->onChangeDirty.value);
     props->onChangeDirty.isDirty = false;

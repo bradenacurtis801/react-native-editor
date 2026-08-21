@@ -17,6 +17,54 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var backgroundColor: String { get set }
   var textColor: String { get set }
   var fontSizePx: Double { get set }
+  var showLineNumbers: Bool { get set }
+  var automaticScrollEnabled: Bool { get set }
+  var verticalOverscrollFactor: Double { get set }
+  var horizontalOverscrollFactor: Double { get set }
+  var isSelectable: Bool { get set }
+  var autocorrectionType: String { get set }
+  var autocapitalizationType: String { get set }
+  var smartQuotesType: String { get set }
+  var smartDashesType: String { get set }
+  var smartInsertDeleteType: String { get set }
+  var spellCheckingType: String { get set }
+  var keyboardType: String { get set }
+  var keyboardAppearance: String { get set }
+  var returnKeyType: String { get set }
+  var insertionPointColorHex: String { get set }
+  var selectionBarColorHex: String { get set }
+  var selectionHighlightColorHex: String { get set }
+  var showTabs: Bool { get set }
+  var showSpaces: Bool { get set }
+  var showNonBreakingSpaces: Bool { get set }
+  var showLineBreaks: Bool { get set }
+  var showSoftLineBreaks: Bool { get set }
+  var tabSymbol: String { get set }
+  var spaceSymbol: String { get set }
+  var nonBreakingSpaceSymbol: String { get set }
+  var lineBreakSymbol: String { get set }
+  var softLineBreakSymbol: String { get set }
+  var invisibleCharactersColorHex: String { get set }
+  var gutterLeadingPadding: Double { get set }
+  var gutterTrailingPadding: Double { get set }
+  var gutterMinimumCharacterCount: Double { get set }
+  var gutterBackgroundColorHex: String { get set }
+  var gutterHairlineColorHex: String { get set }
+  var lineSelectionDisplayType: String { get set }
+  var selectedLineBackgroundColorHex: String { get set }
+  var selectedLinesGutterBackgroundColorHex: String { get set }
+  var isLineWrappingEnabled: Bool { get set }
+  var lineBreakMode: String { get set }
+  var kern: Double { get set }
+  var lineHeightMultiplier: Double { get set }
+  var showPageGuide: Bool { get set }
+  var pageGuideColumn: Double { get set }
+  var pageGuideHairlineColorHex: String { get set }
+  var pageGuideBackgroundColorHex: String { get set }
+  var markedTextBackgroundColorHex: String { get set }
+  var isFindInteractionEnabled: Bool { get set }
+  var lineEndings: String { get set }
+  var showMenuAfterNavigatingToHighlightedRange: Bool { get set }
   var onChangeDirty: (_ isDirty: Bool) -> Void { get set }
 
   // Methods

@@ -110,6 +110,322 @@ namespace margelo::nitro::editor {
     inline void setFontSizePx(double fontSizePx) noexcept override {
       _swiftPart.setFontSizePx(std::forward<decltype(fontSizePx)>(fontSizePx));
     }
+    inline bool getShowLineNumbers() noexcept override {
+      return _swiftPart.getShowLineNumbers();
+    }
+    inline void setShowLineNumbers(bool showLineNumbers) noexcept override {
+      _swiftPart.setShowLineNumbers(std::forward<decltype(showLineNumbers)>(showLineNumbers));
+    }
+    inline bool getAutomaticScrollEnabled() noexcept override {
+      return _swiftPart.getAutomaticScrollEnabled();
+    }
+    inline void setAutomaticScrollEnabled(bool automaticScrollEnabled) noexcept override {
+      _swiftPart.setAutomaticScrollEnabled(std::forward<decltype(automaticScrollEnabled)>(automaticScrollEnabled));
+    }
+    inline double getVerticalOverscrollFactor() noexcept override {
+      return _swiftPart.getVerticalOverscrollFactor();
+    }
+    inline void setVerticalOverscrollFactor(double verticalOverscrollFactor) noexcept override {
+      _swiftPart.setVerticalOverscrollFactor(std::forward<decltype(verticalOverscrollFactor)>(verticalOverscrollFactor));
+    }
+    inline double getHorizontalOverscrollFactor() noexcept override {
+      return _swiftPart.getHorizontalOverscrollFactor();
+    }
+    inline void setHorizontalOverscrollFactor(double horizontalOverscrollFactor) noexcept override {
+      _swiftPart.setHorizontalOverscrollFactor(std::forward<decltype(horizontalOverscrollFactor)>(horizontalOverscrollFactor));
+    }
+    inline bool getIsSelectable() noexcept override {
+      return _swiftPart.isSelectable();
+    }
+    inline void setIsSelectable(bool isSelectable) noexcept override {
+      _swiftPart.setIsSelectable(std::forward<decltype(isSelectable)>(isSelectable));
+    }
+    inline std::string getAutocorrectionType() noexcept override {
+      auto __result = _swiftPart.getAutocorrectionType();
+      return __result;
+    }
+    inline void setAutocorrectionType(const std::string& autocorrectionType) noexcept override {
+      _swiftPart.setAutocorrectionType(autocorrectionType);
+    }
+    inline std::string getAutocapitalizationType() noexcept override {
+      auto __result = _swiftPart.getAutocapitalizationType();
+      return __result;
+    }
+    inline void setAutocapitalizationType(const std::string& autocapitalizationType) noexcept override {
+      _swiftPart.setAutocapitalizationType(autocapitalizationType);
+    }
+    inline std::string getSmartQuotesType() noexcept override {
+      auto __result = _swiftPart.getSmartQuotesType();
+      return __result;
+    }
+    inline void setSmartQuotesType(const std::string& smartQuotesType) noexcept override {
+      _swiftPart.setSmartQuotesType(smartQuotesType);
+    }
+    inline std::string getSmartDashesType() noexcept override {
+      auto __result = _swiftPart.getSmartDashesType();
+      return __result;
+    }
+    inline void setSmartDashesType(const std::string& smartDashesType) noexcept override {
+      _swiftPart.setSmartDashesType(smartDashesType);
+    }
+    inline std::string getSmartInsertDeleteType() noexcept override {
+      auto __result = _swiftPart.getSmartInsertDeleteType();
+      return __result;
+    }
+    inline void setSmartInsertDeleteType(const std::string& smartInsertDeleteType) noexcept override {
+      _swiftPart.setSmartInsertDeleteType(smartInsertDeleteType);
+    }
+    inline std::string getSpellCheckingType() noexcept override {
+      auto __result = _swiftPart.getSpellCheckingType();
+      return __result;
+    }
+    inline void setSpellCheckingType(const std::string& spellCheckingType) noexcept override {
+      _swiftPart.setSpellCheckingType(spellCheckingType);
+    }
+    inline std::string getKeyboardType() noexcept override {
+      auto __result = _swiftPart.getKeyboardType();
+      return __result;
+    }
+    inline void setKeyboardType(const std::string& keyboardType) noexcept override {
+      _swiftPart.setKeyboardType(keyboardType);
+    }
+    inline std::string getKeyboardAppearance() noexcept override {
+      auto __result = _swiftPart.getKeyboardAppearance();
+      return __result;
+    }
+    inline void setKeyboardAppearance(const std::string& keyboardAppearance) noexcept override {
+      _swiftPart.setKeyboardAppearance(keyboardAppearance);
+    }
+    inline std::string getReturnKeyType() noexcept override {
+      auto __result = _swiftPart.getReturnKeyType();
+      return __result;
+    }
+    inline void setReturnKeyType(const std::string& returnKeyType) noexcept override {
+      _swiftPart.setReturnKeyType(returnKeyType);
+    }
+    inline std::string getInsertionPointColorHex() noexcept override {
+      auto __result = _swiftPart.getInsertionPointColorHex();
+      return __result;
+    }
+    inline void setInsertionPointColorHex(const std::string& insertionPointColorHex) noexcept override {
+      _swiftPart.setInsertionPointColorHex(insertionPointColorHex);
+    }
+    inline std::string getSelectionBarColorHex() noexcept override {
+      auto __result = _swiftPart.getSelectionBarColorHex();
+      return __result;
+    }
+    inline void setSelectionBarColorHex(const std::string& selectionBarColorHex) noexcept override {
+      _swiftPart.setSelectionBarColorHex(selectionBarColorHex);
+    }
+    inline std::string getSelectionHighlightColorHex() noexcept override {
+      auto __result = _swiftPart.getSelectionHighlightColorHex();
+      return __result;
+    }
+    inline void setSelectionHighlightColorHex(const std::string& selectionHighlightColorHex) noexcept override {
+      _swiftPart.setSelectionHighlightColorHex(selectionHighlightColorHex);
+    }
+    inline bool getShowTabs() noexcept override {
+      return _swiftPart.getShowTabs();
+    }
+    inline void setShowTabs(bool showTabs) noexcept override {
+      _swiftPart.setShowTabs(std::forward<decltype(showTabs)>(showTabs));
+    }
+    inline bool getShowSpaces() noexcept override {
+      return _swiftPart.getShowSpaces();
+    }
+    inline void setShowSpaces(bool showSpaces) noexcept override {
+      _swiftPart.setShowSpaces(std::forward<decltype(showSpaces)>(showSpaces));
+    }
+    inline bool getShowNonBreakingSpaces() noexcept override {
+      return _swiftPart.getShowNonBreakingSpaces();
+    }
+    inline void setShowNonBreakingSpaces(bool showNonBreakingSpaces) noexcept override {
+      _swiftPart.setShowNonBreakingSpaces(std::forward<decltype(showNonBreakingSpaces)>(showNonBreakingSpaces));
+    }
+    inline bool getShowLineBreaks() noexcept override {
+      return _swiftPart.getShowLineBreaks();
+    }
+    inline void setShowLineBreaks(bool showLineBreaks) noexcept override {
+      _swiftPart.setShowLineBreaks(std::forward<decltype(showLineBreaks)>(showLineBreaks));
+    }
+    inline bool getShowSoftLineBreaks() noexcept override {
+      return _swiftPart.getShowSoftLineBreaks();
+    }
+    inline void setShowSoftLineBreaks(bool showSoftLineBreaks) noexcept override {
+      _swiftPart.setShowSoftLineBreaks(std::forward<decltype(showSoftLineBreaks)>(showSoftLineBreaks));
+    }
+    inline std::string getTabSymbol() noexcept override {
+      auto __result = _swiftPart.getTabSymbol();
+      return __result;
+    }
+    inline void setTabSymbol(const std::string& tabSymbol) noexcept override {
+      _swiftPart.setTabSymbol(tabSymbol);
+    }
+    inline std::string getSpaceSymbol() noexcept override {
+      auto __result = _swiftPart.getSpaceSymbol();
+      return __result;
+    }
+    inline void setSpaceSymbol(const std::string& spaceSymbol) noexcept override {
+      _swiftPart.setSpaceSymbol(spaceSymbol);
+    }
+    inline std::string getNonBreakingSpaceSymbol() noexcept override {
+      auto __result = _swiftPart.getNonBreakingSpaceSymbol();
+      return __result;
+    }
+    inline void setNonBreakingSpaceSymbol(const std::string& nonBreakingSpaceSymbol) noexcept override {
+      _swiftPart.setNonBreakingSpaceSymbol(nonBreakingSpaceSymbol);
+    }
+    inline std::string getLineBreakSymbol() noexcept override {
+      auto __result = _swiftPart.getLineBreakSymbol();
+      return __result;
+    }
+    inline void setLineBreakSymbol(const std::string& lineBreakSymbol) noexcept override {
+      _swiftPart.setLineBreakSymbol(lineBreakSymbol);
+    }
+    inline std::string getSoftLineBreakSymbol() noexcept override {
+      auto __result = _swiftPart.getSoftLineBreakSymbol();
+      return __result;
+    }
+    inline void setSoftLineBreakSymbol(const std::string& softLineBreakSymbol) noexcept override {
+      _swiftPart.setSoftLineBreakSymbol(softLineBreakSymbol);
+    }
+    inline std::string getInvisibleCharactersColorHex() noexcept override {
+      auto __result = _swiftPart.getInvisibleCharactersColorHex();
+      return __result;
+    }
+    inline void setInvisibleCharactersColorHex(const std::string& invisibleCharactersColorHex) noexcept override {
+      _swiftPart.setInvisibleCharactersColorHex(invisibleCharactersColorHex);
+    }
+    inline double getGutterLeadingPadding() noexcept override {
+      return _swiftPart.getGutterLeadingPadding();
+    }
+    inline void setGutterLeadingPadding(double gutterLeadingPadding) noexcept override {
+      _swiftPart.setGutterLeadingPadding(std::forward<decltype(gutterLeadingPadding)>(gutterLeadingPadding));
+    }
+    inline double getGutterTrailingPadding() noexcept override {
+      return _swiftPart.getGutterTrailingPadding();
+    }
+    inline void setGutterTrailingPadding(double gutterTrailingPadding) noexcept override {
+      _swiftPart.setGutterTrailingPadding(std::forward<decltype(gutterTrailingPadding)>(gutterTrailingPadding));
+    }
+    inline double getGutterMinimumCharacterCount() noexcept override {
+      return _swiftPart.getGutterMinimumCharacterCount();
+    }
+    inline void setGutterMinimumCharacterCount(double gutterMinimumCharacterCount) noexcept override {
+      _swiftPart.setGutterMinimumCharacterCount(std::forward<decltype(gutterMinimumCharacterCount)>(gutterMinimumCharacterCount));
+    }
+    inline std::string getGutterBackgroundColorHex() noexcept override {
+      auto __result = _swiftPart.getGutterBackgroundColorHex();
+      return __result;
+    }
+    inline void setGutterBackgroundColorHex(const std::string& gutterBackgroundColorHex) noexcept override {
+      _swiftPart.setGutterBackgroundColorHex(gutterBackgroundColorHex);
+    }
+    inline std::string getGutterHairlineColorHex() noexcept override {
+      auto __result = _swiftPart.getGutterHairlineColorHex();
+      return __result;
+    }
+    inline void setGutterHairlineColorHex(const std::string& gutterHairlineColorHex) noexcept override {
+      _swiftPart.setGutterHairlineColorHex(gutterHairlineColorHex);
+    }
+    inline std::string getLineSelectionDisplayType() noexcept override {
+      auto __result = _swiftPart.getLineSelectionDisplayType();
+      return __result;
+    }
+    inline void setLineSelectionDisplayType(const std::string& lineSelectionDisplayType) noexcept override {
+      _swiftPart.setLineSelectionDisplayType(lineSelectionDisplayType);
+    }
+    inline std::string getSelectedLineBackgroundColorHex() noexcept override {
+      auto __result = _swiftPart.getSelectedLineBackgroundColorHex();
+      return __result;
+    }
+    inline void setSelectedLineBackgroundColorHex(const std::string& selectedLineBackgroundColorHex) noexcept override {
+      _swiftPart.setSelectedLineBackgroundColorHex(selectedLineBackgroundColorHex);
+    }
+    inline std::string getSelectedLinesGutterBackgroundColorHex() noexcept override {
+      auto __result = _swiftPart.getSelectedLinesGutterBackgroundColorHex();
+      return __result;
+    }
+    inline void setSelectedLinesGutterBackgroundColorHex(const std::string& selectedLinesGutterBackgroundColorHex) noexcept override {
+      _swiftPart.setSelectedLinesGutterBackgroundColorHex(selectedLinesGutterBackgroundColorHex);
+    }
+    inline bool getIsLineWrappingEnabled() noexcept override {
+      return _swiftPart.isLineWrappingEnabled();
+    }
+    inline void setIsLineWrappingEnabled(bool isLineWrappingEnabled) noexcept override {
+      _swiftPart.setIsLineWrappingEnabled(std::forward<decltype(isLineWrappingEnabled)>(isLineWrappingEnabled));
+    }
+    inline std::string getLineBreakMode() noexcept override {
+      auto __result = _swiftPart.getLineBreakMode();
+      return __result;
+    }
+    inline void setLineBreakMode(const std::string& lineBreakMode) noexcept override {
+      _swiftPart.setLineBreakMode(lineBreakMode);
+    }
+    inline double getKern() noexcept override {
+      return _swiftPart.getKern();
+    }
+    inline void setKern(double kern) noexcept override {
+      _swiftPart.setKern(std::forward<decltype(kern)>(kern));
+    }
+    inline double getLineHeightMultiplier() noexcept override {
+      return _swiftPart.getLineHeightMultiplier();
+    }
+    inline void setLineHeightMultiplier(double lineHeightMultiplier) noexcept override {
+      _swiftPart.setLineHeightMultiplier(std::forward<decltype(lineHeightMultiplier)>(lineHeightMultiplier));
+    }
+    inline bool getShowPageGuide() noexcept override {
+      return _swiftPart.getShowPageGuide();
+    }
+    inline void setShowPageGuide(bool showPageGuide) noexcept override {
+      _swiftPart.setShowPageGuide(std::forward<decltype(showPageGuide)>(showPageGuide));
+    }
+    inline double getPageGuideColumn() noexcept override {
+      return _swiftPart.getPageGuideColumn();
+    }
+    inline void setPageGuideColumn(double pageGuideColumn) noexcept override {
+      _swiftPart.setPageGuideColumn(std::forward<decltype(pageGuideColumn)>(pageGuideColumn));
+    }
+    inline std::string getPageGuideHairlineColorHex() noexcept override {
+      auto __result = _swiftPart.getPageGuideHairlineColorHex();
+      return __result;
+    }
+    inline void setPageGuideHairlineColorHex(const std::string& pageGuideHairlineColorHex) noexcept override {
+      _swiftPart.setPageGuideHairlineColorHex(pageGuideHairlineColorHex);
+    }
+    inline std::string getPageGuideBackgroundColorHex() noexcept override {
+      auto __result = _swiftPart.getPageGuideBackgroundColorHex();
+      return __result;
+    }
+    inline void setPageGuideBackgroundColorHex(const std::string& pageGuideBackgroundColorHex) noexcept override {
+      _swiftPart.setPageGuideBackgroundColorHex(pageGuideBackgroundColorHex);
+    }
+    inline std::string getMarkedTextBackgroundColorHex() noexcept override {
+      auto __result = _swiftPart.getMarkedTextBackgroundColorHex();
+      return __result;
+    }
+    inline void setMarkedTextBackgroundColorHex(const std::string& markedTextBackgroundColorHex) noexcept override {
+      _swiftPart.setMarkedTextBackgroundColorHex(markedTextBackgroundColorHex);
+    }
+    inline bool getIsFindInteractionEnabled() noexcept override {
+      return _swiftPart.isFindInteractionEnabled();
+    }
+    inline void setIsFindInteractionEnabled(bool isFindInteractionEnabled) noexcept override {
+      _swiftPart.setIsFindInteractionEnabled(std::forward<decltype(isFindInteractionEnabled)>(isFindInteractionEnabled));
+    }
+    inline std::string getLineEndings() noexcept override {
+      auto __result = _swiftPart.getLineEndings();
+      return __result;
+    }
+    inline void setLineEndings(const std::string& lineEndings) noexcept override {
+      _swiftPart.setLineEndings(lineEndings);
+    }
+    inline bool getShowMenuAfterNavigatingToHighlightedRange() noexcept override {
+      return _swiftPart.getShowMenuAfterNavigatingToHighlightedRange();
+    }
+    inline void setShowMenuAfterNavigatingToHighlightedRange(bool showMenuAfterNavigatingToHighlightedRange) noexcept override {
+      _swiftPart.setShowMenuAfterNavigatingToHighlightedRange(std::forward<decltype(showMenuAfterNavigatingToHighlightedRange)>(showMenuAfterNavigatingToHighlightedRange));
+    }
     inline std::function<void(bool /* isDirty */)> getOnChangeDirty() noexcept override {
       auto __result = _swiftPart.getOnChangeDirty();
       return __result;

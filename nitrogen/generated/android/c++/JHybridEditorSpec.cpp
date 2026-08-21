@@ -107,6 +107,438 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* fontSizePx */)>("setFontSizePx");
     method(_javaPart, fontSizePx);
   }
+  bool JHybridEditorSpec::getShowLineNumbers() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowLineNumbers");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowLineNumbers(bool showLineNumbers) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showLineNumbers */)>("setShowLineNumbers");
+    method(_javaPart, showLineNumbers);
+  }
+  bool JHybridEditorSpec::getAutomaticScrollEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getAutomaticScrollEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setAutomaticScrollEnabled(bool automaticScrollEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* automaticScrollEnabled */)>("setAutomaticScrollEnabled");
+    method(_javaPart, automaticScrollEnabled);
+  }
+  double JHybridEditorSpec::getVerticalOverscrollFactor() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getVerticalOverscrollFactor");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setVerticalOverscrollFactor(double verticalOverscrollFactor) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* verticalOverscrollFactor */)>("setVerticalOverscrollFactor");
+    method(_javaPart, verticalOverscrollFactor);
+  }
+  double JHybridEditorSpec::getHorizontalOverscrollFactor() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getHorizontalOverscrollFactor");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setHorizontalOverscrollFactor(double horizontalOverscrollFactor) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* horizontalOverscrollFactor */)>("setHorizontalOverscrollFactor");
+    method(_javaPart, horizontalOverscrollFactor);
+  }
+  bool JHybridEditorSpec::getIsSelectable() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isSelectable");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsSelectable(bool isSelectable) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isSelectable */)>("setSelectable");
+    method(_javaPart, isSelectable);
+  }
+  std::string JHybridEditorSpec::getAutocorrectionType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getAutocorrectionType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setAutocorrectionType(const std::string& autocorrectionType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* autocorrectionType */)>("setAutocorrectionType");
+    method(_javaPart, jni::make_jstring(autocorrectionType));
+  }
+  std::string JHybridEditorSpec::getAutocapitalizationType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getAutocapitalizationType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setAutocapitalizationType(const std::string& autocapitalizationType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* autocapitalizationType */)>("setAutocapitalizationType");
+    method(_javaPart, jni::make_jstring(autocapitalizationType));
+  }
+  std::string JHybridEditorSpec::getSmartQuotesType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSmartQuotesType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSmartQuotesType(const std::string& smartQuotesType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* smartQuotesType */)>("setSmartQuotesType");
+    method(_javaPart, jni::make_jstring(smartQuotesType));
+  }
+  std::string JHybridEditorSpec::getSmartDashesType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSmartDashesType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSmartDashesType(const std::string& smartDashesType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* smartDashesType */)>("setSmartDashesType");
+    method(_javaPart, jni::make_jstring(smartDashesType));
+  }
+  std::string JHybridEditorSpec::getSmartInsertDeleteType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSmartInsertDeleteType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSmartInsertDeleteType(const std::string& smartInsertDeleteType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* smartInsertDeleteType */)>("setSmartInsertDeleteType");
+    method(_javaPart, jni::make_jstring(smartInsertDeleteType));
+  }
+  std::string JHybridEditorSpec::getSpellCheckingType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSpellCheckingType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSpellCheckingType(const std::string& spellCheckingType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* spellCheckingType */)>("setSpellCheckingType");
+    method(_javaPart, jni::make_jstring(spellCheckingType));
+  }
+  std::string JHybridEditorSpec::getKeyboardType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getKeyboardType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setKeyboardType(const std::string& keyboardType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* keyboardType */)>("setKeyboardType");
+    method(_javaPart, jni::make_jstring(keyboardType));
+  }
+  std::string JHybridEditorSpec::getKeyboardAppearance() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getKeyboardAppearance");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setKeyboardAppearance(const std::string& keyboardAppearance) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* keyboardAppearance */)>("setKeyboardAppearance");
+    method(_javaPart, jni::make_jstring(keyboardAppearance));
+  }
+  std::string JHybridEditorSpec::getReturnKeyType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getReturnKeyType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setReturnKeyType(const std::string& returnKeyType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* returnKeyType */)>("setReturnKeyType");
+    method(_javaPart, jni::make_jstring(returnKeyType));
+  }
+  std::string JHybridEditorSpec::getInsertionPointColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getInsertionPointColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setInsertionPointColorHex(const std::string& insertionPointColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* insertionPointColorHex */)>("setInsertionPointColorHex");
+    method(_javaPart, jni::make_jstring(insertionPointColorHex));
+  }
+  std::string JHybridEditorSpec::getSelectionBarColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSelectionBarColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSelectionBarColorHex(const std::string& selectionBarColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* selectionBarColorHex */)>("setSelectionBarColorHex");
+    method(_javaPart, jni::make_jstring(selectionBarColorHex));
+  }
+  std::string JHybridEditorSpec::getSelectionHighlightColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSelectionHighlightColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSelectionHighlightColorHex(const std::string& selectionHighlightColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* selectionHighlightColorHex */)>("setSelectionHighlightColorHex");
+    method(_javaPart, jni::make_jstring(selectionHighlightColorHex));
+  }
+  bool JHybridEditorSpec::getShowTabs() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowTabs");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowTabs(bool showTabs) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showTabs */)>("setShowTabs");
+    method(_javaPart, showTabs);
+  }
+  bool JHybridEditorSpec::getShowSpaces() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowSpaces");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowSpaces(bool showSpaces) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showSpaces */)>("setShowSpaces");
+    method(_javaPart, showSpaces);
+  }
+  bool JHybridEditorSpec::getShowNonBreakingSpaces() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowNonBreakingSpaces");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowNonBreakingSpaces(bool showNonBreakingSpaces) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showNonBreakingSpaces */)>("setShowNonBreakingSpaces");
+    method(_javaPart, showNonBreakingSpaces);
+  }
+  bool JHybridEditorSpec::getShowLineBreaks() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowLineBreaks");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowLineBreaks(bool showLineBreaks) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showLineBreaks */)>("setShowLineBreaks");
+    method(_javaPart, showLineBreaks);
+  }
+  bool JHybridEditorSpec::getShowSoftLineBreaks() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowSoftLineBreaks");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowSoftLineBreaks(bool showSoftLineBreaks) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showSoftLineBreaks */)>("setShowSoftLineBreaks");
+    method(_javaPart, showSoftLineBreaks);
+  }
+  std::string JHybridEditorSpec::getTabSymbol() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getTabSymbol");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setTabSymbol(const std::string& tabSymbol) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* tabSymbol */)>("setTabSymbol");
+    method(_javaPart, jni::make_jstring(tabSymbol));
+  }
+  std::string JHybridEditorSpec::getSpaceSymbol() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSpaceSymbol");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSpaceSymbol(const std::string& spaceSymbol) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* spaceSymbol */)>("setSpaceSymbol");
+    method(_javaPart, jni::make_jstring(spaceSymbol));
+  }
+  std::string JHybridEditorSpec::getNonBreakingSpaceSymbol() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getNonBreakingSpaceSymbol");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setNonBreakingSpaceSymbol(const std::string& nonBreakingSpaceSymbol) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* nonBreakingSpaceSymbol */)>("setNonBreakingSpaceSymbol");
+    method(_javaPart, jni::make_jstring(nonBreakingSpaceSymbol));
+  }
+  std::string JHybridEditorSpec::getLineBreakSymbol() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getLineBreakSymbol");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setLineBreakSymbol(const std::string& lineBreakSymbol) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* lineBreakSymbol */)>("setLineBreakSymbol");
+    method(_javaPart, jni::make_jstring(lineBreakSymbol));
+  }
+  std::string JHybridEditorSpec::getSoftLineBreakSymbol() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSoftLineBreakSymbol");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSoftLineBreakSymbol(const std::string& softLineBreakSymbol) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* softLineBreakSymbol */)>("setSoftLineBreakSymbol");
+    method(_javaPart, jni::make_jstring(softLineBreakSymbol));
+  }
+  std::string JHybridEditorSpec::getInvisibleCharactersColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getInvisibleCharactersColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setInvisibleCharactersColorHex(const std::string& invisibleCharactersColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* invisibleCharactersColorHex */)>("setInvisibleCharactersColorHex");
+    method(_javaPart, jni::make_jstring(invisibleCharactersColorHex));
+  }
+  double JHybridEditorSpec::getGutterLeadingPadding() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getGutterLeadingPadding");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setGutterLeadingPadding(double gutterLeadingPadding) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* gutterLeadingPadding */)>("setGutterLeadingPadding");
+    method(_javaPart, gutterLeadingPadding);
+  }
+  double JHybridEditorSpec::getGutterTrailingPadding() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getGutterTrailingPadding");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setGutterTrailingPadding(double gutterTrailingPadding) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* gutterTrailingPadding */)>("setGutterTrailingPadding");
+    method(_javaPart, gutterTrailingPadding);
+  }
+  double JHybridEditorSpec::getGutterMinimumCharacterCount() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getGutterMinimumCharacterCount");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setGutterMinimumCharacterCount(double gutterMinimumCharacterCount) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* gutterMinimumCharacterCount */)>("setGutterMinimumCharacterCount");
+    method(_javaPart, gutterMinimumCharacterCount);
+  }
+  std::string JHybridEditorSpec::getGutterBackgroundColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getGutterBackgroundColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setGutterBackgroundColorHex(const std::string& gutterBackgroundColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* gutterBackgroundColorHex */)>("setGutterBackgroundColorHex");
+    method(_javaPart, jni::make_jstring(gutterBackgroundColorHex));
+  }
+  std::string JHybridEditorSpec::getGutterHairlineColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getGutterHairlineColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setGutterHairlineColorHex(const std::string& gutterHairlineColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* gutterHairlineColorHex */)>("setGutterHairlineColorHex");
+    method(_javaPart, jni::make_jstring(gutterHairlineColorHex));
+  }
+  std::string JHybridEditorSpec::getLineSelectionDisplayType() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getLineSelectionDisplayType");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setLineSelectionDisplayType(const std::string& lineSelectionDisplayType) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* lineSelectionDisplayType */)>("setLineSelectionDisplayType");
+    method(_javaPart, jni::make_jstring(lineSelectionDisplayType));
+  }
+  std::string JHybridEditorSpec::getSelectedLineBackgroundColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSelectedLineBackgroundColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSelectedLineBackgroundColorHex(const std::string& selectedLineBackgroundColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* selectedLineBackgroundColorHex */)>("setSelectedLineBackgroundColorHex");
+    method(_javaPart, jni::make_jstring(selectedLineBackgroundColorHex));
+  }
+  std::string JHybridEditorSpec::getSelectedLinesGutterBackgroundColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getSelectedLinesGutterBackgroundColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setSelectedLinesGutterBackgroundColorHex(const std::string& selectedLinesGutterBackgroundColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* selectedLinesGutterBackgroundColorHex */)>("setSelectedLinesGutterBackgroundColorHex");
+    method(_javaPart, jni::make_jstring(selectedLinesGutterBackgroundColorHex));
+  }
+  bool JHybridEditorSpec::getIsLineWrappingEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isLineWrappingEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsLineWrappingEnabled(bool isLineWrappingEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isLineWrappingEnabled */)>("setLineWrappingEnabled");
+    method(_javaPart, isLineWrappingEnabled);
+  }
+  std::string JHybridEditorSpec::getLineBreakMode() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getLineBreakMode");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setLineBreakMode(const std::string& lineBreakMode) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* lineBreakMode */)>("setLineBreakMode");
+    method(_javaPart, jni::make_jstring(lineBreakMode));
+  }
+  double JHybridEditorSpec::getKern() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getKern");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setKern(double kern) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* kern */)>("setKern");
+    method(_javaPart, kern);
+  }
+  double JHybridEditorSpec::getLineHeightMultiplier() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getLineHeightMultiplier");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setLineHeightMultiplier(double lineHeightMultiplier) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* lineHeightMultiplier */)>("setLineHeightMultiplier");
+    method(_javaPart, lineHeightMultiplier);
+  }
+  bool JHybridEditorSpec::getShowPageGuide() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowPageGuide");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowPageGuide(bool showPageGuide) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showPageGuide */)>("setShowPageGuide");
+    method(_javaPart, showPageGuide);
+  }
+  double JHybridEditorSpec::getPageGuideColumn() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<double()>("getPageGuideColumn");
+    auto __result = method(_javaPart);
+    return __result;
+  }
+  void JHybridEditorSpec::setPageGuideColumn(double pageGuideColumn) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* pageGuideColumn */)>("setPageGuideColumn");
+    method(_javaPart, pageGuideColumn);
+  }
+  std::string JHybridEditorSpec::getPageGuideHairlineColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getPageGuideHairlineColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setPageGuideHairlineColorHex(const std::string& pageGuideHairlineColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* pageGuideHairlineColorHex */)>("setPageGuideHairlineColorHex");
+    method(_javaPart, jni::make_jstring(pageGuideHairlineColorHex));
+  }
+  std::string JHybridEditorSpec::getPageGuideBackgroundColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getPageGuideBackgroundColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setPageGuideBackgroundColorHex(const std::string& pageGuideBackgroundColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* pageGuideBackgroundColorHex */)>("setPageGuideBackgroundColorHex");
+    method(_javaPart, jni::make_jstring(pageGuideBackgroundColorHex));
+  }
+  std::string JHybridEditorSpec::getMarkedTextBackgroundColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getMarkedTextBackgroundColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setMarkedTextBackgroundColorHex(const std::string& markedTextBackgroundColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* markedTextBackgroundColorHex */)>("setMarkedTextBackgroundColorHex");
+    method(_javaPart, jni::make_jstring(markedTextBackgroundColorHex));
+  }
+  bool JHybridEditorSpec::getIsFindInteractionEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isFindInteractionEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsFindInteractionEnabled(bool isFindInteractionEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isFindInteractionEnabled */)>("setFindInteractionEnabled");
+    method(_javaPart, isFindInteractionEnabled);
+  }
+  std::string JHybridEditorSpec::getLineEndings() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getLineEndings");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setLineEndings(const std::string& lineEndings) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* lineEndings */)>("setLineEndings");
+    method(_javaPart, jni::make_jstring(lineEndings));
+  }
+  bool JHybridEditorSpec::getShowMenuAfterNavigatingToHighlightedRange() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowMenuAfterNavigatingToHighlightedRange");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setShowMenuAfterNavigatingToHighlightedRange(bool showMenuAfterNavigatingToHighlightedRange) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* showMenuAfterNavigatingToHighlightedRange */)>("setShowMenuAfterNavigatingToHighlightedRange");
+    method(_javaPart, showMenuAfterNavigatingToHighlightedRange);
+  }
   std::function<void(bool /* isDirty */)> JHybridEditorSpec::getOnChangeDirty() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_bool::javaobject>()>("getOnChangeDirty_cxx");
     auto __result = method(_javaPart);

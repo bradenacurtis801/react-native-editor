@@ -96,6 +96,486 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.fontSizePx: ") + exc.what());
       }
     }()),
+    showLineNumbers([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showLineNumbers", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showLineNumbers;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showLineNumbers);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showLineNumbers: ") + exc.what());
+      }
+    }()),
+    automaticScrollEnabled([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("automaticScrollEnabled", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.automaticScrollEnabled;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.automaticScrollEnabled);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.automaticScrollEnabled: ") + exc.what());
+      }
+    }()),
+    verticalOverscrollFactor([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("verticalOverscrollFactor", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.verticalOverscrollFactor;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.verticalOverscrollFactor);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.verticalOverscrollFactor: ") + exc.what());
+      }
+    }()),
+    horizontalOverscrollFactor([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("horizontalOverscrollFactor", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.horizontalOverscrollFactor;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.horizontalOverscrollFactor);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.horizontalOverscrollFactor: ") + exc.what());
+      }
+    }()),
+    isSelectable([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("isSelectable", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.isSelectable;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.isSelectable);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.isSelectable: ") + exc.what());
+      }
+    }()),
+    autocorrectionType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("autocorrectionType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.autocorrectionType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.autocorrectionType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.autocorrectionType: ") + exc.what());
+      }
+    }()),
+    autocapitalizationType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("autocapitalizationType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.autocapitalizationType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.autocapitalizationType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.autocapitalizationType: ") + exc.what());
+      }
+    }()),
+    smartQuotesType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("smartQuotesType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.smartQuotesType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.smartQuotesType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.smartQuotesType: ") + exc.what());
+      }
+    }()),
+    smartDashesType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("smartDashesType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.smartDashesType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.smartDashesType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.smartDashesType: ") + exc.what());
+      }
+    }()),
+    smartInsertDeleteType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("smartInsertDeleteType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.smartInsertDeleteType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.smartInsertDeleteType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.smartInsertDeleteType: ") + exc.what());
+      }
+    }()),
+    spellCheckingType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("spellCheckingType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.spellCheckingType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.spellCheckingType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.spellCheckingType: ") + exc.what());
+      }
+    }()),
+    keyboardType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("keyboardType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.keyboardType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.keyboardType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.keyboardType: ") + exc.what());
+      }
+    }()),
+    keyboardAppearance([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("keyboardAppearance", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.keyboardAppearance;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.keyboardAppearance);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.keyboardAppearance: ") + exc.what());
+      }
+    }()),
+    returnKeyType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("returnKeyType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.returnKeyType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.returnKeyType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.returnKeyType: ") + exc.what());
+      }
+    }()),
+    insertionPointColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("insertionPointColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.insertionPointColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.insertionPointColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.insertionPointColorHex: ") + exc.what());
+      }
+    }()),
+    selectionBarColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("selectionBarColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.selectionBarColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.selectionBarColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.selectionBarColorHex: ") + exc.what());
+      }
+    }()),
+    selectionHighlightColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("selectionHighlightColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.selectionHighlightColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.selectionHighlightColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.selectionHighlightColorHex: ") + exc.what());
+      }
+    }()),
+    showTabs([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showTabs", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showTabs;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showTabs);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showTabs: ") + exc.what());
+      }
+    }()),
+    showSpaces([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showSpaces", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showSpaces;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showSpaces);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showSpaces: ") + exc.what());
+      }
+    }()),
+    showNonBreakingSpaces([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showNonBreakingSpaces", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showNonBreakingSpaces;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showNonBreakingSpaces);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showNonBreakingSpaces: ") + exc.what());
+      }
+    }()),
+    showLineBreaks([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showLineBreaks", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showLineBreaks;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showLineBreaks);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showLineBreaks: ") + exc.what());
+      }
+    }()),
+    showSoftLineBreaks([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showSoftLineBreaks", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showSoftLineBreaks;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showSoftLineBreaks);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showSoftLineBreaks: ") + exc.what());
+      }
+    }()),
+    tabSymbol([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("tabSymbol", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.tabSymbol;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.tabSymbol);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.tabSymbol: ") + exc.what());
+      }
+    }()),
+    spaceSymbol([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("spaceSymbol", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.spaceSymbol;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.spaceSymbol);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.spaceSymbol: ") + exc.what());
+      }
+    }()),
+    nonBreakingSpaceSymbol([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("nonBreakingSpaceSymbol", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.nonBreakingSpaceSymbol;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.nonBreakingSpaceSymbol);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.nonBreakingSpaceSymbol: ") + exc.what());
+      }
+    }()),
+    lineBreakSymbol([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineBreakSymbol", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineBreakSymbol;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.lineBreakSymbol);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineBreakSymbol: ") + exc.what());
+      }
+    }()),
+    softLineBreakSymbol([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("softLineBreakSymbol", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.softLineBreakSymbol;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.softLineBreakSymbol);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.softLineBreakSymbol: ") + exc.what());
+      }
+    }()),
+    invisibleCharactersColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("invisibleCharactersColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.invisibleCharactersColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.invisibleCharactersColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.invisibleCharactersColorHex: ") + exc.what());
+      }
+    }()),
+    gutterLeadingPadding([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("gutterLeadingPadding", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.gutterLeadingPadding;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.gutterLeadingPadding);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.gutterLeadingPadding: ") + exc.what());
+      }
+    }()),
+    gutterTrailingPadding([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("gutterTrailingPadding", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.gutterTrailingPadding;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.gutterTrailingPadding);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.gutterTrailingPadding: ") + exc.what());
+      }
+    }()),
+    gutterMinimumCharacterCount([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("gutterMinimumCharacterCount", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.gutterMinimumCharacterCount;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.gutterMinimumCharacterCount);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.gutterMinimumCharacterCount: ") + exc.what());
+      }
+    }()),
+    gutterBackgroundColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("gutterBackgroundColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.gutterBackgroundColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.gutterBackgroundColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.gutterBackgroundColorHex: ") + exc.what());
+      }
+    }()),
+    gutterHairlineColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("gutterHairlineColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.gutterHairlineColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.gutterHairlineColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.gutterHairlineColorHex: ") + exc.what());
+      }
+    }()),
+    lineSelectionDisplayType([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineSelectionDisplayType", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineSelectionDisplayType;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.lineSelectionDisplayType);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineSelectionDisplayType: ") + exc.what());
+      }
+    }()),
+    selectedLineBackgroundColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("selectedLineBackgroundColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.selectedLineBackgroundColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.selectedLineBackgroundColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.selectedLineBackgroundColorHex: ") + exc.what());
+      }
+    }()),
+    selectedLinesGutterBackgroundColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("selectedLinesGutterBackgroundColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.selectedLinesGutterBackgroundColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.selectedLinesGutterBackgroundColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.selectedLinesGutterBackgroundColorHex: ") + exc.what());
+      }
+    }()),
+    isLineWrappingEnabled([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("isLineWrappingEnabled", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.isLineWrappingEnabled;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.isLineWrappingEnabled);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.isLineWrappingEnabled: ") + exc.what());
+      }
+    }()),
+    lineBreakMode([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineBreakMode", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineBreakMode;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.lineBreakMode);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineBreakMode: ") + exc.what());
+      }
+    }()),
+    kern([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("kern", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.kern;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.kern);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.kern: ") + exc.what());
+      }
+    }()),
+    lineHeightMultiplier([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineHeightMultiplier", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineHeightMultiplier;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.lineHeightMultiplier);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineHeightMultiplier: ") + exc.what());
+      }
+    }()),
+    showPageGuide([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showPageGuide", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showPageGuide;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showPageGuide);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showPageGuide: ") + exc.what());
+      }
+    }()),
+    pageGuideColumn([&]() -> CachedProp<double> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("pageGuideColumn", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.pageGuideColumn;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<double>::fromRawValue(*runtime, value, sourceProps.pageGuideColumn);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.pageGuideColumn: ") + exc.what());
+      }
+    }()),
+    pageGuideHairlineColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("pageGuideHairlineColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.pageGuideHairlineColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.pageGuideHairlineColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.pageGuideHairlineColorHex: ") + exc.what());
+      }
+    }()),
+    pageGuideBackgroundColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("pageGuideBackgroundColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.pageGuideBackgroundColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.pageGuideBackgroundColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.pageGuideBackgroundColorHex: ") + exc.what());
+      }
+    }()),
+    markedTextBackgroundColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("markedTextBackgroundColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.markedTextBackgroundColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.markedTextBackgroundColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.markedTextBackgroundColorHex: ") + exc.what());
+      }
+    }()),
+    isFindInteractionEnabled([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("isFindInteractionEnabled", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.isFindInteractionEnabled;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.isFindInteractionEnabled);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.isFindInteractionEnabled: ") + exc.what());
+      }
+    }()),
+    lineEndings([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineEndings", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineEndings;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.lineEndings);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineEndings: ") + exc.what());
+      }
+    }()),
+    showMenuAfterNavigatingToHighlightedRange([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("showMenuAfterNavigatingToHighlightedRange", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.showMenuAfterNavigatingToHighlightedRange;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.showMenuAfterNavigatingToHighlightedRange);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.showMenuAfterNavigatingToHighlightedRange: ") + exc.what());
+      }
+    }()),
     onChangeDirty([&]() -> CachedProp<std::function<void(bool /* isDirty */)>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onChangeDirty", nullptr, nullptr);
@@ -126,6 +606,54 @@ namespace margelo::nitro::editor::views {
       case hashString("backgroundColor"): return true;
       case hashString("textColor"): return true;
       case hashString("fontSizePx"): return true;
+      case hashString("showLineNumbers"): return true;
+      case hashString("automaticScrollEnabled"): return true;
+      case hashString("verticalOverscrollFactor"): return true;
+      case hashString("horizontalOverscrollFactor"): return true;
+      case hashString("isSelectable"): return true;
+      case hashString("autocorrectionType"): return true;
+      case hashString("autocapitalizationType"): return true;
+      case hashString("smartQuotesType"): return true;
+      case hashString("smartDashesType"): return true;
+      case hashString("smartInsertDeleteType"): return true;
+      case hashString("spellCheckingType"): return true;
+      case hashString("keyboardType"): return true;
+      case hashString("keyboardAppearance"): return true;
+      case hashString("returnKeyType"): return true;
+      case hashString("insertionPointColorHex"): return true;
+      case hashString("selectionBarColorHex"): return true;
+      case hashString("selectionHighlightColorHex"): return true;
+      case hashString("showTabs"): return true;
+      case hashString("showSpaces"): return true;
+      case hashString("showNonBreakingSpaces"): return true;
+      case hashString("showLineBreaks"): return true;
+      case hashString("showSoftLineBreaks"): return true;
+      case hashString("tabSymbol"): return true;
+      case hashString("spaceSymbol"): return true;
+      case hashString("nonBreakingSpaceSymbol"): return true;
+      case hashString("lineBreakSymbol"): return true;
+      case hashString("softLineBreakSymbol"): return true;
+      case hashString("invisibleCharactersColorHex"): return true;
+      case hashString("gutterLeadingPadding"): return true;
+      case hashString("gutterTrailingPadding"): return true;
+      case hashString("gutterMinimumCharacterCount"): return true;
+      case hashString("gutterBackgroundColorHex"): return true;
+      case hashString("gutterHairlineColorHex"): return true;
+      case hashString("lineSelectionDisplayType"): return true;
+      case hashString("selectedLineBackgroundColorHex"): return true;
+      case hashString("selectedLinesGutterBackgroundColorHex"): return true;
+      case hashString("isLineWrappingEnabled"): return true;
+      case hashString("lineBreakMode"): return true;
+      case hashString("kern"): return true;
+      case hashString("lineHeightMultiplier"): return true;
+      case hashString("showPageGuide"): return true;
+      case hashString("pageGuideColumn"): return true;
+      case hashString("pageGuideHairlineColorHex"): return true;
+      case hashString("pageGuideBackgroundColorHex"): return true;
+      case hashString("markedTextBackgroundColorHex"): return true;
+      case hashString("isFindInteractionEnabled"): return true;
+      case hashString("lineEndings"): return true;
+      case hashString("showMenuAfterNavigatingToHighlightedRange"): return true;
       case hashString("onChangeDirty"): return true;
       case hashString("hybridRef"): return true;
       default: return false;

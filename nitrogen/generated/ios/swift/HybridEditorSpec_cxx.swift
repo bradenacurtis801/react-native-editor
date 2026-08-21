@@ -198,6 +198,534 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var showLineNumbers: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showLineNumbers
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showLineNumbers = newValue
+    }
+  }
+  
+  public final var automaticScrollEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.automaticScrollEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.automaticScrollEnabled = newValue
+    }
+  }
+  
+  public final var verticalOverscrollFactor: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.verticalOverscrollFactor
+    }
+    @inline(__always)
+    set {
+      self.__implementation.verticalOverscrollFactor = newValue
+    }
+  }
+  
+  public final var horizontalOverscrollFactor: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.horizontalOverscrollFactor
+    }
+    @inline(__always)
+    set {
+      self.__implementation.horizontalOverscrollFactor = newValue
+    }
+  }
+  
+  public final var isSelectable: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isSelectable
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isSelectable = newValue
+    }
+  }
+  
+  public final var autocorrectionType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.autocorrectionType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.autocorrectionType = String(newValue)
+    }
+  }
+  
+  public final var autocapitalizationType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.autocapitalizationType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.autocapitalizationType = String(newValue)
+    }
+  }
+  
+  public final var smartQuotesType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.smartQuotesType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.smartQuotesType = String(newValue)
+    }
+  }
+  
+  public final var smartDashesType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.smartDashesType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.smartDashesType = String(newValue)
+    }
+  }
+  
+  public final var smartInsertDeleteType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.smartInsertDeleteType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.smartInsertDeleteType = String(newValue)
+    }
+  }
+  
+  public final var spellCheckingType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.spellCheckingType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.spellCheckingType = String(newValue)
+    }
+  }
+  
+  public final var keyboardType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.keyboardType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.keyboardType = String(newValue)
+    }
+  }
+  
+  public final var keyboardAppearance: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.keyboardAppearance)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.keyboardAppearance = String(newValue)
+    }
+  }
+  
+  public final var returnKeyType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.returnKeyType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.returnKeyType = String(newValue)
+    }
+  }
+  
+  public final var insertionPointColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.insertionPointColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.insertionPointColorHex = String(newValue)
+    }
+  }
+  
+  public final var selectionBarColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.selectionBarColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectionBarColorHex = String(newValue)
+    }
+  }
+  
+  public final var selectionHighlightColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.selectionHighlightColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectionHighlightColorHex = String(newValue)
+    }
+  }
+  
+  public final var showTabs: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showTabs
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showTabs = newValue
+    }
+  }
+  
+  public final var showSpaces: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showSpaces
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showSpaces = newValue
+    }
+  }
+  
+  public final var showNonBreakingSpaces: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showNonBreakingSpaces
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showNonBreakingSpaces = newValue
+    }
+  }
+  
+  public final var showLineBreaks: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showLineBreaks
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showLineBreaks = newValue
+    }
+  }
+  
+  public final var showSoftLineBreaks: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showSoftLineBreaks
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showSoftLineBreaks = newValue
+    }
+  }
+  
+  public final var tabSymbol: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.tabSymbol)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.tabSymbol = String(newValue)
+    }
+  }
+  
+  public final var spaceSymbol: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.spaceSymbol)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.spaceSymbol = String(newValue)
+    }
+  }
+  
+  public final var nonBreakingSpaceSymbol: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.nonBreakingSpaceSymbol)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.nonBreakingSpaceSymbol = String(newValue)
+    }
+  }
+  
+  public final var lineBreakSymbol: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.lineBreakSymbol)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineBreakSymbol = String(newValue)
+    }
+  }
+  
+  public final var softLineBreakSymbol: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.softLineBreakSymbol)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.softLineBreakSymbol = String(newValue)
+    }
+  }
+  
+  public final var invisibleCharactersColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.invisibleCharactersColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.invisibleCharactersColorHex = String(newValue)
+    }
+  }
+  
+  public final var gutterLeadingPadding: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.gutterLeadingPadding
+    }
+    @inline(__always)
+    set {
+      self.__implementation.gutterLeadingPadding = newValue
+    }
+  }
+  
+  public final var gutterTrailingPadding: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.gutterTrailingPadding
+    }
+    @inline(__always)
+    set {
+      self.__implementation.gutterTrailingPadding = newValue
+    }
+  }
+  
+  public final var gutterMinimumCharacterCount: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.gutterMinimumCharacterCount
+    }
+    @inline(__always)
+    set {
+      self.__implementation.gutterMinimumCharacterCount = newValue
+    }
+  }
+  
+  public final var gutterBackgroundColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.gutterBackgroundColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.gutterBackgroundColorHex = String(newValue)
+    }
+  }
+  
+  public final var gutterHairlineColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.gutterHairlineColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.gutterHairlineColorHex = String(newValue)
+    }
+  }
+  
+  public final var lineSelectionDisplayType: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.lineSelectionDisplayType)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineSelectionDisplayType = String(newValue)
+    }
+  }
+  
+  public final var selectedLineBackgroundColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.selectedLineBackgroundColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectedLineBackgroundColorHex = String(newValue)
+    }
+  }
+  
+  public final var selectedLinesGutterBackgroundColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.selectedLinesGutterBackgroundColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectedLinesGutterBackgroundColorHex = String(newValue)
+    }
+  }
+  
+  public final var isLineWrappingEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isLineWrappingEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isLineWrappingEnabled = newValue
+    }
+  }
+  
+  public final var lineBreakMode: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.lineBreakMode)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineBreakMode = String(newValue)
+    }
+  }
+  
+  public final var kern: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.kern
+    }
+    @inline(__always)
+    set {
+      self.__implementation.kern = newValue
+    }
+  }
+  
+  public final var lineHeightMultiplier: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.lineHeightMultiplier
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineHeightMultiplier = newValue
+    }
+  }
+  
+  public final var showPageGuide: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showPageGuide
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showPageGuide = newValue
+    }
+  }
+  
+  public final var pageGuideColumn: Double {
+    @inline(__always)
+    get {
+      return self.__implementation.pageGuideColumn
+    }
+    @inline(__always)
+    set {
+      self.__implementation.pageGuideColumn = newValue
+    }
+  }
+  
+  public final var pageGuideHairlineColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.pageGuideHairlineColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.pageGuideHairlineColorHex = String(newValue)
+    }
+  }
+  
+  public final var pageGuideBackgroundColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.pageGuideBackgroundColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.pageGuideBackgroundColorHex = String(newValue)
+    }
+  }
+  
+  public final var markedTextBackgroundColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.markedTextBackgroundColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.markedTextBackgroundColorHex = String(newValue)
+    }
+  }
+  
+  public final var isFindInteractionEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isFindInteractionEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isFindInteractionEnabled = newValue
+    }
+  }
+  
+  public final var lineEndings: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.lineEndings)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineEndings = String(newValue)
+    }
+  }
+  
+  public final var showMenuAfterNavigatingToHighlightedRange: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.showMenuAfterNavigatingToHighlightedRange
+    }
+    @inline(__always)
+    set {
+      self.__implementation.showMenuAfterNavigatingToHighlightedRange = newValue
+    }
+  }
+  
   public final var onChangeDirty: bridge.Func_void_bool {
     @inline(__always)
     get {
