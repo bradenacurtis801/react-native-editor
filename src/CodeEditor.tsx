@@ -71,7 +71,7 @@ export interface CodeEditorSettings {
 	insertionPointColor?: string;
 	/** `#RRGGBB` selection-handle bar color. @default theme.text */
 	selectionBarColor?: string;
-	/** `#RRGGBB` selected-text background color. */
+	/** `#RRGGBBAA` selected-text background color — include an alpha byte, or it paints as a fully opaque block over the selected text instead of a translucent highlight. @default '#3399ff33' (~20% opacity) */
 	selectionHighlightColor?: string;
 	showTabs?: boolean;
 	showSpaces?: boolean;
@@ -163,7 +163,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'insertionPointColor'
 	keyboardType: 'asciiCapable',
 	keyboardAppearance: 'default',
 	returnKeyType: 'default',
-	selectionHighlightColor: '#3399ff',
+	selectionHighlightColor: '#3399ff33',
 	showTabs: false,
 	showSpaces: false,
 	showNonBreakingSpaces: false,

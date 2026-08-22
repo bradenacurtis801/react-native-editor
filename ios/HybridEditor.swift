@@ -347,7 +347,7 @@ class HybridEditor: HybridEditorSpec {
   var returnKeyType: String = "default"
   var insertionPointColorHex: String = "#ffffff"
   var selectionBarColorHex: String = "#ffffff"
-  var selectionHighlightColorHex: String = "#3399ff"
+  var selectionHighlightColorHex: String = "#3399ff33"
   var showTabs: Bool = false
   var showSpaces: Bool = false
   var showNonBreakingSpaces: Bool = false
