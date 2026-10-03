@@ -1,0 +1,122 @@
+import type { StyleProp, ViewStyle } from 'react-native';
+
+/** Colors + font size the editor renders with — caller supplies these from its own theme, this package has no theme system of its own. */
+export interface CodeEditorTheme {
+	background: string;
+	text: string;
+	keyword: string;
+	string: string;
+	comment: string;
+	number: string;
+	plain: string;
+	fontSize?: number;
+}
+
+/**
+ * Every other configurable Runestone behavior beyond the theme/language/
+ * editable basics — all optional, all iOS-only (no effect on the Android
+ * `TextInput` fallback, which has no equivalent knobs). See `Editor.nitro.ts`
+ * for what each one does natively; names here match 1:1 except the `*Hex`
+ * suffix is dropped (every color here is a `#RRGGBB` hex string).
+ */
+export interface CodeEditorSettings {
+	showLineNumbers?: boolean;
+	/** @default false — see `Editor.nitro.ts`'s own doc comment on why. */
+	automaticScrollEnabled?: boolean;
+	/** @default 1 — lets the last line scroll to the top of the screen instead of stopping at the bottom edge. */
+	verticalOverscrollFactor?: number;
+	horizontalOverscrollFactor?: number;
+	isSelectable?: boolean;
+	/** @default 'no' */
+	autocorrectionType?: 'default' | 'no' | 'yes';
+	/** @default 'none' */
+	autocapitalizationType?: 'none' | 'sentences' | 'words' | 'allCharacters';
+	/** @default 'no' — smart quotes would corrupt string literals. */
+	smartQuotesType?: 'default' | 'no' | 'yes';
+	/** @default 'no' — smart dashes would corrupt `--`/`->` etc. */
+	smartDashesType?: 'default' | 'no' | 'yes';
+	/** @default 'no' */
+	smartInsertDeleteType?: 'default' | 'no' | 'yes';
+	/** @default 'no' */
+	spellCheckingType?: 'default' | 'no' | 'yes';
+	/** @default 'asciiCapable' */
+	keyboardType?:
+		| 'default' | 'asciiCapable' | 'numbersAndPunctuation' | 'URL'
+		| 'numberPad' | 'phonePad' | 'namePhonePad' | 'emailAddress'
+		| 'decimalPad' | 'twitter' | 'webSearch' | 'asciiCapableNumberPad';
+	keyboardAppearance?: 'default' | 'light' | 'dark';
+	returnKeyType?:
+		| 'default' | 'go' | 'google' | 'join' | 'next' | 'route' | 'search'
+		| 'send' | 'yahoo' | 'done' | 'emergencyCall' | 'continue';
+	/** `#RRGGBB` caret color. @default theme.text */
+	insertionPointColor?: string;
+	/** `#RRGGBB` selection-handle bar color. @default theme.text */
+	selectionBarColor?: string;
+	/** `#RRGGBBAA` selected-text background color — include an alpha byte, or it paints as a fully opaque block over the selected text instead of a translucent highlight. @default '#3399ff33' (~20% opacity) */
+	selectionHighlightColor?: string;
+	showTabs?: boolean;
+	showSpaces?: boolean;
+	showNonBreakingSpaces?: boolean;
+	showLineBreaks?: boolean;
+	showSoftLineBreaks?: boolean;
+	tabSymbol?: string;
+	spaceSymbol?: string;
+	nonBreakingSpaceSymbol?: string;
+	lineBreakSymbol?: string;
+	softLineBreakSymbol?: string;
+	/** `#RRGGBB` — color the above symbols render in. */
+	invisibleCharactersColor?: string;
+	gutterLeadingPadding?: number;
+	gutterTrailingPadding?: number;
+	gutterMinimumCharacterCount?: number;
+	/** `#RRGGBB`. @default theme.background */
+	gutterBackgroundColor?: string;
+	/** `#RRGGBB`, transparent by default. */
+	gutterHairlineColor?: string;
+	/** @default 'disabled' */
+	lineSelectionDisplayType?: 'disabled' | 'line' | 'lineFragment';
+	/** `#RRGGBB`, transparent by default. */
+	selectedLineBackgroundColor?: string;
+	/** `#RRGGBB`, transparent by default. */
+	selectedLinesGutterBackgroundColor?: string;
+	/** @default true */
+	isLineWrappingEnabled?: boolean;
+	/** @default 'byWordWrapping' */
+	lineBreakMode?: 'byWordWrapping' | 'byCharWrapping';
+	kern?: number;
+	lineHeightMultiplier?: number;
+	showPageGuide?: boolean;
+	/** @default 80 */
+	pageGuideColumn?: number;
+	/** `#RRGGBB`, transparent by default. */
+	pageGuideHairlineColor?: string;
+	/** `#RRGGBB`, transparent by default. */
+	pageGuideBackgroundColor?: string;
+	/** `#RRGGBB`, transparent by default. */
+	markedTextBackgroundColor?: string;
+	/** Turns on iOS's entire native find/replace UI for free. iOS 16+; a no-op below that. @default false */
+	isFindInteractionEnabled?: boolean;
+	/** @default 'lf' */
+	lineEndings?: 'lf' | 'crlf' | 'cr';
+	showMenuAfterNavigatingToHighlightedRange?: boolean;
+}
+
+export interface CodeEditorProps {
+	/** Seeds the initial buffer. Changing this after mount does NOT reset the buffer — this is an uncontrolled component (see `CodeEditorHandle`). */
+	initialText: string;
+	/** Tree-sitter grammar id, e.g. "json" | "swift" | "plaintext". Unrecognized ids fall back to plain text. */
+	language: string;
+	editable?: boolean;
+	theme: CodeEditorTheme;
+	/** iOS-only; ignored on the Android fallback. Omitted fields use Runestone/this package's own defaults — see each field's own doc comment. */
+	settings?: CodeEditorSettings;
+	/** Fires whenever the buffer transitions between matching/not-matching `initialText`. */
+	onDirtyChange?: (isDirty: boolean) => void;
+	style?: StyleProp<ViewStyle>;
+}
+
+/** Imperative handle — the buffer lives natively (iOS) or in local state (Android fallback), not in JS-controlled `value` state, so content is pulled on demand (e.g. on Save) rather than streamed through `onChangeText` on every keystroke. */
+export interface CodeEditorHandle {
+	getText(): string;
+	setText(text: string): void;
+}
