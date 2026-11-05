@@ -117,6 +117,10 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setKeyboardAppearance(props->keyboardAppearance.value);
     props->keyboardAppearance.isDirty = false;
   }
+  if (props->keyboardDismissMode.isDirty) {
+    hybridView->setKeyboardDismissMode(props->keyboardDismissMode.value);
+    props->keyboardDismissMode.isDirty = false;
+  }
   if (props->returnKeyType.isDirty) {
     hybridView->setReturnKeyType(props->returnKeyType.value);
     props->returnKeyType.isDirty = false;

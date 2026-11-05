@@ -226,6 +226,16 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.keyboardAppearance: ") + exc.what());
       }
     }()),
+    keyboardDismissMode([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("keyboardDismissMode", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.keyboardDismissMode;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.keyboardDismissMode);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.keyboardDismissMode: ") + exc.what());
+      }
+    }()),
     returnKeyType([&]() -> CachedProp<std::string> {
       try {
         const react::RawValue* rawValue = rawProps.at("returnKeyType", nullptr, nullptr);
@@ -619,6 +629,7 @@ namespace margelo::nitro::editor::views {
       case hashString("spellCheckingType"): return true;
       case hashString("keyboardType"): return true;
       case hashString("keyboardAppearance"): return true;
+      case hashString("keyboardDismissMode"): return true;
       case hashString("returnKeyType"): return true;
       case hashString("insertionPointColorHex"): return true;
       case hashString("selectionBarColorHex"): return true;

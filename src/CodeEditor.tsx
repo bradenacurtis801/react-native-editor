@@ -64,6 +64,12 @@ export interface CodeEditorSettings {
 		| 'numberPad' | 'phonePad' | 'namePhonePad' | 'emailAddress'
 		| 'decimalPad' | 'twitter' | 'webSearch' | 'asciiCapableNumberPad';
 	keyboardAppearance?: 'default' | 'light' | 'dark';
+	/**
+	 * How scrolling puts the keyboard away: `'interactive'` — it follows the finger
+	 * down, as in Messages; `'onDrag'` — it goes as the drag starts; `'none'`.
+	 * @default 'interactive'
+	 */
+	keyboardDismissMode?: 'none' | 'onDrag' | 'interactive';
 	returnKeyType?:
 		| 'default' | 'go' | 'google' | 'join' | 'next' | 'route' | 'search'
 		| 'send' | 'yahoo' | 'done' | 'emergencyCall' | 'continue';
@@ -162,6 +168,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'insertionPointColor'
 	spellCheckingType: 'no',
 	keyboardType: 'asciiCapable',
 	keyboardAppearance: 'default',
+	keyboardDismissMode: 'interactive',
 	returnKeyType: 'default',
 	selectionHighlightColor: '#3399ff33',
 	showTabs: false,
@@ -245,6 +252,7 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				spellCheckingType={s.spellCheckingType}
 				keyboardType={s.keyboardType}
 				keyboardAppearance={s.keyboardAppearance}
+				keyboardDismissMode={s.keyboardDismissMode}
 				returnKeyType={s.returnKeyType}
 				insertionPointColorHex={settings?.insertionPointColor ?? theme.text}
 				selectionBarColorHex={settings?.selectionBarColor ?? theme.text}

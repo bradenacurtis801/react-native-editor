@@ -24,6 +24,7 @@
     "spellCheckingType": true,
     "keyboardType": true,
     "keyboardAppearance": true,
+    "keyboardDismissMode": true,
     "returnKeyType": true,
     "insertionPointColorHex": true,
     "selectionBarColorHex": true,

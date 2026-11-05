@@ -179,6 +179,11 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setKeyboardAppearance(newViewProps.keyboardAppearance.value);
     newViewProps.keyboardAppearance.isDirty = false;
   }
+  // keyboardDismissMode: string
+  if (newViewProps.keyboardDismissMode.isDirty) {
+    swiftPart.setKeyboardDismissMode(newViewProps.keyboardDismissMode.value);
+    newViewProps.keyboardDismissMode.isDirty = false;
+  }
   // returnKeyType: string
   if (newViewProps.returnKeyType.isDirty) {
     swiftPart.setReturnKeyType(newViewProps.returnKeyType.value);

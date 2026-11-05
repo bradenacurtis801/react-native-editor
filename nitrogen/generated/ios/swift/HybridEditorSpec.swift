@@ -30,6 +30,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var spellCheckingType: String { get set }
   var keyboardType: String { get set }
   var keyboardAppearance: String { get set }
+  var keyboardDismissMode: String { get set }
   var returnKeyType: String { get set }
   var insertionPointColorHex: String { get set }
   var selectionBarColorHex: String { get set }

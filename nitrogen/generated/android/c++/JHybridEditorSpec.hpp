@@ -90,6 +90,8 @@ namespace margelo::nitro::editor {
     void setKeyboardType(const std::string& keyboardType) override;
     std::string getKeyboardAppearance() override;
     void setKeyboardAppearance(const std::string& keyboardAppearance) override;
+    std::string getKeyboardDismissMode() override;
+    void setKeyboardDismissMode(const std::string& keyboardDismissMode) override;
     std::string getReturnKeyType() override;
     void setReturnKeyType(const std::string& returnKeyType) override;
     std::string getInsertionPointColorHex() override;

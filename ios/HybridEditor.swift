@@ -160,6 +160,14 @@ private func parsedKeyboardAppearance(for id: String) -> UIKeyboardAppearance {
   }
 }
 
+private func parsedKeyboardDismissMode(for id: String) -> UIScrollView.KeyboardDismissMode {
+  switch id {
+  case "onDrag": return .onDrag
+  case "interactive": return .interactive
+  default: return .none
+  }
+}
+
 private func parsedReturnKeyType(for id: String) -> UIReturnKeyType {
   switch id {
   case "go": return .go
@@ -344,6 +352,7 @@ class HybridEditor: HybridEditorSpec {
   var spellCheckingType: String = "no"
   var keyboardType: String = "asciiCapable"
   var keyboardAppearance: String = "default"
+  var keyboardDismissMode: String = "interactive"
   var returnKeyType: String = "default"
   var insertionPointColorHex: String = "#ffffff"
   var selectionBarColorHex: String = "#ffffff"
@@ -413,6 +422,8 @@ class HybridEditor: HybridEditorSpec {
     textView.spellCheckingType = parsedSpellCheckingType(for: spellCheckingType)
     textView.keyboardType = parsedKeyboardType(for: keyboardType)
     textView.keyboardAppearance = parsedKeyboardAppearance(for: keyboardAppearance)
+    // `TextView` is a `UIScrollView`, so this is its own scroll-to-dismiss.
+    textView.keyboardDismissMode = parsedKeyboardDismissMode(for: keyboardDismissMode)
     textView.returnKeyType = parsedReturnKeyType(for: returnKeyType)
     textView.insertionPointColor = UIColor(hex: insertionPointColorHex)
     textView.selectionBarColor = UIColor(hex: selectionBarColorHex)

@@ -196,6 +196,13 @@ namespace margelo::nitro::editor {
     inline void setKeyboardAppearance(const std::string& keyboardAppearance) noexcept override {
       _swiftPart.setKeyboardAppearance(keyboardAppearance);
     }
+    inline std::string getKeyboardDismissMode() noexcept override {
+      auto __result = _swiftPart.getKeyboardDismissMode();
+      return __result;
+    }
+    inline void setKeyboardDismissMode(const std::string& keyboardDismissMode) noexcept override {
+      _swiftPart.setKeyboardDismissMode(keyboardDismissMode);
+    }
     inline std::string getReturnKeyType() noexcept override {
       auto __result = _swiftPart.getReturnKeyType();
       return __result;

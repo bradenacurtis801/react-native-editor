@@ -71,6 +71,8 @@ export interface EditorProps extends HybridViewProps {
 	keyboardType: string;
 	/** 'default' | 'light' | 'dark'. @default 'default' */
 	keyboardAppearance: string;
+	/** How scrolling puts the keyboard away: 'none' | 'onDrag' | 'interactive' (the keyboard follows the finger down, as in Messages). @default 'interactive' */
+	keyboardDismissMode: string;
 	/** A `UIReturnKeyType` case name, e.g. 'default' | 'go' | 'search' | 'send' | 'done' | ... — rarely meaningful for a multiline code editor, exposed for completeness. @default 'default' */
 	returnKeyType: string;
 	/** `#RRGGBB` caret color. */

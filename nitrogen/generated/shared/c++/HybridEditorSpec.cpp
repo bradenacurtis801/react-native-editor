@@ -54,6 +54,8 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("keyboardType", &HybridEditorSpec::setKeyboardType);
       prototype.registerHybridGetter("keyboardAppearance", &HybridEditorSpec::getKeyboardAppearance);
       prototype.registerHybridSetter("keyboardAppearance", &HybridEditorSpec::setKeyboardAppearance);
+      prototype.registerHybridGetter("keyboardDismissMode", &HybridEditorSpec::getKeyboardDismissMode);
+      prototype.registerHybridSetter("keyboardDismissMode", &HybridEditorSpec::setKeyboardDismissMode);
       prototype.registerHybridGetter("returnKeyType", &HybridEditorSpec::getReturnKeyType);
       prototype.registerHybridSetter("returnKeyType", &HybridEditorSpec::setReturnKeyType);
       prototype.registerHybridGetter("insertionPointColorHex", &HybridEditorSpec::getInsertionPointColorHex);

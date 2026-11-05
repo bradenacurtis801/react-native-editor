@@ -85,6 +85,8 @@ namespace margelo::nitro::editor {
       virtual void setKeyboardType(const std::string& keyboardType) = 0;
       virtual std::string getKeyboardAppearance() = 0;
       virtual void setKeyboardAppearance(const std::string& keyboardAppearance) = 0;
+      virtual std::string getKeyboardDismissMode() = 0;
+      virtual void setKeyboardDismissMode(const std::string& keyboardDismissMode) = 0;
       virtual std::string getReturnKeyType() = 0;
       virtual void setReturnKeyType(const std::string& returnKeyType) = 0;
       virtual std::string getInsertionPointColorHex() = 0;

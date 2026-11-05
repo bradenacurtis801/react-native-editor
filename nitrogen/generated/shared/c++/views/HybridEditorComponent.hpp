@@ -62,6 +62,7 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::string> spellCheckingType;
     CachedProp<std::string> keyboardType;
     CachedProp<std::string> keyboardAppearance;
+    CachedProp<std::string> keyboardDismissMode;
     CachedProp<std::string> returnKeyType;
     CachedProp<std::string> insertionPointColorHex;
     CachedProp<std::string> selectionBarColorHex;

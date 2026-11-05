@@ -224,6 +224,15 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* keyboardAppearance */)>("setKeyboardAppearance");
     method(_javaPart, jni::make_jstring(keyboardAppearance));
   }
+  std::string JHybridEditorSpec::getKeyboardDismissMode() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getKeyboardDismissMode");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setKeyboardDismissMode(const std::string& keyboardDismissMode) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* keyboardDismissMode */)>("setKeyboardDismissMode");
+    method(_javaPart, jni::make_jstring(keyboardDismissMode));
+  }
   std::string JHybridEditorSpec::getReturnKeyType() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getReturnKeyType");
     auto __result = method(_javaPart);

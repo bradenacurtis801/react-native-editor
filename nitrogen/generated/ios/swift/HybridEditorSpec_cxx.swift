@@ -341,6 +341,17 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var keyboardDismissMode: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.keyboardDismissMode)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.keyboardDismissMode = String(newValue)
+    }
+  }
+  
   public final var returnKeyType: std.string {
     @inline(__always)
     get {
