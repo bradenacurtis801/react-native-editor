@@ -114,6 +114,11 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setFontSizePx(newViewProps.fontSizePx.value);
     newViewProps.fontSizePx.isDirty = false;
   }
+  // indentStrategy: string
+  if (newViewProps.indentStrategy.isDirty) {
+    swiftPart.setIndentStrategy(newViewProps.indentStrategy.value);
+    newViewProps.indentStrategy.isDirty = false;
+  }
   // showLineNumbers: boolean
   if (newViewProps.showLineNumbers.isDirty) {
     swiftPart.setShowLineNumbers(newViewProps.showLineNumbers.value);

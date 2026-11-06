@@ -64,6 +64,8 @@ namespace margelo::nitro::editor {
     void setTextColor(const std::string& textColor) override;
     double getFontSizePx() override;
     void setFontSizePx(double fontSizePx) override;
+    std::string getIndentStrategy() override;
+    void setIndentStrategy(const std::string& indentStrategy) override;
     bool getShowLineNumbers() override;
     void setShowLineNumbers(bool showLineNumbers) override;
     bool getAutomaticScrollEnabled() override;
@@ -178,6 +180,7 @@ namespace margelo::nitro::editor {
     void insertText(const std::string& text) override;
     void undo() override;
     void redo() override;
+    void tab() override;
     void indent() override;
     void outdent() override;
     void moveCursor(const std::string& direction) override;

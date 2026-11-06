@@ -17,6 +17,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var backgroundColor: String { get set }
   var textColor: String { get set }
   var fontSizePx: Double { get set }
+  var indentStrategy: String { get set }
   var showLineNumbers: Bool { get set }
   var automaticScrollEnabled: Bool { get set }
   var verticalOverscrollFactor: Double { get set }
@@ -77,6 +78,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func insertText(text: String) throws -> Void
   func undo() throws -> Void
   func redo() throws -> Void
+  func tab() throws -> Void
   func indent() throws -> Void
   func outdent() throws -> Void
   func moveCursor(direction: String) throws -> Void

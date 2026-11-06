@@ -198,6 +198,17 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var indentStrategy: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.indentStrategy)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.indentStrategy = String(newValue)
+    }
+  }
+  
   public final var showLineNumbers: Bool {
     @inline(__always)
     get {
@@ -863,6 +874,17 @@ open class HybridEditorSpec_cxx {
   public final func redo() -> bridge.Result_void_ {
     do {
       try self.__implementation.redo()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func tab() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.tab()
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

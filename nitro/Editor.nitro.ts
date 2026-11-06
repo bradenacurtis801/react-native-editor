@@ -33,6 +33,8 @@ export interface EditorProps extends HybridViewProps {
 	backgroundColor: string;
 	textColor: string;
 	fontSizePx: number;
+	/** What one level of indentation is, for Tab and indent / outdent: `'tab:N'` (a tab, shown N wide) or `'space:N'` (N spaces). @default 'tab:4' */
+	indentStrategy: string;
 	/** Gutter line numbers. @default true */
 	showLineNumbers: boolean;
 	/**
@@ -158,6 +160,8 @@ export interface EditorMethods extends HybridViewMethods {
 	undo(): void;
 	redo(): void;
 	/** Indents the selected lines (the caret's line when nothing is selected) by one level. */
+	/** The Tab key: indents the selected lines — or the caret's line when the caret is in its leading whitespace or the line is empty — and otherwise types one level of indentation at the caret. */
+	tab(): void;
 	indent(): void;
 	/** Takes one level of indentation off the selected lines. */
 	outdent(): void;

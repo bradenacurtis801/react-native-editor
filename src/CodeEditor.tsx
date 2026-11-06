@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { callback, getHostComponent } from 'react-native-nitro-modules';
 
+import { detectIndentation } from './indentation';
 import EditorViewConfig from '../nitrogen/generated/shared/json/EditorConfig.json';
 import type { Editor, EditorMethods, EditorProps } from '../nitro/Editor.nitro';
 
@@ -39,6 +40,8 @@ export interface CodeEditorTheme {
  * suffix is dropped (every color here is a `#RRGGBB` hex string).
  */
 export interface CodeEditorSettings {
+	/** What one level of indentation is: `'tab:N'` or `'space:N'`. @default guessed from the text (`detectIndentation`) */
+	indentation?: string;
 	showLineNumbers?: boolean;
 	/** @default false — see `Editor.nitro.ts`'s own doc comment on why. */
 	automaticScrollEnabled?: boolean;
@@ -155,6 +158,8 @@ export interface CodeEditorHandle {
 	undo(): void;
 	redo(): void;
 	/** Indent / take one level off the selected lines (the caret's line when nothing is selected). */
+	/** The Tab key: indents the selected lines, or the caret's line when it is in its leading whitespace; otherwise types one level of indentation. */
+	tab(): void;
 	indent(): void;
 	outdent(): void;
 	moveCursor(direction: CursorDirection): void;
@@ -174,7 +179,7 @@ const NativeEditor = getHostComponent<EditorProps, EditorMethods>(
 );
 
 /** Mirrors every default `HybridEditor.swift` itself falls back to — kept in sync by hand (Nitro props have no cross-language default mechanism), not re-derived at runtime. */
-const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'insertionPointColor' | 'selectionBarColor' | 'gutterBackgroundColor'>> = {
+const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'insertionPointColor' | 'selectionBarColor' | 'gutterBackgroundColor'>> = {
 	showLineNumbers: true,
 	automaticScrollEnabled: false,
 	verticalOverscrollFactor: 1,
@@ -239,6 +244,7 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			insertText: (text: string) => hybridRef.current?.insertText(text),
 			undo: () => hybridRef.current?.undo(),
 			redo: () => hybridRef.current?.redo(),
+			tab: () => hybridRef.current?.tab(),
 			indent: () => hybridRef.current?.indent(),
 			outdent: () => hybridRef.current?.outdent(),
 			moveCursor: (direction: CursorDirection) => hybridRef.current?.moveCursor(direction),
@@ -267,6 +273,7 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				backgroundColor={theme.background}
 				textColor={theme.text}
 				fontSizePx={theme.fontSize ?? 13}
+				indentStrategy={settings?.indentation ?? detectIndentation(initialText)}
 				showLineNumbers={s.showLineNumbers}
 				automaticScrollEnabled={s.automaticScrollEnabled}
 				verticalOverscrollFactor={s.verticalOverscrollFactor}
@@ -344,6 +351,7 @@ const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			insertText: () => {},
 			undo: () => {},
 			redo: () => {},
+			tab: () => {},
 			indent: () => {},
 			outdent: () => {},
 			moveCursor: () => {},

@@ -49,6 +49,7 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::string> backgroundColor;
     CachedProp<std::string> textColor;
     CachedProp<double> fontSizePx;
+    CachedProp<std::string> indentStrategy;
     CachedProp<bool> showLineNumbers;
     CachedProp<bool> automaticScrollEnabled;
     CachedProp<double> verticalOverscrollFactor;

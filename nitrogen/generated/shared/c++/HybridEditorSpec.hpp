@@ -59,6 +59,8 @@ namespace margelo::nitro::editor {
       virtual void setTextColor(const std::string& textColor) = 0;
       virtual double getFontSizePx() = 0;
       virtual void setFontSizePx(double fontSizePx) = 0;
+      virtual std::string getIndentStrategy() = 0;
+      virtual void setIndentStrategy(const std::string& indentStrategy) = 0;
       virtual bool getShowLineNumbers() = 0;
       virtual void setShowLineNumbers(bool showLineNumbers) = 0;
       virtual bool getAutomaticScrollEnabled() = 0;
@@ -173,6 +175,7 @@ namespace margelo::nitro::editor {
       virtual void insertText(const std::string& text) = 0;
       virtual void undo() = 0;
       virtual void redo() = 0;
+      virtual void tab() = 0;
       virtual void indent() = 0;
       virtual void outdent() = 0;
       virtual void moveCursor(const std::string& direction) = 0;

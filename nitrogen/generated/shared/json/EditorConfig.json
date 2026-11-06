@@ -11,6 +11,7 @@
     "backgroundColor": true,
     "textColor": true,
     "fontSizePx": true,
+    "indentStrategy": true,
     "showLineNumbers": true,
     "automaticScrollEnabled": true,
     "verticalOverscrollFactor": true,

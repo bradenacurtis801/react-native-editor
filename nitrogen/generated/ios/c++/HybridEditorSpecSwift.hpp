@@ -110,6 +110,13 @@ namespace margelo::nitro::editor {
     inline void setFontSizePx(double fontSizePx) noexcept override {
       _swiftPart.setFontSizePx(std::forward<decltype(fontSizePx)>(fontSizePx));
     }
+    inline std::string getIndentStrategy() noexcept override {
+      auto __result = _swiftPart.getIndentStrategy();
+      return __result;
+    }
+    inline void setIndentStrategy(const std::string& indentStrategy) noexcept override {
+      _swiftPart.setIndentStrategy(indentStrategy);
+    }
     inline bool getShowLineNumbers() noexcept override {
       return _swiftPart.getShowLineNumbers();
     }
@@ -492,6 +499,12 @@ namespace margelo::nitro::editor {
     }
     inline void redo() override {
       auto __result = _swiftPart.redo();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void tab() override {
+      auto __result = _swiftPart.tab();
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

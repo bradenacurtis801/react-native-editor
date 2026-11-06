@@ -72,6 +72,12 @@ abstract class HybridEditorSpec: HybridView() {
   @get:Keep
   @set:DoNotStrip
   @set:Keep
+  abstract var indentStrategy: String
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
   abstract var showLineNumbers: Boolean
   
   @get:DoNotStrip
@@ -438,6 +444,10 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun redo(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun tab(): Unit
   
   @DoNotStrip
   @Keep

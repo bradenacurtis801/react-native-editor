@@ -28,6 +28,8 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("textColor", &HybridEditorSpec::setTextColor);
       prototype.registerHybridGetter("fontSizePx", &HybridEditorSpec::getFontSizePx);
       prototype.registerHybridSetter("fontSizePx", &HybridEditorSpec::setFontSizePx);
+      prototype.registerHybridGetter("indentStrategy", &HybridEditorSpec::getIndentStrategy);
+      prototype.registerHybridSetter("indentStrategy", &HybridEditorSpec::setIndentStrategy);
       prototype.registerHybridGetter("showLineNumbers", &HybridEditorSpec::getShowLineNumbers);
       prototype.registerHybridSetter("showLineNumbers", &HybridEditorSpec::setShowLineNumbers);
       prototype.registerHybridGetter("automaticScrollEnabled", &HybridEditorSpec::getAutomaticScrollEnabled);
@@ -139,6 +141,7 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("insertText", &HybridEditorSpec::insertText);
       prototype.registerHybridMethod("undo", &HybridEditorSpec::undo);
       prototype.registerHybridMethod("redo", &HybridEditorSpec::redo);
+      prototype.registerHybridMethod("tab", &HybridEditorSpec::tab);
       prototype.registerHybridMethod("indent", &HybridEditorSpec::indent);
       prototype.registerHybridMethod("outdent", &HybridEditorSpec::outdent);
       prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);

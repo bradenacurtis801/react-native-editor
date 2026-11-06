@@ -193,6 +193,12 @@ private func parsedLineSelectionDisplayType(for id: String) -> LineSelectionDisp
   }
 }
 
+private func parsedIndentStrategy(for id: String) -> IndentStrategy {
+  let parts = id.split(separator: ":")
+  let length = parts.count > 1 ? Int(parts[1]) ?? 4 : 4
+  return parts.first == "space" ? .space(length: max(1, length)) : .tab(length: max(1, length))
+}
+
 private func parsedLineBreakMode(for id: String) -> LineBreakMode {
   id == "byCharWrapping" ? .byCharWrapping : .byWordWrapping
 }
@@ -450,6 +456,7 @@ class HybridEditor: HybridEditorSpec {
   var backgroundColor: String = "#000000"
   var textColor: String = "#ffffff"
   var fontSizePx: Double = 13
+  var indentStrategy: String = "tab:4"
   var showLineNumbers: Bool = true
   var automaticScrollEnabled: Bool = false
   var verticalOverscrollFactor: Double = 1
@@ -524,6 +531,7 @@ class HybridEditor: HybridEditorSpec {
     let textView = container.textView
     textView.isEditable = editable
     textView.isSelectable = isSelectable
+    textView.indentStrategy = parsedIndentStrategy(for: indentStrategy)
     textView.showLineNumbers = showLineNumbers
     textView.isAutomaticScrollEnabled = automaticScrollEnabled
     textView.verticalOverscrollFactor = CGFloat(verticalOverscrollFactor)
@@ -587,6 +595,23 @@ class HybridEditor: HybridEditorSpec {
   func insertText(text: String) throws { onMain { [weak self] in self?.container.textView.insertText(text) } }
   func undo() throws { onMain { [weak self] in self?.container.textView.undoManager?.undo() } }
   func redo() throws { onMain { [weak self] in self?.container.textView.undoManager?.redo() } }
+  func tab() throws {
+    onMain { [weak self] in
+      guard let textView = self?.container.textView else { return }
+      let range = textView.selectedRange
+      let text = textView.text as NSString
+      let line = text.lineRange(for: NSRange(location: range.location, length: 0))
+      let before = text.substring(with: NSRange(location: line.location, length: range.location - line.location))
+      if range.length > 0 || before.allSatisfy({ $0 == " " || $0 == "\t" }) {
+        textView.shiftRight()
+      } else {
+        switch textView.indentStrategy {
+        case .tab: textView.insertText("\t")
+        case .space(let length): textView.insertText(String(repeating: " ", count: length))
+        }
+      }
+    }
+  }
   func indent() throws { onMain { [weak self] in self?.container.textView.shiftRight() } }
   func outdent() throws { onMain { [weak self] in self?.container.textView.shiftLeft() } }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }

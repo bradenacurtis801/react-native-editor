@@ -109,6 +109,15 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* fontSizePx */)>("setFontSizePx");
     method(_javaPart, fontSizePx);
   }
+  std::string JHybridEditorSpec::getIndentStrategy() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getIndentStrategy");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setIndentStrategy(const std::string& indentStrategy) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* indentStrategy */)>("setIndentStrategy");
+    method(_javaPart, jni::make_jstring(indentStrategy));
+  }
   bool JHybridEditorSpec::getShowLineNumbers() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getShowLineNumbers");
     auto __result = method(_javaPart);
@@ -639,6 +648,10 @@ namespace margelo::nitro::editor {
   }
   void JHybridEditorSpec::redo() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("redo");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::tab() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("tab");
     method(_javaPart);
   }
   void JHybridEditorSpec::indent() {

@@ -65,6 +65,10 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setFontSizePx(props->fontSizePx.value);
     props->fontSizePx.isDirty = false;
   }
+  if (props->indentStrategy.isDirty) {
+    hybridView->setIndentStrategy(props->indentStrategy.value);
+    props->indentStrategy.isDirty = false;
+  }
   if (props->showLineNumbers.isDirty) {
     hybridView->setShowLineNumbers(props->showLineNumbers.value);
     props->showLineNumbers.isDirty = false;

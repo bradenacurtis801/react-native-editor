@@ -96,6 +96,16 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.fontSizePx: ") + exc.what());
       }
     }()),
+    indentStrategy([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("indentStrategy", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.indentStrategy;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.indentStrategy);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.indentStrategy: ") + exc.what());
+      }
+    }()),
     showLineNumbers([&]() -> CachedProp<bool> {
       try {
         const react::RawValue* rawValue = rawProps.at("showLineNumbers", nullptr, nullptr);
@@ -646,6 +656,7 @@ namespace margelo::nitro::editor::views {
       case hashString("backgroundColor"): return true;
       case hashString("textColor"): return true;
       case hashString("fontSizePx"): return true;
+      case hashString("indentStrategy"): return true;
       case hashString("showLineNumbers"): return true;
       case hashString("automaticScrollEnabled"): return true;
       case hashString("verticalOverscrollFactor"): return true;
