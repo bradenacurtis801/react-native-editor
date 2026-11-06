@@ -84,6 +84,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			indent: () => hybridRef.current?.indent(),
 			outdent: () => hybridRef.current?.outdent(),
 			moveCursor: (direction: CursorDirection) => hybridRef.current?.moveCursor(direction),
+			setLanguage: (language: string) => hybridRef.current?.setLanguage(language),
 			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
 			goToLine: (line: number) => hybridRef.current?.goToLine(line),
 		}), [initialText]);

@@ -926,6 +926,17 @@ open class HybridEditorSpec_cxx {
   }
   
   @inline(__always)
+  public final func setLanguage(language: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.setLanguage(language: String(language))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
   public final func showFind(replace: Bool) -> bridge.Result_void_ {
     do {
       try self.__implementation.showFind(replace: replace)

@@ -143,6 +143,8 @@ export interface CodeEditorHandle {
 	indent(): void;
 	outdent(): void;
 	moveCursor(direction: CursorDirection): void;
+	/** Changes the syntax highlighting to `language` (the `language` prop's ids) without touching the text, selection or undo history. */
+	setLanguage(language: string): void;
 	/** Opens iOS's find bar, with the replace field when `replace` — needs `settings.isFindInteractionEnabled`. */
 	showFind(replace: boolean): void;
 	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */

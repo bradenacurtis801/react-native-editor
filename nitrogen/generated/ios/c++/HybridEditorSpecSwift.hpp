@@ -527,6 +527,12 @@ namespace margelo::nitro::editor {
         std::rethrow_exception(__result.error());
       }
     }
+    inline void setLanguage(const std::string& language) override {
+      auto __result = _swiftPart.setLanguage(language);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
     inline void showFind(bool replace) override {
       auto __result = _swiftPart.showFind(std::forward<decltype(replace)>(replace));
       if (__result.hasError()) [[unlikely]] {

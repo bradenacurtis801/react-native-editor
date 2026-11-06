@@ -145,6 +145,7 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("indent", &HybridEditorSpec::indent);
       prototype.registerHybridMethod("outdent", &HybridEditorSpec::outdent);
       prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);
+      prototype.registerHybridMethod("setLanguage", &HybridEditorSpec::setLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);
       prototype.registerHybridMethod("goToLine", &HybridEditorSpec::goToLine);
     });

@@ -179,6 +179,7 @@ namespace margelo::nitro::editor {
       virtual void indent() = 0;
       virtual void outdent() = 0;
       virtual void moveCursor(const std::string& direction) = 0;
+      virtual void setLanguage(const std::string& language) = 0;
       virtual void showFind(bool replace) = 0;
       virtual void goToLine(double line) = 0;
 

@@ -655,6 +655,15 @@ class HybridEditor: HybridEditorSpec {
   }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
 
+  func setLanguage(language: String) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      self.language = language
+      let mode: LanguageMode = treeSitterLanguage(for: language).map { TreeSitterLanguageMode(language: $0) } ?? PlainTextLanguageMode()
+      self.container.textView.setLanguageMode(mode)
+    }
+  }
+
   func showFind(replace: Bool) throws {
     onMain { [weak self] in
       guard let self else { return }

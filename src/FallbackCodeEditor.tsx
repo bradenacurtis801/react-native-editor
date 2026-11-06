@@ -26,6 +26,7 @@ export const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			indent: () => {},
 			outdent: () => {},
 			moveCursor: () => {},
+			setLanguage: () => {},
 			showFind: () => {},
 			goToLine: () => {},
 		}), []);

@@ -463,6 +463,10 @@ abstract class HybridEditorSpec: HybridView() {
   
   @DoNotStrip
   @Keep
+  abstract fun setLanguage(language: String): Unit
+  
+  @DoNotStrip
+  @Keep
   abstract fun showFind(replace: Boolean): Unit
   
   @DoNotStrip
