@@ -613,7 +613,46 @@ class HybridEditor: HybridEditorSpec {
     }
   }
   func indent() throws { onMain { [weak self] in self?.container.textView.shiftRight() } }
-  func outdent() throws { onMain { [weak self] in self?.container.textView.shiftLeft() } }
+  /// Takes one level of indentation off every selected line (the caret's line for a caret). Runestone's own
+  /// `shiftLeft` does nothing unless the line starts with exactly its indent string, so a file that mixes tabs and
+  /// spaces, or indents by another width, never moved: this removes a tab, or up to one level of spaces, whatever the line has.
+  func outdent() throws {
+    onMain { [weak self] in
+      guard let textView = self?.container.textView else { return }
+      let text = textView.text as NSString
+      let selection = textView.selectedRange
+      let lines = text.lineRange(for: selection)
+      let level: Int
+      switch textView.indentStrategy {
+      case .tab(let length): level = length
+      case .space(let length): level = length
+      }
+      var result = ""
+      var removedFirst = 0
+      var removedTotal = 0
+      var cursor = lines.location
+      var first = true
+      while cursor < lines.location + lines.length {
+        let line = text.lineRange(for: NSRange(location: cursor, length: 0))
+        let string = text.substring(with: line)
+        var remove = 0
+        if string.hasPrefix("\t") {
+          remove = 1
+        } else {
+          for character in string.prefix(level) { if character == " " { remove += 1 } else { break } }
+        }
+        result += String(string.dropFirst(remove))
+        removedTotal += remove
+        if first { removedFirst = remove; first = false }
+        cursor = line.location + line.length
+      }
+      guard removedTotal > 0 else { return }
+      let start = max(lines.location, selection.location - removedFirst)
+      let end = max(start, selection.location + selection.length - removedTotal)
+      textView.replace(lines, withText: result)
+      textView.selectedRange = NSRange(location: start, length: selection.length == 0 ? 0 : end - start)
+    }
+  }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
 
   func showFind(replace: Bool) throws {
