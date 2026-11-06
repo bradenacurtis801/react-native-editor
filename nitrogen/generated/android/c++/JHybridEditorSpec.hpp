@@ -184,7 +184,7 @@ namespace margelo::nitro::editor {
     void indent() override;
     void outdent() override;
     void moveCursor(const std::string& direction) override;
-    void setLanguage(const std::string& language) override;
+    void applyLanguage(const std::string& language) override;
     void showFind(bool replace) override;
     void goToLine(double line) override;
 

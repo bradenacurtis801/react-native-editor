@@ -463,7 +463,7 @@ abstract class HybridEditorSpec: HybridView() {
   
   @DoNotStrip
   @Keep
-  abstract fun setLanguage(language: String): Unit
+  abstract fun applyLanguage(language: String): Unit
   
   @DoNotStrip
   @Keep

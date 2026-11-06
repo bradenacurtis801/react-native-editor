@@ -655,7 +655,7 @@ class HybridEditor: HybridEditorSpec {
   }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
 
-  func setLanguage(language: String) throws {
+  func applyLanguage(language: String) throws {
     onMain { [weak self] in
       guard let self else { return }
       self.language = language

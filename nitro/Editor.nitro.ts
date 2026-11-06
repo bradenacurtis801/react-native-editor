@@ -168,7 +168,7 @@ export interface EditorMethods extends HybridViewMethods {
 	/** Moves the caret, collapsing a selection: 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd'. */
 	moveCursor(direction: string): void;
 	/** Changes the syntax highlighting to `language` (the same ids as the `language` prop; an unknown id is plain text) without touching the text, the selection or the undo history. */
-	setLanguage(language: string): void;
+	applyLanguage(language: string): void;
 	/** Opens iOS's find bar (with the replace field when `replace`). Needs `isFindInteractionEnabled`; iOS 16+, else a no-op. */
 	showFind(replace: boolean): void;
 	/** Puts the caret at the start of the 1-based `line` and scrolls to it; a line past the end goes to the last one. */

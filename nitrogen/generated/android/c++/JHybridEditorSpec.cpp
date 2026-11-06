@@ -666,8 +666,8 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveCursor");
     method(_javaPart, jni::make_jstring(direction));
   }
-  void JHybridEditorSpec::setLanguage(const std::string& language) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* language */)>("setLanguage");
+  void JHybridEditorSpec::applyLanguage(const std::string& language) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* language */)>("applyLanguage");
     method(_javaPart, jni::make_jstring(language));
   }
   void JHybridEditorSpec::showFind(bool replace) {
