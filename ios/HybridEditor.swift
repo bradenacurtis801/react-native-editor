@@ -547,15 +547,17 @@ class HybridEditor: HybridEditorSpec {
     container.textView.text
   }
 
-  func insertText(text: String) throws {
-    container.textView.insertText(text)
+  // Nitro calls these on the JS thread; UIKit's text input must be driven from the main one (off it, the keyboard's task queue asserts and aborts).
+  private func onMain(_ work: @escaping () -> Void) {
+    if Thread.isMainThread { work() } else { DispatchQueue.main.async(execute: work) }
   }
 
-  func undo() throws { container.textView.undoManager?.undo() }
-  func redo() throws { container.textView.undoManager?.redo() }
-  func indent() throws { container.textView.shiftRight() }
-  func outdent() throws { container.textView.shiftLeft() }
-  func moveCursor(direction: String) throws { container.moveCursor(direction) }
+  func insertText(text: String) throws { onMain { [weak self] in self?.container.textView.insertText(text) } }
+  func undo() throws { onMain { [weak self] in self?.container.textView.undoManager?.undo() } }
+  func redo() throws { onMain { [weak self] in self?.container.textView.undoManager?.redo() } }
+  func indent() throws { onMain { [weak self] in self?.container.textView.shiftRight() } }
+  func outdent() throws { onMain { [weak self] in self?.container.textView.shiftLeft() } }
+  func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
 
   func writeBuffer(text: String) throws {
     self.text = text
