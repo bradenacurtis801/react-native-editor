@@ -281,6 +281,33 @@ private final class EditorContainerView: UIView, TextViewDelegate {
   var onSelectionChange: ((Int, Int, Int) -> Void)?
   var onHistoryChange: ((Bool, Bool) -> Void)?
   var onFindChange: ((Bool) -> Void)?
+  private var findWatch: Timer?
+
+  /// Tells JS when the find bar is up and when it has gone: UIKit has no event for it that a view can listen to
+  /// without becoming the interaction's session delegate (Runestone's), so it is looked at while it is expected to change.
+  func watchFind() {
+    guard #available(iOS 16.0, *) else { return }
+    findWatch?.invalidate()
+    var seenOpen = false
+    var ticks = 0
+    findWatch = Timer.scheduledTimer(withTimeInterval: 0.15, repeats: true) { [weak self] timer in
+      guard let self else { timer.invalidate(); return }
+      ticks += 1
+      let open = self.textView.findInteraction?.isFindNavigatorVisible ?? false
+      if open && !seenOpen {
+        seenOpen = true
+        self.onFindChange?(true)
+      } else if !open && seenOpen {
+        timer.invalidate()
+        self.findWatch = nil
+        self.onFindChange?(false)
+      } else if !open && ticks > 20 {
+        // It never came up.
+        timer.invalidate()
+        self.findWatch = nil
+      }
+    }
+  }
   private var lastSelection: (Int, Int, Int)?
   private var lastHistory: (Bool, Bool)?
   private var historyObservers: [NSObjectProtocol] = []
@@ -381,12 +408,6 @@ private final class EditorContainerView: UIView, TextViewDelegate {
     isDirty = dirty
     onDirtyChange?(dirty)
   }
-}
-
-@available(iOS 16.0, *)
-extension EditorContainerView: UIFindInteractionDelegate {
-  func findInteraction(_ interaction: UIFindInteraction, didBegin session: UIFindSession) { onFindChange?(true) }
-  func findInteraction(_ interaction: UIFindInteraction, didEnd session: UIFindSession) { onFindChange?(false) }
 }
 
 /// iOS implementation of the `Editor` Nitro HybridView, wrapping Runestone.
@@ -574,9 +595,8 @@ class HybridEditor: HybridEditorSpec {
     onMain { [weak self] in
       guard let self else { return }
       if #available(iOS 16.0, *) {
-        // Its delegate tells JS when the bar opens and closes (the interaction's search session stays Runestone's).
-        self.container.textView.findInteraction?.delegate = self.container
         self.container.textView.findInteraction?.presentFindNavigator(showingReplace: replace)
+        self.container.watchFind()
       }
     }
   }
