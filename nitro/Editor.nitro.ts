@@ -140,6 +140,10 @@ export interface EditorProps extends HybridViewProps {
 
 	/** Fires whenever the buffer transitions between matching/not-matching its initial `text` — cheap dirty-tracking without streaming every keystroke to JS. */
 	onChangeDirty: (isDirty: boolean) => void;
+	/** The caret or selection moved (or the text changed under it). `line` and `column` are 1-based, of the selection's start; `length` is how many characters are selected (0 for a caret). */
+	onChangeSelection: (line: number, column: number, length: number) => void;
+	/** What undo and redo can do now — fires when either changes, so a button can enable and disable. */
+	onChangeHistory: (canUndo: boolean, canRedo: boolean) => void;
 }
 
 export interface EditorMethods extends HybridViewMethods {
@@ -147,6 +151,16 @@ export interface EditorMethods extends HybridViewMethods {
 	readBuffer(): string;
 	/** Replace the buffer content (e.g. after a failed save, to restore a known-good state). */
 	writeBuffer(text: string): void;
+	/** Types `text` at the caret, replacing the selection — as the keyboard would, so it is one undo step and respects the editor's own handling of it. */
+	insertText(text: string): void;
+	undo(): void;
+	redo(): void;
+	/** Indents the selected lines (the caret's line when nothing is selected) by one level. */
+	indent(): void;
+	/** Takes one level of indentation off the selected lines. */
+	outdent(): void;
+	/** Moves the caret, collapsing a selection: 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd'. */
+	moveCursor(direction: string): void;
 }
 
 export type Editor = HybridView<EditorProps, EditorMethods>;

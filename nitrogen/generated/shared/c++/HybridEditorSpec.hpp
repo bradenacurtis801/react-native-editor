@@ -159,11 +159,21 @@ namespace margelo::nitro::editor {
       virtual void setShowMenuAfterNavigatingToHighlightedRange(bool showMenuAfterNavigatingToHighlightedRange) = 0;
       virtual std::function<void(bool /* isDirty */)> getOnChangeDirty() = 0;
       virtual void setOnChangeDirty(const std::function<void(bool /* isDirty */)>& onChangeDirty) = 0;
+      virtual std::function<void(double /* line */, double /* column */, double /* length */)> getOnChangeSelection() = 0;
+      virtual void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) = 0;
+      virtual std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() = 0;
+      virtual void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) = 0;
 
     public:
       // Methods
       virtual std::string readBuffer() = 0;
       virtual void writeBuffer(const std::string& text) = 0;
+      virtual void insertText(const std::string& text) = 0;
+      virtual void undo() = 0;
+      virtual void redo() = 0;
+      virtual void indent() = 0;
+      virtual void outdent() = 0;
+      virtual void moveCursor(const std::string& direction) = 0;
 
     protected:
       // Hybrid Setup

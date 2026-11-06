@@ -51,6 +51,50 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_bool_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::function<void(double /* line */, double /* column */, double /* length */)>
+  /**
+   * Specialized version of `std::function<void(double, double, double)>`.
+   */
+  using Func_void_double_double_double = std::function<void(double /* line */, double /* column */, double /* length */)>;
+  /**
+   * Wrapper class for a `std::function<void(double / * line * /, double / * column * /, double / * length * /)>`, this can be used from Swift.
+   */
+  class Func_void_double_double_double_Wrapper final {
+  public:
+    explicit Func_void_double_double_double_Wrapper(std::function<void(double /* line */, double /* column */, double /* length */)>&& func): _function(std::make_unique<std::function<void(double /* line */, double /* column */, double /* length */)>>(std::move(func))) {}
+    inline void call(double line, double column, double length) const noexcept {
+      _function->operator()(line, column, length);
+    }
+  private:
+    std::unique_ptr<std::function<void(double /* line */, double /* column */, double /* length */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_double_double_double create_Func_void_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_double_Wrapper wrap_Func_void_double_double_double(Func_void_double_double_double value) noexcept {
+    return Func_void_double_double_double_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::function<void(bool /* canUndo */, bool /* canRedo */)>
+  /**
+   * Specialized version of `std::function<void(bool, bool)>`.
+   */
+  using Func_void_bool_bool = std::function<void(bool /* canUndo */, bool /* canRedo */)>;
+  /**
+   * Wrapper class for a `std::function<void(bool / * canUndo * /, bool / * canRedo * /)>`, this can be used from Swift.
+   */
+  class Func_void_bool_bool_Wrapper final {
+  public:
+    explicit Func_void_bool_bool_Wrapper(std::function<void(bool /* canUndo */, bool /* canRedo */)>&& func): _function(std::make_unique<std::function<void(bool /* canUndo */, bool /* canRedo */)>>(std::move(func))) {}
+    inline void call(bool canUndo, bool canRedo) const noexcept {
+      _function->operator()(canUndo, canRedo);
+    }
+  private:
+    std::unique_ptr<std::function<void(bool /* canUndo */, bool /* canRedo */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_bool_bool create_Func_void_bool_bool(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_bool_bool_Wrapper wrap_Func_void_bool_bool(Func_void_bool_bool value) noexcept {
+    return Func_void_bool_bool_Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::shared_ptr<HybridEditorSpec>
   /**
    * Specialized version of `std::shared_ptr<HybridEditorSpec>`.

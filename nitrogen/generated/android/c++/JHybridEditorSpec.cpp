@@ -13,6 +13,8 @@
 #include <functional>
 #include "JFunc_void_bool.hpp"
 #include <NitroModules/JNICallable.hpp>
+#include "JFunc_void_double_double_double.hpp"
+#include "JFunc_void_bool_bool.hpp"
 
 namespace margelo::nitro::editor {
 
@@ -565,6 +567,40 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool::javaobject> /* onChangeDirty */)>("setOnChangeDirty_cxx");
     method(_javaPart, JFunc_void_bool_cxx::fromCpp(onChangeDirty));
   }
+  std::function<void(double /* line */, double /* column */, double /* length */)> JHybridEditorSpec::getOnChangeSelection() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_double::javaobject>()>("getOnChangeSelection_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* line */, double /* column */, double /* length */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double_double_double, void(double, double, double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_double::javaobject> /* onChangeSelection */)>("setOnChangeSelection_cxx");
+    method(_javaPart, JFunc_void_double_double_double_cxx::fromCpp(onChangeSelection));
+  }
+  std::function<void(bool /* canUndo */, bool /* canRedo */)> JHybridEditorSpec::getOnChangeHistory() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_bool_bool::javaobject>()>("getOnChangeHistory_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(bool /* canUndo */, bool /* canRedo */)> {
+      if (__result->isInstanceOf(JFunc_void_bool_bool_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_bool_bool_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_bool_bool, void(bool, bool)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool_bool::javaobject> /* onChangeHistory */)>("setOnChangeHistory_cxx");
+    method(_javaPart, JFunc_void_bool_bool_cxx::fromCpp(onChangeHistory));
+  }
 
   // Methods
   std::string JHybridEditorSpec::readBuffer() {
@@ -575,6 +611,30 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::writeBuffer(const std::string& text) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* text */)>("writeBuffer");
     method(_javaPart, jni::make_jstring(text));
+  }
+  void JHybridEditorSpec::insertText(const std::string& text) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* text */)>("insertText");
+    method(_javaPart, jni::make_jstring(text));
+  }
+  void JHybridEditorSpec::undo() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("undo");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::redo() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("redo");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::indent() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("indent");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::outdent() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("outdent");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::moveCursor(const std::string& direction) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveCursor");
+    method(_javaPart, jni::make_jstring(direction));
   }
 
 } // namespace margelo::nitro::editor

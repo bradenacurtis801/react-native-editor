@@ -137,6 +137,10 @@ export interface CodeEditorProps {
 	settings?: CodeEditorSettings;
 	/** Fires whenever the buffer transitions between matching/not-matching `initialText`. */
 	onDirtyChange?: (isDirty: boolean) => void;
+	/** The caret or selection moved. `line` and `column` are 1-based, of the selection's start; `length` is the selected character count. iOS only. */
+	onSelectionChange?: (line: number, column: number, length: number) => void;
+	/** Whether undo and redo have anything to do — fires when either changes. iOS only. */
+	onHistoryChange?: (canUndo: boolean, canRedo: boolean) => void;
 	style?: StyleProp<ViewStyle>;
 }
 
@@ -144,7 +148,17 @@ export interface CodeEditorProps {
 export interface CodeEditorHandle {
 	getText(): string;
 	setText(text: string): void;
+	/** Types `text` at the caret, replacing the selection, as the keyboard would (one undo step). */
+	insertText(text: string): void;
+	undo(): void;
+	redo(): void;
+	/** Indent / take one level off the selected lines (the caret's line when nothing is selected). */
+	indent(): void;
+	outdent(): void;
+	moveCursor(direction: CursorDirection): void;
 }
+
+export type CursorDirection = 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd';
 
 // ─────────────────────────── iOS: native Runestone view ────────────────────
 
@@ -204,7 +218,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'insertionPointColor'
 };
 
 const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -216,6 +230,12 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 		useImperativeHandle(ref, () => ({
 			getText: () => hybridRef.current?.readBuffer() ?? initialText,
 			setText: (text: string) => hybridRef.current?.writeBuffer(text),
+			insertText: (text: string) => hybridRef.current?.insertText(text),
+			undo: () => hybridRef.current?.undo(),
+			redo: () => hybridRef.current?.redo(),
+			indent: () => hybridRef.current?.indent(),
+			outdent: () => hybridRef.current?.outdent(),
+			moveCursor: (direction: CursorDirection) => hybridRef.current?.moveCursor(direction),
 		}), [initialText]);
 
 		const syntaxColorsJson = JSON.stringify({
@@ -289,6 +309,8 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				lineEndings={s.lineEndings}
 				showMenuAfterNavigatingToHighlightedRange={s.showMenuAfterNavigatingToHighlightedRange}
 				onChangeDirty={callback((isDirty: boolean) => onDirtyChange?.(isDirty))}
+				onChangeSelection={callback((line: number, column: number, length: number) => onSelectionChange?.(line, column, length))}
+				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}
 			/>
 		);
 	},
@@ -309,6 +331,13 @@ const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 		useImperativeHandle(ref, () => ({
 			getText: () => textRef.current,
 			setText: (text: string) => { textRef.current = text; },
+			// No editing commands on the plain TextInput.
+			insertText: () => {},
+			undo: () => {},
+			redo: () => {},
+			indent: () => {},
+			outdent: () => {},
+			moveCursor: () => {},
 		}), []);
 
 		const handleChangeText = useCallback((text: string) => {

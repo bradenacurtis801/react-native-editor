@@ -61,6 +61,8 @@
     "lineEndings": true,
     "showMenuAfterNavigatingToHighlightedRange": true,
     "onChangeDirty": true,
+    "onChangeSelection": true,
+    "onChangeHistory": true,
     "hybridRef": true
   }
 }

@@ -67,10 +67,18 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var lineEndings: String { get set }
   var showMenuAfterNavigatingToHighlightedRange: Bool { get set }
   var onChangeDirty: (_ isDirty: Bool) -> Void { get set }
+  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void { get set }
+  var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
 
   // Methods
   func readBuffer() throws -> String
   func writeBuffer(text: String) throws -> Void
+  func insertText(text: String) throws -> Void
+  func undo() throws -> Void
+  func redo() throws -> Void
+  func indent() throws -> Void
+  func outdent() throws -> Void
+  func moveCursor(direction: String) throws -> Void
 }
 
 public extension HybridEditorSpec_protocol {

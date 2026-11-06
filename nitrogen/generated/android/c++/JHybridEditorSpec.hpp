@@ -164,11 +164,21 @@ namespace margelo::nitro::editor {
     void setShowMenuAfterNavigatingToHighlightedRange(bool showMenuAfterNavigatingToHighlightedRange) override;
     std::function<void(bool /* isDirty */)> getOnChangeDirty() override;
     void setOnChangeDirty(const std::function<void(bool /* isDirty */)>& onChangeDirty) override;
+    std::function<void(double /* line */, double /* column */, double /* length */)> getOnChangeSelection() override;
+    void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) override;
+    std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() override;
+    void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) override;
 
   public:
     // Methods
     std::string readBuffer() override;
     void writeBuffer(const std::string& text) override;
+    void insertText(const std::string& text) override;
+    void undo() override;
+    void redo() override;
+    void indent() override;
+    void outdent() override;
+    void moveCursor(const std::string& direction) override;
 
   private:
     jni::global_ref<JHybridEditorSpec::JavaPart> _javaPart;

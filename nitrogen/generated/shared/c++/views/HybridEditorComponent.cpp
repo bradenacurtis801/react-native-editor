@@ -596,6 +596,26 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onChangeDirty: ") + exc.what());
       }
     }()),
+    onChangeSelection([&]() -> CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeSelection", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeSelection;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeSelection);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeSelection: ") + exc.what());
+      }
+    }()),
+    onChangeHistory([&]() -> CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeHistory", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeHistory;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeHistory);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeHistory: ") + exc.what());
+      }
+    }()),
     hybridRef([&]() -> CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridEditorSpec>& /* ref */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("hybridRef", nullptr, nullptr);
@@ -666,6 +686,8 @@ namespace margelo::nitro::editor::views {
       case hashString("lineEndings"): return true;
       case hashString("showMenuAfterNavigatingToHighlightedRange"): return true;
       case hashString("onChangeDirty"): return true;
+      case hashString("onChangeSelection"): return true;
+      case hashString("onChangeHistory"): return true;
       case hashString("hybridRef"): return true;
       default: return false;
     }

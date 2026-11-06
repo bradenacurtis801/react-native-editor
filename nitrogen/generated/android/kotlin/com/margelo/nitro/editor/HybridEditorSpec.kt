@@ -375,6 +375,34 @@ abstract class HybridEditorSpec: HybridView() {
     set(value) {
       onChangeDirty = value
     }
+  
+  abstract var onChangeSelection: (line: Double, column: Double, length: Double) -> Unit
+  
+  private var onChangeSelection_cxx: Func_void_double_double_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_double_double_java(onChangeSelection)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeSelection = value
+    }
+  
+  abstract var onChangeHistory: (canUndo: Boolean, canRedo: Boolean) -> Unit
+  
+  private var onChangeHistory_cxx: Func_void_bool_bool
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_bool_bool_java(onChangeHistory)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeHistory = value
+    }
 
   // Methods
   @DoNotStrip
@@ -384,6 +412,30 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun writeBuffer(text: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun insertText(text: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun undo(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun redo(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun indent(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun outdent(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun moveCursor(direction: String): Unit
 
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {

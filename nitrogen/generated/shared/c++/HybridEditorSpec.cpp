@@ -128,8 +128,18 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("showMenuAfterNavigatingToHighlightedRange", &HybridEditorSpec::setShowMenuAfterNavigatingToHighlightedRange);
       prototype.registerHybridGetter("onChangeDirty", &HybridEditorSpec::getOnChangeDirty);
       prototype.registerHybridSetter("onChangeDirty", &HybridEditorSpec::setOnChangeDirty);
+      prototype.registerHybridGetter("onChangeSelection", &HybridEditorSpec::getOnChangeSelection);
+      prototype.registerHybridSetter("onChangeSelection", &HybridEditorSpec::setOnChangeSelection);
+      prototype.registerHybridGetter("onChangeHistory", &HybridEditorSpec::getOnChangeHistory);
+      prototype.registerHybridSetter("onChangeHistory", &HybridEditorSpec::setOnChangeHistory);
       prototype.registerHybridMethod("readBuffer", &HybridEditorSpec::readBuffer);
       prototype.registerHybridMethod("writeBuffer", &HybridEditorSpec::writeBuffer);
+      prototype.registerHybridMethod("insertText", &HybridEditorSpec::insertText);
+      prototype.registerHybridMethod("undo", &HybridEditorSpec::undo);
+      prototype.registerHybridMethod("redo", &HybridEditorSpec::redo);
+      prototype.registerHybridMethod("indent", &HybridEditorSpec::indent);
+      prototype.registerHybridMethod("outdent", &HybridEditorSpec::outdent);
+      prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);
     });
   }
 

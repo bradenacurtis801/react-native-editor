@@ -265,6 +265,14 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setOnChangeDirty(props->onChangeDirty.value);
     props->onChangeDirty.isDirty = false;
   }
+  if (props->onChangeSelection.isDirty) {
+    hybridView->setOnChangeSelection(props->onChangeSelection.value);
+    props->onChangeSelection.isDirty = false;
+  }
+  if (props->onChangeHistory.isDirty) {
+    hybridView->setOnChangeHistory(props->onChangeHistory.value);
+    props->onChangeHistory.isDirty = false;
+  }
 
   // Update hybridRef if it changed
   if (props->hybridRef.isDirty) {

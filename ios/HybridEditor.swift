@@ -278,11 +278,79 @@ private final class EditorContainerView: UIView, TextViewDelegate {
   private var baselineText = ""
   private var isDirty = false
   var onDirtyChange: ((Bool) -> Void)?
+  var onSelectionChange: ((Int, Int, Int) -> Void)?
+  var onHistoryChange: ((Bool, Bool) -> Void)?
+  private var lastSelection: (Int, Int, Int)?
+  private var lastHistory: (Bool, Bool)?
+  private var historyObservers: [NSObjectProtocol] = []
 
   override init(frame: CGRect) {
     super.init(frame: frame)
     textView.editorDelegate = self
     addSubview(textView)
+    // Undo and redo change what can be undone without the text view being told.
+    let center = NotificationCenter.default
+    let names: [Notification.Name] = [.NSUndoManagerDidUndoChange, .NSUndoManagerDidRedoChange, .NSUndoManagerDidCloseUndoGroup, .NSUndoManagerCheckpoint]
+    historyObservers = names.map { name in
+      center.addObserver(forName: name, object: nil, queue: .main) { [weak self] note in
+        guard let self, let manager = self.textView.undoManager, note.object as AnyObject? === manager else { return }
+        self.reportHistory()
+      }
+    }
+  }
+
+  deinit { historyObservers.forEach(NotificationCenter.default.removeObserver) }
+
+  private func reportHistory() {
+    guard let manager = textView.undoManager else { return }
+    let now = (manager.canUndo, manager.canRedo)
+    guard lastHistory == nil || lastHistory! != now else { return }
+    lastHistory = now
+    onHistoryChange?(now.0, now.1)
+  }
+
+  private func reportSelection() {
+    let range = textView.selectedRange
+    let at = textView.textLocation(at: range.location)
+    let now = ((at?.lineNumber ?? 0) + 1, (at?.column ?? 0) + 1, range.length)
+    guard lastSelection == nil || lastSelection! != now else { return }
+    lastSelection = now
+    onSelectionChange?(now.0, now.1, now.2)
+  }
+
+  /// Moves the caret as `direction` says, collapsing any selection.
+  func moveCursor(_ direction: String) {
+    let range = textView.selectedRange
+    let text = textView.text as NSString
+    switch direction {
+    case "left", "right":
+      // Over a selection, to its near edge; otherwise one character, whole (an emoji is more than one UTF-16 unit).
+      if range.length > 0 {
+        textView.selectedRange = NSRange(location: direction == "left" ? range.location : range.location + range.length, length: 0)
+        return
+      }
+      let from = textView.selectedTextRange?.start ?? textView.beginningOfDocument
+      guard let to = textView.position(from: from, offset: direction == "left" ? -1 : 1) else { return }
+      textView.selectedTextRange = textView.textRange(from: to, to: to)
+    case "up", "down":
+      let from = (direction == "up" ? textView.selectedTextRange?.start : textView.selectedTextRange?.end) ?? textView.beginningOfDocument
+      guard let to = textView.position(from: from, in: direction == "up" ? .up : .down, offset: 1) else { return }
+      textView.selectedTextRange = textView.textRange(from: to, to: to)
+    case "lineStart":
+      textView.selectedRange = NSRange(location: text.lineRange(for: NSRange(location: range.location, length: 0)).location, length: 0)
+    case "lineEnd":
+      let line = text.lineRange(for: NSRange(location: range.location, length: 0))
+      var end = line.location + line.length
+      // Before the line's own break, not after it.
+      while end > line.location, [10, 13].contains(text.character(at: end - 1)) { end -= 1 }
+      textView.selectedRange = NSRange(location: end, length: 0)
+    case "documentStart":
+      textView.selectedRange = NSRange(location: 0, length: 0)
+    case "documentEnd":
+      textView.selectedRange = NSRange(location: text.length, length: 0)
+    default:
+      break
+    }
   }
 
   required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -300,7 +368,13 @@ private final class EditorContainerView: UIView, TextViewDelegate {
     textView.setState(state)
   }
 
+  func textViewDidChangeSelection(_ textView: TextView) {
+    reportSelection()
+  }
+
   func textViewDidChange(_ textView: TextView) {
+    reportSelection()
+    reportHistory()
     let dirty = textView.text != baselineText
     guard dirty != isDirty else { return }
     isDirty = dirty
@@ -329,6 +403,12 @@ class HybridEditor: HybridEditorSpec {
     super.init()
     container.onDirtyChange = { [weak self] isDirty in
       self?.onChangeDirty(isDirty)
+    }
+    container.onSelectionChange = { [weak self] line, column, length in
+      self?.onChangeSelection(Double(line), Double(column), Double(length))
+    }
+    container.onHistoryChange = { [weak self] canUndo, canRedo in
+      self?.onChangeHistory(canUndo, canRedo)
     }
   }
 
@@ -389,6 +469,8 @@ class HybridEditor: HybridEditorSpec {
   var lineEndings: String = "lf"
   var showMenuAfterNavigatingToHighlightedRange: Bool = true
   var onChangeDirty: (_ isDirty: Bool) -> Void = { _ in }
+  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void = { _, _, _ in }
+  var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void = { _, _ in }
 
   func afterUpdate() {
     editorTheme.configure(
@@ -464,6 +546,16 @@ class HybridEditor: HybridEditorSpec {
   func readBuffer() throws -> String {
     container.textView.text
   }
+
+  func insertText(text: String) throws {
+    container.textView.insertText(text)
+  }
+
+  func undo() throws { container.textView.undoManager?.undo() }
+  func redo() throws { container.textView.undoManager?.redo() }
+  func indent() throws { container.textView.shiftRight() }
+  func outdent() throws { container.textView.shiftLeft() }
+  func moveCursor(direction: String) throws { container.moveCursor(direction) }
 
   func writeBuffer(text: String) throws {
     self.text = text

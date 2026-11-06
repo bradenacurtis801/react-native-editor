@@ -440,6 +440,20 @@ namespace margelo::nitro::editor {
     inline void setOnChangeDirty(const std::function<void(bool /* isDirty */)>& onChangeDirty) noexcept override {
       _swiftPart.setOnChangeDirty(onChangeDirty);
     }
+    inline std::function<void(double /* line */, double /* column */, double /* length */)> getOnChangeSelection() noexcept override {
+      auto __result = _swiftPart.getOnChangeSelection();
+      return __result;
+    }
+    inline void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) noexcept override {
+      _swiftPart.setOnChangeSelection(onChangeSelection);
+    }
+    inline std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() noexcept override {
+      auto __result = _swiftPart.getOnChangeHistory();
+      return __result;
+    }
+    inline void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) noexcept override {
+      _swiftPart.setOnChangeHistory(onChangeHistory);
+    }
 
   public:
     // Methods
@@ -453,6 +467,42 @@ namespace margelo::nitro::editor {
     }
     inline void writeBuffer(const std::string& text) override {
       auto __result = _swiftPart.writeBuffer(text);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void insertText(const std::string& text) override {
+      auto __result = _swiftPart.insertText(text);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void undo() override {
+      auto __result = _swiftPart.undo();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void redo() override {
+      auto __result = _swiftPart.redo();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void indent() override {
+      auto __result = _swiftPart.indent();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void outdent() override {
+      auto __result = _swiftPart.outdent();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void moveCursor(const std::string& direction) override {
+      auto __result = _swiftPart.moveCursor(direction);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

@@ -755,6 +755,44 @@ open class HybridEditorSpec_cxx {
       }()
     }
   }
+  
+  public final var onChangeSelection: bridge.Func_void_double_double_double {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double_double_double in
+        let __closureWrapper = Func_void_double_double_double(self.__implementation.onChangeSelection)
+        return bridge.create_Func_void_double_double_double(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeSelection = { () -> (Double, Double, Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double_double(newValue)
+        return { (__line: Double, __column: Double, __length: Double) -> Void in
+          __wrappedFunction.call(__line, __column, __length)
+        }
+      }()
+    }
+  }
+  
+  public final var onChangeHistory: bridge.Func_void_bool_bool {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_bool_bool in
+        let __closureWrapper = Func_void_bool_bool(self.__implementation.onChangeHistory)
+        return bridge.create_Func_void_bool_bool(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeHistory = { () -> (Bool, Bool) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_bool_bool(newValue)
+        return { (__canUndo: Bool, __canRedo: Bool) -> Void in
+          __wrappedFunction.call(__canUndo, __canRedo)
+        }
+      }()
+    }
+  }
 
   // Methods
   @inline(__always)
@@ -773,6 +811,72 @@ open class HybridEditorSpec_cxx {
   public final func writeBuffer(text: std.string) -> bridge.Result_void_ {
     do {
       try self.__implementation.writeBuffer(text: String(text))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func insertText(text: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.insertText(text: String(text))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func undo() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.undo()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func redo() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.redo()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func indent() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.indent()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func outdent() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.outdent()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func moveCursor(direction: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.moveCursor(direction: String(direction))
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()
