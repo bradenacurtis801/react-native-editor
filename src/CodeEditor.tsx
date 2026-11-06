@@ -156,6 +156,10 @@ export interface CodeEditorHandle {
 	indent(): void;
 	outdent(): void;
 	moveCursor(direction: CursorDirection): void;
+	/** Opens iOS's find bar, with the replace field when `replace` — needs `settings.isFindInteractionEnabled`. */
+	showFind(replace: boolean): void;
+	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */
+	goToLine(line: number): void;
 }
 
 export type CursorDirection = 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd';
@@ -236,6 +240,8 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			indent: () => hybridRef.current?.indent(),
 			outdent: () => hybridRef.current?.outdent(),
 			moveCursor: (direction: CursorDirection) => hybridRef.current?.moveCursor(direction),
+			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
+			goToLine: (line: number) => hybridRef.current?.goToLine(line),
 		}), [initialText]);
 
 		const syntaxColorsJson = JSON.stringify({
@@ -338,6 +344,8 @@ const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			indent: () => {},
 			outdent: () => {},
 			moveCursor: () => {},
+			showFind: () => {},
+			goToLine: () => {},
 		}), []);
 
 		const handleChangeText = useCallback((text: string) => {

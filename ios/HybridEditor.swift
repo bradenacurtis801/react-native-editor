@@ -559,6 +559,25 @@ class HybridEditor: HybridEditorSpec {
   func outdent() throws { onMain { [weak self] in self?.container.textView.shiftLeft() } }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
 
+  func showFind(replace: Bool) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      if #available(iOS 16.0, *) {
+        self.container.textView.findInteraction?.presentFindNavigator(showingReplace: replace)
+      }
+    }
+  }
+
+  func goToLine(line: Double) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      let textView = self.container.textView
+      // Runestone counts lines from 0 and refuses one past the end: clamp to the last.
+      let last = max(0, (textView.text as NSString).components(separatedBy: "\n").count - 1)
+      textView.goToLine(min(max(0, Int(line) - 1), last))
+    }
+  }
+
   func writeBuffer(text: String) throws {
     self.text = text
     container.configure(text: text, language: language, theme: editorTheme)

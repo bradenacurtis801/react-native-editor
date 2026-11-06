@@ -436,6 +436,14 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun moveCursor(direction: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun showFind(replace: Boolean): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun goToLine(line: Double): Unit
 
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {

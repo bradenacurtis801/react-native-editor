@@ -79,6 +79,8 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func indent() throws -> Void
   func outdent() throws -> Void
   func moveCursor(direction: String) throws -> Void
+  func showFind(replace: Bool) throws -> Void
+  func goToLine(line: Double) throws -> Void
 }
 
 public extension HybridEditorSpec_protocol {

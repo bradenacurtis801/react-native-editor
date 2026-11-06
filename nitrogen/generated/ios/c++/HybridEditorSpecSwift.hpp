@@ -507,6 +507,18 @@ namespace margelo::nitro::editor {
         std::rethrow_exception(__result.error());
       }
     }
+    inline void showFind(bool replace) override {
+      auto __result = _swiftPart.showFind(std::forward<decltype(replace)>(replace));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void goToLine(double line) override {
+      auto __result = _swiftPart.goToLine(std::forward<decltype(line)>(line));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
 
   private:
     ReactNativeEditor::HybridEditorSpec_cxx _swiftPart;

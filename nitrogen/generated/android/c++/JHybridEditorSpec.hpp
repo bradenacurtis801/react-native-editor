@@ -179,6 +179,8 @@ namespace margelo::nitro::editor {
     void indent() override;
     void outdent() override;
     void moveCursor(const std::string& direction) override;
+    void showFind(bool replace) override;
+    void goToLine(double line) override;
 
   private:
     jni::global_ref<JHybridEditorSpec::JavaPart> _javaPart;

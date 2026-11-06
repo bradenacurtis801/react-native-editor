@@ -884,6 +884,28 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  @inline(__always)
+  public final func showFind(replace: Bool) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.showFind(replace: replace)
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func goToLine(line: Double) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.goToLine(line: line)
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
   public final func getView() -> UnsafeMutableRawPointer {
     return Unmanaged.passRetained(__implementation.view).toOpaque()
   }
