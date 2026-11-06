@@ -374,6 +374,11 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setOnChangeHistory(newViewProps.onChangeHistory.value);
     newViewProps.onChangeHistory.isDirty = false;
   }
+  // onChangeFind: function
+  if (newViewProps.onChangeFind.isDirty) {
+    swiftPart.setOnChangeFind(newViewProps.onChangeFind.value);
+    newViewProps.onChangeFind.isDirty = false;
+  }
 
   swiftPart.afterUpdate();
 

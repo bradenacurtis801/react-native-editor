@@ -144,6 +144,8 @@ export interface EditorProps extends HybridViewProps {
 	onChangeSelection: (line: number, column: number, length: number) => void;
 	/** What undo and redo can do now — fires when either changes, so a button can enable and disable. */
 	onChangeHistory: (canUndo: boolean, canRedo: boolean) => void;
+	/** The find bar opened or closed (`showFind`, or the system's own). */
+	onChangeFind: (isOpen: boolean) => void;
 }
 
 export interface EditorMethods extends HybridViewMethods {

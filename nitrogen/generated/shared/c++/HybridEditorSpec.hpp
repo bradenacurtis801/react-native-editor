@@ -163,6 +163,8 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) = 0;
       virtual std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() = 0;
       virtual void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) = 0;
+      virtual std::function<void(bool /* isOpen */)> getOnChangeFind() = 0;
+      virtual void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) = 0;
 
     public:
       // Methods

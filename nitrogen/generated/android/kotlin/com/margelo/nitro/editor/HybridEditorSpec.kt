@@ -403,6 +403,20 @@ abstract class HybridEditorSpec: HybridView() {
     set(value) {
       onChangeHistory = value
     }
+  
+  abstract var onChangeFind: (isOpen: Boolean) -> Unit
+  
+  private var onChangeFind_cxx: Func_void_bool
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_bool_java(onChangeFind)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeFind = value
+    }
 
   // Methods
   @DoNotStrip

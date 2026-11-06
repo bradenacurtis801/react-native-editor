@@ -141,6 +141,8 @@ export interface CodeEditorProps {
 	onSelectionChange?: (line: number, column: number, length: number) => void;
 	/** Whether undo and redo have anything to do — fires when either changes. iOS only. */
 	onHistoryChange?: (canUndo: boolean, canRedo: boolean) => void;
+	/** The find bar opened or closed. iOS only. */
+	onFindChange?: (isOpen: boolean) => void;
 	style?: StyleProp<ViewStyle>;
 }
 
@@ -222,7 +224,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'insertionPointColor'
 };
 
 const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -317,6 +319,7 @@ const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeDirty={callback((isDirty: boolean) => onDirtyChange?.(isDirty))}
 				onChangeSelection={callback((line: number, column: number, length: number) => onSelectionChange?.(line, column, length))}
 				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}
+					onChangeFind={callback((isOpen: boolean) => onFindChange?.(isOpen))}
 			/>
 		);
 	},

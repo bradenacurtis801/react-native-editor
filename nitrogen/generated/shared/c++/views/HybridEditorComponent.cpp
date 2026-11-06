@@ -616,6 +616,16 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onChangeHistory: ") + exc.what());
       }
     }()),
+    onChangeFind([&]() -> CachedProp<std::function<void(bool /* isOpen */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeFind", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeFind;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(bool /* isOpen */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeFind);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeFind: ") + exc.what());
+      }
+    }()),
     hybridRef([&]() -> CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridEditorSpec>& /* ref */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("hybridRef", nullptr, nullptr);
@@ -688,6 +698,7 @@ namespace margelo::nitro::editor::views {
       case hashString("onChangeDirty"): return true;
       case hashString("onChangeSelection"): return true;
       case hashString("onChangeHistory"): return true;
+      case hashString("onChangeFind"): return true;
       case hashString("hybridRef"): return true;
       default: return false;
     }

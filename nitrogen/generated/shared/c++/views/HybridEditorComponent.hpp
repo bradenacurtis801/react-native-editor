@@ -101,6 +101,7 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::function<void(bool /* isDirty */)>> onChangeDirty;
     CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>> onChangeSelection;
     CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> onChangeHistory;
+    CachedProp<std::function<void(bool /* isOpen */)>> onChangeFind;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridEditorSpec>& /* ref */)>>> hybridRef;
 
   private:

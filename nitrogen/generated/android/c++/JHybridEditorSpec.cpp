@@ -601,6 +601,23 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool_bool::javaobject> /* onChangeHistory */)>("setOnChangeHistory_cxx");
     method(_javaPart, JFunc_void_bool_bool_cxx::fromCpp(onChangeHistory));
   }
+  std::function<void(bool /* isOpen */)> JHybridEditorSpec::getOnChangeFind() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_bool::javaobject>()>("getOnChangeFind_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(bool /* isOpen */)> {
+      if (__result->isInstanceOf(JFunc_void_bool_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_bool_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_bool, void(bool)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool::javaobject> /* onChangeFind */)>("setOnChangeFind_cxx");
+    method(_javaPart, JFunc_void_bool_cxx::fromCpp(onChangeFind));
+  }
 
   // Methods
   std::string JHybridEditorSpec::readBuffer() {

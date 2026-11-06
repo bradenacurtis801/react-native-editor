@@ -454,6 +454,13 @@ namespace margelo::nitro::editor {
     inline void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) noexcept override {
       _swiftPart.setOnChangeHistory(onChangeHistory);
     }
+    inline std::function<void(bool /* isOpen */)> getOnChangeFind() noexcept override {
+      auto __result = _swiftPart.getOnChangeFind();
+      return __result;
+    }
+    inline void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) noexcept override {
+      _swiftPart.setOnChangeFind(onChangeFind);
+    }
 
   public:
     // Methods

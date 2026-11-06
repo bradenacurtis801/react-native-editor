@@ -132,6 +132,8 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeSelection", &HybridEditorSpec::setOnChangeSelection);
       prototype.registerHybridGetter("onChangeHistory", &HybridEditorSpec::getOnChangeHistory);
       prototype.registerHybridSetter("onChangeHistory", &HybridEditorSpec::setOnChangeHistory);
+      prototype.registerHybridGetter("onChangeFind", &HybridEditorSpec::getOnChangeFind);
+      prototype.registerHybridSetter("onChangeFind", &HybridEditorSpec::setOnChangeFind);
       prototype.registerHybridMethod("readBuffer", &HybridEditorSpec::readBuffer);
       prototype.registerHybridMethod("writeBuffer", &HybridEditorSpec::writeBuffer);
       prototype.registerHybridMethod("insertText", &HybridEditorSpec::insertText);

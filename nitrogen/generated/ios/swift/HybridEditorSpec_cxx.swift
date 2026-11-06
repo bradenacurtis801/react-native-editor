@@ -793,6 +793,25 @@ open class HybridEditorSpec_cxx {
       }()
     }
   }
+  
+  public final var onChangeFind: bridge.Func_void_bool {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_bool in
+        let __closureWrapper = Func_void_bool(self.__implementation.onChangeFind)
+        return bridge.create_Func_void_bool(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeFind = { () -> (Bool) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_bool(newValue)
+        return { (__isOpen: Bool) -> Void in
+          __wrappedFunction.call(__isOpen)
+        }
+      }()
+    }
+  }
 
   // Methods
   @inline(__always)

@@ -69,6 +69,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onChangeDirty: (_ isDirty: Bool) -> Void { get set }
   var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void { get set }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
+  var onChangeFind: (_ isOpen: Bool) -> Void { get set }
 
   // Methods
   func readBuffer() throws -> String

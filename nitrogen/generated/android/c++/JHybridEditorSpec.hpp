@@ -168,6 +168,8 @@ namespace margelo::nitro::editor {
     void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) override;
     std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() override;
     void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) override;
+    std::function<void(bool /* isOpen */)> getOnChangeFind() override;
+    void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) override;
 
   public:
     // Methods

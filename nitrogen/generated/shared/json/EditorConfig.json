@@ -63,6 +63,7 @@
     "onChangeDirty": true,
     "onChangeSelection": true,
     "onChangeHistory": true,
+    "onChangeFind": true,
     "hybridRef": true
   }
 }
