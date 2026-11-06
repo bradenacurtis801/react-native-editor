@@ -279,8 +279,35 @@ private final class EditorTheme: Theme {
 /// Hosts Runestone's `TextView` and tracks dirty state against the buffer it
 /// was last `configure`d with (used both for the initial mount and for
 /// `setText`, e.g. to restore a known-good state after a failed save).
-private final class EditorContainerView: UIView, TextViewDelegate {
+private final class EditorContainerView: UIView, TextViewDelegate, UIGestureRecognizerDelegate {
   let textView = TextView()
+  /// Pinching the text changes its size: `shownFontSize` says what it is now, `applyFontSize` shows another, `onZoomEnd` reports where it stopped.
+  var shownFontSize: () -> CGFloat = { 13 }
+  var applyFontSize: (CGFloat) -> Void = { _ in }
+  var onZoomEnd: (CGFloat) -> Void = { _ in }
+  private lazy var pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinched(_:)))
+  private var pinchStart: CGFloat = 13
+  var isZoomEnabled: Bool {
+    get { pinch.isEnabled }
+    set { pinch.isEnabled = newValue }
+  }
+
+  @objc private func pinched(_ gesture: UIPinchGestureRecognizer) {
+    switch gesture.state {
+    case .began:
+      pinchStart = shownFontSize()
+    case .changed:
+      // Half-point steps: finer is invisible, and every step re-lays the text out.
+      let size = min(40, max(8, (pinchStart * gesture.scale * 2).rounded() / 2))
+      if size != shownFontSize() { applyFontSize(size) }
+    case .ended, .cancelled:
+      onZoomEnd(shownFontSize())
+    default:
+      break
+    }
+  }
+
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
   private var baselineText = ""
   private var isDirty = false
   var onDirtyChange: ((Bool) -> Void)?
@@ -322,6 +349,9 @@ private final class EditorContainerView: UIView, TextViewDelegate {
     super.init(frame: frame)
     textView.editorDelegate = self
     addSubview(textView)
+    pinch.delegate = self
+    pinch.isEnabled = false
+    textView.addGestureRecognizer(pinch)
     // Undo and redo change what can be undone without the text view being told.
     let center = NotificationCenter.default
     let names: [Notification.Name] = [.NSUndoManagerDidUndoChange, .NSUndoManagerDidRedoChange, .NSUndoManagerDidCloseUndoGroup, .NSUndoManagerCheckpoint]
@@ -428,7 +458,9 @@ private final class EditorContainerView: UIView, TextViewDelegate {
 /// prop can be changed live from JS without a re-mount.
 class HybridEditor: HybridEditorSpec {
   private let container = EditorContainerView()
-  private let editorTheme = EditorTheme()
+  private var editorTheme = EditorTheme()
+  private var appliedThemeKey = ""
+  private var shownFontSize: CGFloat = 13
   private var hasConfigured = false
 
   var view: UIView { container }
@@ -447,6 +479,9 @@ class HybridEditor: HybridEditorSpec {
     container.onFindChange = { [weak self] isOpen in
       self?.onChangeFind(isOpen)
     }
+    container.shownFontSize = { [weak self] in self?.shownFontSize ?? 13 }
+    container.applyFontSize = { [weak self] size in self?.applyTheme(fontSize: size, replacing: true) }
+    container.onZoomEnd = { [weak self] size in self?.onChangeFontSize(Double(size)) }
   }
 
   var text: String = ""
@@ -510,12 +545,17 @@ class HybridEditor: HybridEditorSpec {
   var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void = { _, _, _ in }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void = { _, _ in }
   var onChangeFind: (_ isOpen: Bool) -> Void = { _ in }
+  var onChangeFontSize: (_ fontSizePx: Double) -> Void = { _ in }
+  var pinchToZoom: Bool = false
 
-  func afterUpdate() {
+  private func applyTheme(fontSize: CGFloat, replacing: Bool) {
+    // Runestone ignores a theme that is the one it already has, so a change is a new object.
+    if replacing { editorTheme = EditorTheme() }
+    shownFontSize = fontSize
     editorTheme.configure(
       syntaxColorsJson: syntaxColorsJson,
       textColor: UIColor(hex: textColor),
-      fontSizePx: CGFloat(fontSizePx),
+      fontSizePx: fontSize,
       gutterBackgroundColor: UIColor(hex: gutterBackgroundColorHex),
       gutterHairlineColor: UIColor(hex: gutterHairlineColorHex),
       selectedLineBackgroundColor: UIColor(hex: selectedLineBackgroundColorHex),
@@ -524,6 +564,22 @@ class HybridEditor: HybridEditorSpec {
       pageGuideHairlineColor: UIColor(hex: pageGuideHairlineColorHex),
       pageGuideBackgroundColor: UIColor(hex: pageGuideBackgroundColorHex),
       markedTextBackgroundColor: UIColor(hex: markedTextBackgroundColorHex))
+    if replacing {
+      container.textView.theme = editorTheme
+      // The theme only marks lines stale; this lays out the ones on screen now (the rest follow as they scroll in).
+      container.textView.redisplayVisibleLines()
+    }
+  }
+
+  func afterUpdate() {
+    let themeKey = [syntaxColorsJson, textColor, String(fontSizePx), gutterBackgroundColorHex, gutterHairlineColorHex,
+                    selectedLineBackgroundColorHex, selectedLinesGutterBackgroundColorHex, invisibleCharactersColorHex,
+                    pageGuideHairlineColorHex, pageGuideBackgroundColorHex, markedTextBackgroundColorHex].joined(separator: "|")
+    if themeKey != appliedThemeKey {
+      appliedThemeKey = themeKey
+      applyTheme(fontSize: CGFloat(fontSizePx), replacing: hasConfigured)
+    }
+    container.isZoomEnabled = pinchToZoom
     let bg = UIColor(hex: backgroundColor)
     container.backgroundColor = bg
     container.textView.backgroundColor = bg

@@ -423,6 +423,26 @@ abstract class HybridEditorSpec: HybridView() {
     set(value) {
       onChangeFind = value
     }
+  
+  abstract var onChangeFontSize: (fontSizePx: Double) -> Unit
+  
+  private var onChangeFontSize_cxx: Func_void_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_java(onChangeFontSize)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeFontSize = value
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var pinchToZoom: Boolean
 
   // Methods
   @DoNotStrip

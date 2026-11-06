@@ -38,6 +38,14 @@ namespace margelo::nitro::editor::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void(double /* fontSizePx */)>
+  Func_void_double create_Func_void_double(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = ReactNativeEditor::Func_void_double::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](double fontSizePx) mutable -> void {
+      swiftClosure.call(fontSizePx);
+    };
+  }
+  
   // pragma MARK: std::shared_ptr<HybridEditorSpec>
   std::shared_ptr<HybridEditorSpec> create_std__shared_ptr_HybridEditorSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     ReactNativeEditor::HybridEditorSpec_cxx swiftPart = ReactNativeEditor::HybridEditorSpec_cxx::fromUnsafe(swiftUnsafePointer);

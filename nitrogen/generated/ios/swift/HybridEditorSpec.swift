@@ -71,6 +71,8 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void { get set }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
+  var onChangeFontSize: (_ fontSizePx: Double) -> Void { get set }
+  var pinchToZoom: Bool { get set }
 
   // Methods
   func readBuffer() throws -> String

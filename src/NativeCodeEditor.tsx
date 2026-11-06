@@ -59,13 +59,14 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 	pageGuideHairlineColor: '#00000000',
 	pageGuideBackgroundColor: '#00000000',
 	markedTextBackgroundColor: '#00000000',
+	pinchToZoom: false,
 	isFindInteractionEnabled: false,
 	lineEndings: 'lf',
 	showMenuAfterNavigatingToHighlightedRange: true,
 };
 
 export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFontSizeChange, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -157,6 +158,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				pageGuideHairlineColorHex={s.pageGuideHairlineColor}
 				pageGuideBackgroundColorHex={s.pageGuideBackgroundColor}
 				markedTextBackgroundColorHex={s.markedTextBackgroundColor}
+				pinchToZoom={s.pinchToZoom}
 				isFindInteractionEnabled={s.isFindInteractionEnabled}
 				lineEndings={s.lineEndings}
 				showMenuAfterNavigatingToHighlightedRange={s.showMenuAfterNavigatingToHighlightedRange}
@@ -164,6 +166,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeSelection={callback((line: number, column: number, length: number) => onSelectionChange?.(line, column, length))}
 				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}
 				onChangeFind={callback((isOpen: boolean) => onFindChange?.(isOpen))}
+				onChangeFontSize={callback((fontSizePx: number) => onFontSizeChange?.(fontSizePx))}
 			/>
 		);
 	},

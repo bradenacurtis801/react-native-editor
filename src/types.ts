@@ -102,6 +102,8 @@ export interface CodeEditorSettings {
 	pageGuideBackgroundColor?: string;
 	/** `#RRGGBB`, transparent by default. */
 	markedTextBackgroundColor?: string;
+	/** Pinching the text changes its size (8 to 40); `onFontSizeChange` says where it stopped. iOS only. @default false */
+	pinchToZoom?: boolean;
 	/** Turns on iOS's entire native find/replace UI for free. iOS 16+; a no-op below that. @default false */
 	isFindInteractionEnabled?: boolean;
 	/** @default 'lf' */
@@ -126,6 +128,8 @@ export interface CodeEditorProps {
 	onHistoryChange?: (canUndo: boolean, canRedo: boolean) => void;
 	/** The find bar opened or closed. iOS only. */
 	onFindChange?: (isOpen: boolean) => void;
+	/** A pinch ended at this font size — keep it and pass it back as `theme.fontSize`. Needs `settings.pinchToZoom`. iOS only. */
+	onFontSizeChange?: (fontSize: number) => void;
 	style?: StyleProp<ViewStyle>;
 }
 

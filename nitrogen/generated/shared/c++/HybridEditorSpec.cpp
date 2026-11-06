@@ -136,6 +136,10 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeHistory", &HybridEditorSpec::setOnChangeHistory);
       prototype.registerHybridGetter("onChangeFind", &HybridEditorSpec::getOnChangeFind);
       prototype.registerHybridSetter("onChangeFind", &HybridEditorSpec::setOnChangeFind);
+      prototype.registerHybridGetter("onChangeFontSize", &HybridEditorSpec::getOnChangeFontSize);
+      prototype.registerHybridSetter("onChangeFontSize", &HybridEditorSpec::setOnChangeFontSize);
+      prototype.registerHybridGetter("pinchToZoom", &HybridEditorSpec::getPinchToZoom);
+      prototype.registerHybridSetter("pinchToZoom", &HybridEditorSpec::setPinchToZoom);
       prototype.registerHybridMethod("readBuffer", &HybridEditorSpec::readBuffer);
       prototype.registerHybridMethod("writeBuffer", &HybridEditorSpec::writeBuffer);
       prototype.registerHybridMethod("insertText", &HybridEditorSpec::insertText);

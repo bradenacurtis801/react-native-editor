@@ -10,5 +10,6 @@ export {
 	type CodeEditorHandle,
 	type CursorDirection,
 	type CodeEditorProps,
+	type CodeEditorSettings,
 	type CodeEditorTheme,
 } from './CodeEditor';

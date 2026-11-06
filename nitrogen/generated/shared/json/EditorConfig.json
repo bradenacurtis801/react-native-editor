@@ -65,6 +65,8 @@
     "onChangeSelection": true,
     "onChangeHistory": true,
     "onChangeFind": true,
+    "onChangeFontSize": true,
+    "pinchToZoom": true,
     "hybridRef": true
   }
 }

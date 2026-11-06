@@ -384,6 +384,16 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setOnChangeFind(newViewProps.onChangeFind.value);
     newViewProps.onChangeFind.isDirty = false;
   }
+  // onChangeFontSize: function
+  if (newViewProps.onChangeFontSize.isDirty) {
+    swiftPart.setOnChangeFontSize(newViewProps.onChangeFontSize.value);
+    newViewProps.onChangeFontSize.isDirty = false;
+  }
+  // pinchToZoom: boolean
+  if (newViewProps.pinchToZoom.isDirty) {
+    swiftPart.setPinchToZoom(newViewProps.pinchToZoom.value);
+    newViewProps.pinchToZoom.isDirty = false;
+  }
 
   swiftPart.afterUpdate();
 

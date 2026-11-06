@@ -15,6 +15,7 @@
 #include <NitroModules/JNICallable.hpp>
 #include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_bool_bool.hpp"
+#include "JFunc_void_double.hpp"
 
 namespace margelo::nitro::editor {
 
@@ -626,6 +627,32 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool::javaobject> /* onChangeFind */)>("setOnChangeFind_cxx");
     method(_javaPart, JFunc_void_bool_cxx::fromCpp(onChangeFind));
+  }
+  std::function<void(double /* fontSizePx */)> JHybridEditorSpec::getOnChangeFontSize() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double::javaobject>()>("getOnChangeFontSize_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* fontSizePx */)> {
+      if (__result->isInstanceOf(JFunc_void_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double, void(double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onChangeFontSize */)>("setOnChangeFontSize_cxx");
+    method(_javaPart, JFunc_void_double_cxx::fromCpp(onChangeFontSize));
+  }
+  bool JHybridEditorSpec::getPinchToZoom() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getPinchToZoom");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setPinchToZoom(bool pinchToZoom) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* pinchToZoom */)>("setPinchToZoom");
+    method(_javaPart, pinchToZoom);
   }
 
   // Methods

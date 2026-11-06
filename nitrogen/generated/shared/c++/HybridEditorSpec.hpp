@@ -167,6 +167,10 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeHistory(const std::function<void(bool /* canUndo */, bool /* canRedo */)>& onChangeHistory) = 0;
       virtual std::function<void(bool /* isOpen */)> getOnChangeFind() = 0;
       virtual void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) = 0;
+      virtual std::function<void(double /* fontSizePx */)> getOnChangeFontSize() = 0;
+      virtual void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) = 0;
+      virtual bool getPinchToZoom() = 0;
+      virtual void setPinchToZoom(bool pinchToZoom) = 0;
 
     public:
       // Methods

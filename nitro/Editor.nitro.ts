@@ -148,6 +148,10 @@ export interface EditorProps extends HybridViewProps {
 	onChangeHistory: (canUndo: boolean, canRedo: boolean) => void;
 	/** The find bar opened or closed (`showFind`, or the system's own). */
 	onChangeFind: (isOpen: boolean) => void;
+	/** A pinch on the text ended at this font size (only with `pinchToZoom`). The text follows the fingers meanwhile. */
+	onChangeFontSize: (fontSizePx: number) => void;
+	/** Pinching the text changes its size, 8 to 40. @default false */
+	pinchToZoom: boolean;
 }
 
 export interface EditorMethods extends HybridViewMethods {

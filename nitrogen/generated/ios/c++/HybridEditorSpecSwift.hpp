@@ -468,6 +468,19 @@ namespace margelo::nitro::editor {
     inline void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) noexcept override {
       _swiftPart.setOnChangeFind(onChangeFind);
     }
+    inline std::function<void(double /* fontSizePx */)> getOnChangeFontSize() noexcept override {
+      auto __result = _swiftPart.getOnChangeFontSize();
+      return __result;
+    }
+    inline void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) noexcept override {
+      _swiftPart.setOnChangeFontSize(onChangeFontSize);
+    }
+    inline bool getPinchToZoom() noexcept override {
+      return _swiftPart.getPinchToZoom();
+    }
+    inline void setPinchToZoom(bool pinchToZoom) noexcept override {
+      _swiftPart.setPinchToZoom(std::forward<decltype(pinchToZoom)>(pinchToZoom));
+    }
 
   public:
     // Methods
