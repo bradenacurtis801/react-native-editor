@@ -481,6 +481,12 @@ namespace margelo::nitro::editor {
     inline void setPinchToZoom(bool pinchToZoom) noexcept override {
       _swiftPart.setPinchToZoom(std::forward<decltype(pinchToZoom)>(pinchToZoom));
     }
+    inline bool getAutoClosePairs() noexcept override {
+      return _swiftPart.getAutoClosePairs();
+    }
+    inline void setAutoClosePairs(bool autoClosePairs) noexcept override {
+      _swiftPart.setAutoClosePairs(std::forward<decltype(autoClosePairs)>(autoClosePairs));
+    }
 
   public:
     // Methods
@@ -530,6 +536,24 @@ namespace margelo::nitro::editor {
     }
     inline void outdent() override {
       auto __result = _swiftPart.outdent();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void duplicateLines() override {
+      auto __result = _swiftPart.duplicateLines();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void moveLines(const std::string& direction) override {
+      auto __result = _swiftPart.moveLines(direction);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void toggleComment(const std::string& prefix) override {
+      auto __result = _swiftPart.toggleComment(prefix);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

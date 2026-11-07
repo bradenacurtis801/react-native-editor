@@ -176,6 +176,8 @@ namespace margelo::nitro::editor {
     void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) override;
     bool getPinchToZoom() override;
     void setPinchToZoom(bool pinchToZoom) override;
+    bool getAutoClosePairs() override;
+    void setAutoClosePairs(bool autoClosePairs) override;
 
   public:
     // Methods
@@ -187,6 +189,9 @@ namespace margelo::nitro::editor {
     void tab() override;
     void indent() override;
     void outdent() override;
+    void duplicateLines() override;
+    void moveLines(const std::string& direction) override;
+    void toggleComment(const std::string& prefix) override;
     void moveCursor(const std::string& direction) override;
     void applyLanguage(const std::string& language) override;
     void showFind(bool replace) override;

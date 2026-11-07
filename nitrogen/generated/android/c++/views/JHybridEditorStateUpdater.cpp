@@ -289,6 +289,10 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setPinchToZoom(props->pinchToZoom.value);
     props->pinchToZoom.isDirty = false;
   }
+  if (props->autoClosePairs.isDirty) {
+    hybridView->setAutoClosePairs(props->autoClosePairs.value);
+    props->autoClosePairs.isDirty = false;
+  }
 
   // Update hybridRef if it changed
   if (props->hybridRef.isDirty) {

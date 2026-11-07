@@ -67,6 +67,7 @@
     "onChangeFind": true,
     "onChangeFontSize": true,
     "pinchToZoom": true,
+    "autoClosePairs": true,
     "hybridRef": true
   }
 }

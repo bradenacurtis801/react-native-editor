@@ -73,6 +73,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void { get set }
   var pinchToZoom: Bool { get set }
+  var autoClosePairs: Bool { get set }
 
   // Methods
   func readBuffer() throws -> String
@@ -83,6 +84,9 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func tab() throws -> Void
   func indent() throws -> Void
   func outdent() throws -> Void
+  func duplicateLines() throws -> Void
+  func moveLines(direction: String) throws -> Void
+  func toggleComment(prefix: String) throws -> Void
   func moveCursor(direction: String) throws -> Void
   func applyLanguage(language: String) throws -> Void
   func showFind(replace: Bool) throws -> Void

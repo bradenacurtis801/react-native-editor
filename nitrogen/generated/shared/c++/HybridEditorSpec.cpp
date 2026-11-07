@@ -140,6 +140,8 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeFontSize", &HybridEditorSpec::setOnChangeFontSize);
       prototype.registerHybridGetter("pinchToZoom", &HybridEditorSpec::getPinchToZoom);
       prototype.registerHybridSetter("pinchToZoom", &HybridEditorSpec::setPinchToZoom);
+      prototype.registerHybridGetter("autoClosePairs", &HybridEditorSpec::getAutoClosePairs);
+      prototype.registerHybridSetter("autoClosePairs", &HybridEditorSpec::setAutoClosePairs);
       prototype.registerHybridMethod("readBuffer", &HybridEditorSpec::readBuffer);
       prototype.registerHybridMethod("writeBuffer", &HybridEditorSpec::writeBuffer);
       prototype.registerHybridMethod("insertText", &HybridEditorSpec::insertText);
@@ -148,6 +150,9 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("tab", &HybridEditorSpec::tab);
       prototype.registerHybridMethod("indent", &HybridEditorSpec::indent);
       prototype.registerHybridMethod("outdent", &HybridEditorSpec::outdent);
+      prototype.registerHybridMethod("duplicateLines", &HybridEditorSpec::duplicateLines);
+      prototype.registerHybridMethod("moveLines", &HybridEditorSpec::moveLines);
+      prototype.registerHybridMethod("toggleComment", &HybridEditorSpec::toggleComment);
       prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);
       prototype.registerHybridMethod("applyLanguage", &HybridEditorSpec::applyLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);

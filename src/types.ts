@@ -102,6 +102,8 @@ export interface CodeEditorSettings {
 	pageGuideBackgroundColor?: string;
 	/** `#RRGGBB`, transparent by default. */
 	markedTextBackgroundColor?: string;
+	/** Typing an opening bracket or quote also types its closer. iOS only. @default false */
+	autoClosePairs?: boolean;
 	/** Pinching the text changes its size (8 to 40); `onFontSizeChange` says where it stopped. iOS only. @default false */
 	pinchToZoom?: boolean;
 	/** Turns on iOS's entire native find/replace UI for free. iOS 16+; a no-op below that. @default false */
@@ -153,6 +155,12 @@ export interface CodeEditorHandle {
 	showFind(replace: boolean): void;
 	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */
 	goToLine(line: number): void;
+	/** Copies the selected lines (the caret's line) below themselves; the selection moves to the copy. */
+	duplicateLines(): void;
+	/** Swaps the selected lines with the line above or below. */
+	moveLines(direction: 'up' | 'down'): void;
+	/** Comments the selected lines with `prefix` (e.g. `//` or `#`), or uncomments them when every one has it. */
+	toggleComment(prefix: string): void;
 }
 
 export type CursorDirection = 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd';

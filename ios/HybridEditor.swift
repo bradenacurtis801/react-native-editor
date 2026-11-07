@@ -276,6 +276,154 @@ private final class EditorTheme: Theme {
   }
 }
 
+/// What a line command does to the text: replace `range` with `text`, then select `selection`.
+struct LineEdit: Equatable {
+  var range: NSRange
+  var text: String
+  var selection: NSRange
+}
+
+/// Commands on whole lines (duplicate, move, comment), as pure functions of the text and the selection.
+enum LineEditing {
+  /// The lines a selection touches, whole: a selection ending just after a line break doesn't take the next line.
+  static func block(in text: NSString, selection: NSRange) -> NSRange {
+    var probe = selection
+    if probe.length > 0 {
+      let last = text.character(at: NSMaxRange(probe) - 1)
+      if last == 10 || last == 13 { probe.length -= 1 }
+    }
+    return text.lineRange(for: probe)
+  }
+
+  /// A line's text without its line break, and the break (empty on the file's last line).
+  static func split(_ line: String) -> (core: String, eol: String) {
+    let ns = line as NSString
+    var end = ns.length
+    if end > 0, ns.character(at: end - 1) == 10 {
+      end -= 1
+      if end > 0, ns.character(at: end - 1) == 13 { end -= 1 }
+    } else if end > 0, ns.character(at: end - 1) == 13 {
+      end -= 1
+    }
+    return (ns.substring(to: end), ns.substring(from: end))
+  }
+
+  /// Copies the lines below themselves; the selection moves to the copy.
+  static func duplicate(_ text: NSString, selection: NSRange, eol: String) -> LineEdit {
+    let b = block(in: text, selection: selection)
+    let s = text.substring(with: b)
+    let (core, ending) = split(s)
+    let inserted = ending.isEmpty ? eol + core : s
+    let shift = (inserted as NSString).length
+    return LineEdit(
+      range: NSRange(location: NSMaxRange(b), length: 0),
+      text: inserted,
+      selection: NSRange(location: selection.location + shift, length: selection.length))
+  }
+
+  /// Swaps the lines with the one above or below; nil at the top or bottom of the file.
+  static func move(_ text: NSString, selection: NSRange, up: Bool) -> LineEdit? {
+    let b = block(in: text, selection: selection)
+    let (bc, be) = split(text.substring(with: b))
+    if up {
+      guard b.location > 0 else { return nil }
+      let prev = text.lineRange(for: NSRange(location: b.location - 1, length: 0))
+      let (pc, pe) = split(text.substring(with: prev))
+      return LineEdit(
+        range: NSRange(location: prev.location, length: NSMaxRange(b) - prev.location),
+        text: bc + pe + pc + be,
+        selection: NSRange(location: selection.location - prev.length, length: selection.length))
+    }
+    guard NSMaxRange(b) < text.length else { return nil }
+    let next = text.lineRange(for: NSRange(location: NSMaxRange(b), length: 0))
+    let (nc, ne) = split(text.substring(with: next))
+    return LineEdit(
+      range: NSRange(location: b.location, length: NSMaxRange(next) - b.location),
+      text: nc + be + bc + ne,
+      selection: NSRange(location: selection.location + (nc + be).utf16.count, length: selection.length))
+  }
+
+  private static func leadingSpace(_ s: NSString) -> Int {
+    var n = 0
+    while n < s.length, s.character(at: n) == 32 || s.character(at: n) == 9 { n += 1 }
+    return n
+  }
+
+  /// Comments the lines with `prefix`, or takes it off when every one already has it. Blank lines are left alone
+  /// (unless all are blank). nil when `prefix` is empty.
+  static func toggleComment(_ text: NSString, selection: NSRange, prefix: String) -> LineEdit? {
+    guard !prefix.isEmpty else { return nil }
+    let b = block(in: text, selection: selection)
+    var lines: [(core: NSString, eol: String)] = []
+    var loc = b.location
+    while loc < NSMaxRange(b) {
+      let r = text.lineRange(for: NSRange(location: loc, length: 0))
+      let (c, e) = split(text.substring(with: r))
+      lines.append((c as NSString, e))
+      loc = NSMaxRange(r)
+    }
+    if lines.isEmpty { lines = [("" as NSString, "")] }
+    let blank = { (l: NSString) in self.leadingSpace(l) == l.length }
+    var targets = lines.indices.filter { !blank(lines[$0].core) }
+    if targets.isEmpty { targets = Array(lines.indices) }
+    let prefixLength = (prefix as NSString).length
+    let uncomment = targets.allSatisfy { i in
+      let l = lines[i].core
+      let ws = leadingSpace(l)
+      return l.length - ws >= prefixLength && l.substring(with: NSRange(location: ws, length: prefixLength)) == prefix
+    }
+    let indent = targets.map { leadingSpace(lines[$0].core) }.min() ?? 0
+    var out = ""
+    var caretDelta = 0
+    for (i, line) in lines.enumerated() {
+      var core = line.core
+      if targets.contains(i) {
+        if uncomment {
+          let ws = leadingSpace(core)
+          var removed = prefixLength
+          if core.length > ws + prefixLength, core.character(at: ws + prefixLength) == 32 { removed += 1 }
+          if selection.length == 0 {
+            let offset = selection.location - b.location
+            caretDelta = offset >= ws + removed ? -removed : (offset > ws ? ws - offset : 0)
+          }
+          core = core.replacingCharacters(in: NSRange(location: ws, length: removed), with: "") as NSString
+        } else {
+          let insert = prefix + " "
+          if selection.length == 0 {
+            let offset = selection.location - b.location
+            caretDelta = offset >= indent ? (insert as NSString).length : 0
+          }
+          core = core.replacingCharacters(in: NSRange(location: indent, length: 0), with: insert) as NSString
+        }
+      }
+      out += (core as String) + line.eol
+    }
+    let outLength = (out as NSString).length
+    let selected: NSRange
+    if selection.length == 0 {
+      selected = NSRange(location: max(b.location, selection.location + caretDelta), length: 0)
+    } else {
+      let trailing = (lines.last?.eol as NSString?)?.length ?? 0
+      selected = NSRange(location: b.location, length: outLength - trailing)
+    }
+    return LineEdit(range: b, text: out, selection: selected)
+  }
+}
+
+/// The pairs typed brackets and quotes close themselves with (Runestone inserts the closer, steps over it, and wraps a selection).
+private struct BracketPair: CharacterPair {
+  let leading: String
+  let trailing: String
+}
+
+private let bracketPairs: [CharacterPair] = [
+  BracketPair(leading: "(", trailing: ")"),
+  BracketPair(leading: "[", trailing: "]"),
+  BracketPair(leading: "{", trailing: "}"),
+  BracketPair(leading: "\"", trailing: "\""),
+  BracketPair(leading: "`", trailing: "`"),
+]
+
 /// Hosts Runestone's `TextView` and tracks dirty state against the buffer it
 /// was last `configure`d with (used both for the initial mount and for
 /// `setText`, e.g. to restore a known-good state after a failed save).
@@ -380,6 +528,25 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     guard lastSelection == nil || lastSelection! != now else { return }
     lastSelection = now
     onSelectionChange?(now.0, now.1, now.2)
+  }
+
+  /// Applies a line command as one undo step and selects what it says.
+  private func apply(_ edit: LineEdit?) {
+    guard let edit else { return }
+    textView.replace(edit.range, withText: edit.text)
+    textView.selectedRange = edit.selection
+  }
+
+  func duplicateLines() {
+    apply(LineEditing.duplicate(textView.text as NSString, selection: textView.selectedRange, eol: textView.lineEndings.symbol))
+  }
+
+  func moveLines(up: Bool) {
+    apply(LineEditing.move(textView.text as NSString, selection: textView.selectedRange, up: up))
+  }
+
+  func toggleComment(prefix: String) {
+    apply(LineEditing.toggleComment(textView.text as NSString, selection: textView.selectedRange, prefix: prefix))
   }
 
   /// Moves the caret as `direction` says, collapsing any selection.
@@ -547,6 +714,7 @@ class HybridEditor: HybridEditorSpec {
   var onChangeFind: (_ isOpen: Bool) -> Void = { _ in }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void = { _ in }
   var pinchToZoom: Bool = false
+  var autoClosePairs: Bool = false
 
   private func applyTheme(fontSize: CGFloat, replacing: Bool) {
     // Runestone ignores a theme that is the one it already has, so a change is a new object.
@@ -589,6 +757,8 @@ class HybridEditor: HybridEditorSpec {
     textView.isSelectable = isSelectable
     textView.indentStrategy = parsedIndentStrategy(for: indentStrategy)
     textView.showLineNumbers = showLineNumbers
+    textView.characterPairs = autoClosePairs ? bracketPairs : []
+    textView.characterPairTrailingComponentDeletionMode = autoClosePairs ? .immediatelyFollowingLeadingComponent : .disabled
     textView.isAutomaticScrollEnabled = automaticScrollEnabled
     textView.verticalOverscrollFactor = CGFloat(verticalOverscrollFactor)
     textView.horizontalOverscrollFactor = CGFloat(horizontalOverscrollFactor)
@@ -710,6 +880,9 @@ class HybridEditor: HybridEditorSpec {
     }
   }
   func moveCursor(direction: String) throws { onMain { [weak self] in self?.container.moveCursor(direction) } }
+  func duplicateLines() throws { onMain { [weak self] in self?.container.duplicateLines() } }
+  func moveLines(direction: String) throws { onMain { [weak self] in self?.container.moveLines(up: direction == "up") } }
+  func toggleComment(prefix: String) throws { onMain { [weak self] in self?.container.toggleComment(prefix: prefix) } }
 
   func applyLanguage(language: String) throws {
     onMain { [weak self] in

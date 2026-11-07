@@ -29,6 +29,9 @@ export const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			setLanguage: () => {},
 			showFind: () => {},
 			goToLine: () => {},
+			duplicateLines: () => {},
+			moveLines: () => {},
+			toggleComment: () => {},
 		}), []);
 
 		const handleChangeText = useCallback((text: string) => {

@@ -443,6 +443,12 @@ abstract class HybridEditorSpec: HybridView() {
   @set:DoNotStrip
   @set:Keep
   abstract var pinchToZoom: Boolean
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var autoClosePairs: Boolean
 
   // Methods
   @DoNotStrip
@@ -476,6 +482,18 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun outdent(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun duplicateLines(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun moveLines(direction: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun toggleComment(prefix: String): Unit
   
   @DoNotStrip
   @Keep

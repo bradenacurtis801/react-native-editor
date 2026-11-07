@@ -394,6 +394,11 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setPinchToZoom(newViewProps.pinchToZoom.value);
     newViewProps.pinchToZoom.isDirty = false;
   }
+  // autoClosePairs: boolean
+  if (newViewProps.autoClosePairs.isDirty) {
+    swiftPart.setAutoClosePairs(newViewProps.autoClosePairs.value);
+    newViewProps.autoClosePairs.isDirty = false;
+  }
 
   swiftPart.afterUpdate();
 

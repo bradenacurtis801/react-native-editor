@@ -656,6 +656,16 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.pinchToZoom: ") + exc.what());
       }
     }()),
+    autoClosePairs([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("autoClosePairs", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.autoClosePairs;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.autoClosePairs);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.autoClosePairs: ") + exc.what());
+      }
+    }()),
     hybridRef([&]() -> CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridEditorSpec>& /* ref */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("hybridRef", nullptr, nullptr);
@@ -732,6 +742,7 @@ namespace margelo::nitro::editor::views {
       case hashString("onChangeFind"): return true;
       case hashString("onChangeFontSize"): return true;
       case hashString("pinchToZoom"): return true;
+      case hashString("autoClosePairs"): return true;
       case hashString("hybridRef"): return true;
       default: return false;
     }

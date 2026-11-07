@@ -152,6 +152,8 @@ export interface EditorProps extends HybridViewProps {
 	onChangeFontSize: (fontSizePx: number) => void;
 	/** Pinching the text changes its size, 8 to 40. @default false */
 	pinchToZoom: boolean;
+	/** Typing `(`, `[`, `{`, `"` or a backtick types its closer too, typing the closer steps over it, and deleting the opener deletes the pair. @default false */
+	autoClosePairs: boolean;
 }
 
 export interface EditorMethods extends HybridViewMethods {
@@ -169,6 +171,12 @@ export interface EditorMethods extends HybridViewMethods {
 	indent(): void;
 	/** Takes one level of indentation off the selected lines. */
 	outdent(): void;
+	/** Copies the selected lines (the caret's line) below themselves; the selection moves to the copy. One undo step. */
+	duplicateLines(): void;
+	/** Swaps the selected lines with the line above or below: 'up' | 'down'. Nothing at the top or bottom of the file. */
+	moveLines(direction: string): void;
+	/** Comments the selected lines with `prefix` (e.g. '//' or '#'), or uncomments them when every one has it. */
+	toggleComment(prefix: string): void;
 	/** Moves the caret, collapsing a selection: 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd'. */
 	moveCursor(direction: string): void;
 	/** Changes the syntax highlighting to `language` (the same ids as the `language` prop; an unknown id is plain text) without touching the text, the selection or the undo history. */

@@ -654,6 +654,15 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* pinchToZoom */)>("setPinchToZoom");
     method(_javaPart, pinchToZoom);
   }
+  bool JHybridEditorSpec::getAutoClosePairs() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getAutoClosePairs");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setAutoClosePairs(bool autoClosePairs) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* autoClosePairs */)>("setAutoClosePairs");
+    method(_javaPart, autoClosePairs);
+  }
 
   // Methods
   std::string JHybridEditorSpec::readBuffer() {
@@ -688,6 +697,18 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::outdent() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("outdent");
     method(_javaPart);
+  }
+  void JHybridEditorSpec::duplicateLines() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("duplicateLines");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::moveLines(const std::string& direction) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveLines");
+    method(_javaPart, jni::make_jstring(direction));
+  }
+  void JHybridEditorSpec::toggleComment(const std::string& prefix) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* prefix */)>("toggleComment");
+    method(_javaPart, jni::make_jstring(prefix));
   }
   void JHybridEditorSpec::moveCursor(const std::string& direction) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveCursor");

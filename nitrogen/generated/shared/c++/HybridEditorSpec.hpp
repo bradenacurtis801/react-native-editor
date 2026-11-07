@@ -171,6 +171,8 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) = 0;
       virtual bool getPinchToZoom() = 0;
       virtual void setPinchToZoom(bool pinchToZoom) = 0;
+      virtual bool getAutoClosePairs() = 0;
+      virtual void setAutoClosePairs(bool autoClosePairs) = 0;
 
     public:
       // Methods
@@ -182,6 +184,9 @@ namespace margelo::nitro::editor {
       virtual void tab() = 0;
       virtual void indent() = 0;
       virtual void outdent() = 0;
+      virtual void duplicateLines() = 0;
+      virtual void moveLines(const std::string& direction) = 0;
+      virtual void toggleComment(const std::string& prefix) = 0;
       virtual void moveCursor(const std::string& direction) = 0;
       virtual void applyLanguage(const std::string& language) = 0;
       virtual void showFind(bool replace) = 0;

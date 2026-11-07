@@ -853,6 +853,17 @@ open class HybridEditorSpec_cxx {
       self.__implementation.pinchToZoom = newValue
     }
   }
+  
+  public final var autoClosePairs: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.autoClosePairs
+    }
+    @inline(__always)
+    set {
+      self.__implementation.autoClosePairs = newValue
+    }
+  }
 
   // Methods
   @inline(__always)
@@ -937,6 +948,39 @@ open class HybridEditorSpec_cxx {
   public final func outdent() -> bridge.Result_void_ {
     do {
       try self.__implementation.outdent()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func duplicateLines() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.duplicateLines()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func moveLines(direction: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.moveLines(direction: String(direction))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func toggleComment(prefix: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.toggleComment(prefix: String(prefix))
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

@@ -60,6 +60,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 	pageGuideBackgroundColor: '#00000000',
 	markedTextBackgroundColor: '#00000000',
 	pinchToZoom: false,
+	autoClosePairs: false,
 	isFindInteractionEnabled: false,
 	lineEndings: 'lf',
 	showMenuAfterNavigatingToHighlightedRange: true,
@@ -88,6 +89,9 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			setLanguage: (language: string) => hybridRef.current?.applyLanguage(language),
 			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
 			goToLine: (line: number) => hybridRef.current?.goToLine(line),
+			duplicateLines: () => hybridRef.current?.duplicateLines(),
+			moveLines: (direction: 'up' | 'down') => hybridRef.current?.moveLines(direction),
+			toggleComment: (prefix: string) => hybridRef.current?.toggleComment(prefix),
 		}), [initialText]);
 
 		const syntaxColorsJson = JSON.stringify({
@@ -159,6 +163,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				pageGuideBackgroundColorHex={s.pageGuideBackgroundColor}
 				markedTextBackgroundColorHex={s.markedTextBackgroundColor}
 				pinchToZoom={s.pinchToZoom}
+				autoClosePairs={s.autoClosePairs}
 				isFindInteractionEnabled={s.isFindInteractionEnabled}
 				lineEndings={s.lineEndings}
 				showMenuAfterNavigatingToHighlightedRange={s.showMenuAfterNavigatingToHighlightedRange}
