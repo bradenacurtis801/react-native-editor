@@ -1,6 +1,6 @@
 {
 	"name": "react-native-editor",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "Native code editor for React Native. iOS: Runestone (tree-sitter syntax highlighting). Android: falls back to a plain TextInput until a native backend lands.",
 	"keywords": [
 		"android",
