@@ -646,6 +646,36 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onChangeFontSize: ") + exc.what());
       }
     }()),
+    onChangeFindResult([&]() -> CachedProp<std::function<void(double /* count */, double /* index */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeFindResult", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeFindResult;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* count */, double /* index */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeFindResult);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeFindResult: ") + exc.what());
+      }
+    }()),
+    findColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("findColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.findColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.findColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.findColorHex: ") + exc.what());
+      }
+    }()),
+    findCurrentColorHex([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("findCurrentColorHex", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.findCurrentColorHex;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.findCurrentColorHex);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.findCurrentColorHex: ") + exc.what());
+      }
+    }()),
     pinchToZoom([&]() -> CachedProp<bool> {
       try {
         const react::RawValue* rawValue = rawProps.at("pinchToZoom", nullptr, nullptr);
@@ -741,6 +771,9 @@ namespace margelo::nitro::editor::views {
       case hashString("onChangeHistory"): return true;
       case hashString("onChangeFind"): return true;
       case hashString("onChangeFontSize"): return true;
+      case hashString("onChangeFindResult"): return true;
+      case hashString("findColorHex"): return true;
+      case hashString("findCurrentColorHex"): return true;
       case hashString("pinchToZoom"): return true;
       case hashString("autoClosePairs"): return true;
       case hashString("hybridRef"): return true;

@@ -843,6 +843,47 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var onChangeFindResult: bridge.Func_void_double_double {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double_double in
+        let __closureWrapper = Func_void_double_double(self.__implementation.onChangeFindResult)
+        return bridge.create_Func_void_double_double(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeFindResult = { () -> (Double, Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double(newValue)
+        return { (__count: Double, __index: Double) -> Void in
+          __wrappedFunction.call(__count, __index)
+        }
+      }()
+    }
+  }
+  
+  public final var findColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.findColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.findColorHex = String(newValue)
+    }
+  }
+  
+  public final var findCurrentColorHex: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.findCurrentColorHex)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.findCurrentColorHex = String(newValue)
+    }
+  }
+  
   public final var pinchToZoom: Bool {
     @inline(__always)
     get {
@@ -1025,6 +1066,72 @@ open class HybridEditorSpec_cxx {
   public final func goToLine(line: Double) -> bridge.Result_void_ {
     do {
       try self.__implementation.goToLine(line: line)
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func findText(query: std.string, method: std.string, caseSensitive: Bool) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.findText(query: String(query), method: String(method), caseSensitive: caseSensitive)
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func findNext() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.findNext()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func findPrevious() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.findPrevious()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func replaceMatch(replacement: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.replaceMatch(replacement: String(replacement))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func replaceAllMatches(replacement: std.string) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.replaceAllMatches(replacement: String(replacement))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func clearFind() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.clearFind()
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

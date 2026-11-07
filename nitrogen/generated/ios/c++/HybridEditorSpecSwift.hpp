@@ -475,6 +475,27 @@ namespace margelo::nitro::editor {
     inline void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) noexcept override {
       _swiftPart.setOnChangeFontSize(onChangeFontSize);
     }
+    inline std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() noexcept override {
+      auto __result = _swiftPart.getOnChangeFindResult();
+      return __result;
+    }
+    inline void setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) noexcept override {
+      _swiftPart.setOnChangeFindResult(onChangeFindResult);
+    }
+    inline std::string getFindColorHex() noexcept override {
+      auto __result = _swiftPart.getFindColorHex();
+      return __result;
+    }
+    inline void setFindColorHex(const std::string& findColorHex) noexcept override {
+      _swiftPart.setFindColorHex(findColorHex);
+    }
+    inline std::string getFindCurrentColorHex() noexcept override {
+      auto __result = _swiftPart.getFindCurrentColorHex();
+      return __result;
+    }
+    inline void setFindCurrentColorHex(const std::string& findCurrentColorHex) noexcept override {
+      _swiftPart.setFindCurrentColorHex(findCurrentColorHex);
+    }
     inline bool getPinchToZoom() noexcept override {
       return _swiftPart.getPinchToZoom();
     }
@@ -578,6 +599,42 @@ namespace margelo::nitro::editor {
     }
     inline void goToLine(double line) override {
       auto __result = _swiftPart.goToLine(std::forward<decltype(line)>(line));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void findText(const std::string& query, const std::string& method, bool caseSensitive) override {
+      auto __result = _swiftPart.findText(query, method, std::forward<decltype(caseSensitive)>(caseSensitive));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void findNext() override {
+      auto __result = _swiftPart.findNext();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void findPrevious() override {
+      auto __result = _swiftPart.findPrevious();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void replaceMatch(const std::string& replacement) override {
+      auto __result = _swiftPart.replaceMatch(replacement);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void replaceAllMatches(const std::string& replacement) override {
+      auto __result = _swiftPart.replaceAllMatches(replacement);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void clearFind() override {
+      auto __result = _swiftPart.clearFind();
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

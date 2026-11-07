@@ -169,6 +169,12 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) = 0;
       virtual std::function<void(double /* fontSizePx */)> getOnChangeFontSize() = 0;
       virtual void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) = 0;
+      virtual std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() = 0;
+      virtual void setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) = 0;
+      virtual std::string getFindColorHex() = 0;
+      virtual void setFindColorHex(const std::string& findColorHex) = 0;
+      virtual std::string getFindCurrentColorHex() = 0;
+      virtual void setFindCurrentColorHex(const std::string& findCurrentColorHex) = 0;
       virtual bool getPinchToZoom() = 0;
       virtual void setPinchToZoom(bool pinchToZoom) = 0;
       virtual bool getAutoClosePairs() = 0;
@@ -191,6 +197,12 @@ namespace margelo::nitro::editor {
       virtual void applyLanguage(const std::string& language) = 0;
       virtual void showFind(bool replace) = 0;
       virtual void goToLine(double line) = 0;
+      virtual void findText(const std::string& query, const std::string& method, bool caseSensitive) = 0;
+      virtual void findNext() = 0;
+      virtual void findPrevious() = 0;
+      virtual void replaceMatch(const std::string& replacement) = 0;
+      virtual void replaceAllMatches(const std::string& replacement) = 0;
+      virtual void clearFind() = 0;
 
     protected:
       // Hybrid Setup

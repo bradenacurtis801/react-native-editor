@@ -285,6 +285,18 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setOnChangeFontSize(props->onChangeFontSize.value);
     props->onChangeFontSize.isDirty = false;
   }
+  if (props->onChangeFindResult.isDirty) {
+    hybridView->setOnChangeFindResult(props->onChangeFindResult.value);
+    props->onChangeFindResult.isDirty = false;
+  }
+  if (props->findColorHex.isDirty) {
+    hybridView->setFindColorHex(props->findColorHex.value);
+    props->findColorHex.isDirty = false;
+  }
+  if (props->findCurrentColorHex.isDirty) {
+    hybridView->setFindCurrentColorHex(props->findCurrentColorHex.value);
+    props->findCurrentColorHex.isDirty = false;
+  }
   if (props->pinchToZoom.isDirty) {
     hybridView->setPinchToZoom(props->pinchToZoom.value);
     props->pinchToZoom.isDirty = false;

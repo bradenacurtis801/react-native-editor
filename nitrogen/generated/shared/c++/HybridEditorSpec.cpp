@@ -138,6 +138,12 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeFind", &HybridEditorSpec::setOnChangeFind);
       prototype.registerHybridGetter("onChangeFontSize", &HybridEditorSpec::getOnChangeFontSize);
       prototype.registerHybridSetter("onChangeFontSize", &HybridEditorSpec::setOnChangeFontSize);
+      prototype.registerHybridGetter("onChangeFindResult", &HybridEditorSpec::getOnChangeFindResult);
+      prototype.registerHybridSetter("onChangeFindResult", &HybridEditorSpec::setOnChangeFindResult);
+      prototype.registerHybridGetter("findColorHex", &HybridEditorSpec::getFindColorHex);
+      prototype.registerHybridSetter("findColorHex", &HybridEditorSpec::setFindColorHex);
+      prototype.registerHybridGetter("findCurrentColorHex", &HybridEditorSpec::getFindCurrentColorHex);
+      prototype.registerHybridSetter("findCurrentColorHex", &HybridEditorSpec::setFindCurrentColorHex);
       prototype.registerHybridGetter("pinchToZoom", &HybridEditorSpec::getPinchToZoom);
       prototype.registerHybridSetter("pinchToZoom", &HybridEditorSpec::setPinchToZoom);
       prototype.registerHybridGetter("autoClosePairs", &HybridEditorSpec::getAutoClosePairs);
@@ -157,6 +163,12 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("applyLanguage", &HybridEditorSpec::applyLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);
       prototype.registerHybridMethod("goToLine", &HybridEditorSpec::goToLine);
+      prototype.registerHybridMethod("findText", &HybridEditorSpec::findText);
+      prototype.registerHybridMethod("findNext", &HybridEditorSpec::findNext);
+      prototype.registerHybridMethod("findPrevious", &HybridEditorSpec::findPrevious);
+      prototype.registerHybridMethod("replaceMatch", &HybridEditorSpec::replaceMatch);
+      prototype.registerHybridMethod("replaceAllMatches", &HybridEditorSpec::replaceAllMatches);
+      prototype.registerHybridMethod("clearFind", &HybridEditorSpec::clearFind);
     });
   }
 

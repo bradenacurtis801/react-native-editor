@@ -276,6 +276,29 @@ private final class EditorTheme: Theme {
   }
 }
 
+/// Which match of a find is the current one: pure, so it is checked off the device.
+enum FindNav {
+  /// The first match that starts at or after `location`, wrapping to the first; nil with none.
+  static func start(_ matches: [NSRange], from location: Int) -> Int? {
+    if matches.isEmpty { return nil }
+    return matches.firstIndex { $0.location >= location } ?? 0
+  }
+
+  /// The match after `current`, or the first one at or after the selection when the selection is not on `current` (the caret was moved).
+  static func next(_ matches: [NSRange], current: Int, selection: NSRange) -> Int? {
+    if matches.isEmpty { return nil }
+    if current >= 0, current < matches.count, matches[current] == selection { return (current + 1) % matches.count }
+    return matches.firstIndex { $0.location >= selection.location } ?? 0
+  }
+
+  /// The match before `current`, or the last one before the selection when the selection is not on `current`.
+  static func previous(_ matches: [NSRange], current: Int, selection: NSRange) -> Int? {
+    if matches.isEmpty { return nil }
+    if current >= 0, current < matches.count, matches[current] == selection { return (current - 1 + matches.count) % matches.count }
+    return matches.lastIndex { $0.location < selection.location } ?? matches.count - 1
+  }
+}
+
 /// What a line command does to the text: replace `range` with `text`, then select `selection`.
 struct LineEdit: Equatable {
   var range: NSRange
@@ -549,6 +572,106 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     apply(LineEditing.toggleComment(textView.text as NSString, selection: textView.selectedRange, prefix: prefix))
   }
 
+  // MARK: Find
+
+  /// The find in progress: its query, every match, and which one is current (0-based, -1 for none).
+  private var findQuery: SearchQuery?
+  private var findMatches: [NSRange] = []
+  private var findIndex = -1
+  private var findRefresh: DispatchWorkItem?
+  var findColor = UIColor(hex: "#ffd60a55")
+  var findCurrentColor = UIColor(hex: "#ff9f0aaa")
+  /// The number of matches and the current one, 1-based (0 when there is none).
+  var onFindResult: ((Int, Int) -> Void)?
+
+  private func matchMethod(_ name: String) -> SearchQuery.MatchMethod {
+    switch name {
+    case "fullWord": return .fullWord
+    case "startsWith": return .startsWith
+    case "endsWith": return .endsWith
+    case "regex": return .regularExpression
+    default: return .contains
+    }
+  }
+
+  /// Searches again (after the query or the text changed) and shows the result; `select` also moves the selection to the current match.
+  private func runFind(from location: Int, select: Bool) {
+    guard let query = findQuery else { return }
+    // A pattern that can match nothing (`a*`) would "find" empty ranges everywhere.
+    findMatches = textView.search(for: query).map(\.range).filter { $0.length > 0 }
+    findIndex = FindNav.start(findMatches, from: location) ?? -1
+    showFind(select: select)
+  }
+
+  private func showFind(select: Bool) {
+    textView.highlightedRanges = findMatches.enumerated().map { i, range in
+      HighlightedRange(range: range, color: i == findIndex ? findCurrentColor : findColor, cornerRadius: 3)
+    }
+    if select, findIndex >= 0 {
+      let range = findMatches[findIndex]
+      textView.selectedRange = range
+      textView.scrollRangeToVisible(range)
+    }
+    onFindResult?(findMatches.count, findIndex + 1)
+  }
+
+  func find(query: String, method: String, caseSensitive: Bool) {
+    guard !query.isEmpty else { clearFind(); return }
+    findQuery = SearchQuery(text: query, matchMethod: matchMethod(method), isCaseSensitive: caseSensitive)
+    runFind(from: textView.selectedRange.location, select: true)
+  }
+
+  func findStep(forward: Bool) {
+    guard findQuery != nil, !findMatches.isEmpty else { return }
+    let selection = textView.selectedRange
+    let target = forward
+      ? FindNav.next(findMatches, current: findIndex, selection: selection)
+      : FindNav.previous(findMatches, current: findIndex, selection: selection)
+    guard let target else { return }
+    findIndex = target
+    showFind(select: true)
+  }
+
+  /// Replaces the current match (one undo step) and moves on to the next.
+  func replaceCurrent(with replacement: String) {
+    guard let query = findQuery, findIndex >= 0, findIndex < findMatches.count else { return }
+    let results = textView.search(for: query, replacingMatchesWith: replacement).filter { $0.range.length > 0 }
+    guard findIndex < results.count else { return }
+    let result = results[findIndex]
+    textView.replace(result.range, withText: result.replacementText)
+    runFind(from: result.range.location + (result.replacementText as NSString).length, select: true)
+  }
+
+  /// Replaces every match in one undo step.
+  func replaceAll(with replacement: String) {
+    guard let query = findQuery else { return }
+    let results = textView.search(for: query, replacingMatchesWith: replacement).filter { $0.range.length > 0 }
+    guard !results.isEmpty else { return }
+    textView.replaceText(in: BatchReplaceSet(replacements: results.map { .init(range: $0.range, text: $0.replacementText) }))
+    runFind(from: 0, select: false)
+  }
+
+  func clearFind() {
+    findRefresh?.cancel()
+    findQuery = nil
+    findMatches = []
+    findIndex = -1
+    textView.highlightedRanges = []
+    onFindResult?(0, 0)
+  }
+
+  /// The text changed under a find: its matches are looked for again once typing pauses, without moving the selection.
+  private func refreshFindSoon() {
+    guard findQuery != nil else { return }
+    findRefresh?.cancel()
+    let work = DispatchWorkItem { [weak self] in
+      guard let self else { return }
+      self.runFind(from: self.textView.selectedRange.location, select: false)
+    }
+    findRefresh = work
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: work)
+  }
+
   /// Moves the caret as `direction` says, collapsing any selection.
   func moveCursor(_ direction: String) {
     let range = textView.selectedRange
@@ -606,6 +729,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   func textViewDidChange(_ textView: TextView) {
     reportSelection()
     reportHistory()
+    refreshFindSoon()
     let dirty = textView.text != baselineText
     guard dirty != isDirty else { return }
     isDirty = dirty
@@ -642,6 +766,9 @@ class HybridEditor: HybridEditorSpec {
     }
     container.onHistoryChange = { [weak self] canUndo, canRedo in
       self?.onChangeHistory(canUndo, canRedo)
+    }
+    container.onFindResult = { [weak self] count, index in
+      self?.onChangeFindResult(Double(count), Double(index))
     }
     container.onFindChange = { [weak self] isOpen in
       self?.onChangeFind(isOpen)
@@ -711,6 +838,9 @@ class HybridEditor: HybridEditorSpec {
   var onChangeDirty: (_ isDirty: Bool) -> Void = { _ in }
   var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void = { _, _, _ in }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void = { _, _ in }
+  var onChangeFindResult: (_ count: Double, _ index: Double) -> Void = { _, _ in }
+  var findColorHex: String = "#ffd60a55"
+  var findCurrentColorHex: String = "#ff9f0aaa"
   var onChangeFind: (_ isOpen: Bool) -> Void = { _ in }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void = { _ in }
   var pinchToZoom: Bool = false
@@ -798,6 +928,8 @@ class HybridEditor: HybridEditorSpec {
     textView.pageGuideColumn = Int(pageGuideColumn)
     textView.lineEndings = parsedLineEnding(for: lineEndings)
     textView.showMenuAfterNavigatingToHighlightedRange = showMenuAfterNavigatingToHighlightedRange
+    container.findColor = UIColor(hex: findColorHex)
+    container.findCurrentColor = UIColor(hex: findCurrentColorHex)
     // iOS 16+ only — `isFindInteractionEnabled` doesn't exist below that.
     if #available(iOS 16.0, *) {
       textView.isFindInteractionEnabled = isFindInteractionEnabled
@@ -883,6 +1015,15 @@ class HybridEditor: HybridEditorSpec {
   func duplicateLines() throws { onMain { [weak self] in self?.container.duplicateLines() } }
   func moveLines(direction: String) throws { onMain { [weak self] in self?.container.moveLines(up: direction == "up") } }
   func toggleComment(prefix: String) throws { onMain { [weak self] in self?.container.toggleComment(prefix: prefix) } }
+
+  func findText(query: String, method: String, caseSensitive: Bool) throws {
+    onMain { [weak self] in self?.container.find(query: query, method: method, caseSensitive: caseSensitive) }
+  }
+  func findNext() throws { onMain { [weak self] in self?.container.findStep(forward: true) } }
+  func findPrevious() throws { onMain { [weak self] in self?.container.findStep(forward: false) } }
+  func replaceMatch(replacement: String) throws { onMain { [weak self] in self?.container.replaceCurrent(with: replacement) } }
+  func replaceAllMatches(replacement: String) throws { onMain { [weak self] in self?.container.replaceAll(with: replacement) } }
+  func clearFind() throws { onMain { [weak self] in self?.container.clearFind() } }
 
   func applyLanguage(language: String) throws {
     onMain { [weak self] in

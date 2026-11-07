@@ -5,7 +5,7 @@ import { callback, getHostComponent } from 'react-native-nitro-modules';
 import EditorViewConfig from '../nitrogen/generated/shared/json/EditorConfig.json';
 import type { Editor, EditorMethods, EditorProps } from '../nitro/Editor.nitro';
 import { detectIndentation } from './indentation';
-import type { CodeEditorHandle, CodeEditorProps, CodeEditorSettings, CursorDirection } from './types';
+import type { CodeEditorHandle, CodeEditorProps, CodeEditorSettings, CursorDirection, FindOptions } from './types';
 
 // ─────────────────────────── iOS: native Runestone view ────────────────────
 
@@ -60,6 +60,8 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 	pageGuideBackgroundColor: '#00000000',
 	markedTextBackgroundColor: '#00000000',
 	pinchToZoom: false,
+	findColor: '#ffd60a55',
+	findCurrentColor: '#ff9f0aaa',
 	autoClosePairs: false,
 	isFindInteractionEnabled: false,
 	lineEndings: 'lf',
@@ -67,7 +69,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 };
 
 export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFontSizeChange, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -89,6 +91,12 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			setLanguage: (language: string) => hybridRef.current?.applyLanguage(language),
 			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
 			goToLine: (line: number) => hybridRef.current?.goToLine(line),
+			find: (query: string, options?: FindOptions) => hybridRef.current?.findText(query, options?.method ?? 'contains', options?.caseSensitive ?? false),
+			findNext: () => hybridRef.current?.findNext(),
+			findPrevious: () => hybridRef.current?.findPrevious(),
+			replaceMatch: (replacement: string) => hybridRef.current?.replaceMatch(replacement),
+			replaceAllMatches: (replacement: string) => hybridRef.current?.replaceAllMatches(replacement),
+			clearFind: () => hybridRef.current?.clearFind(),
 			duplicateLines: () => hybridRef.current?.duplicateLines(),
 			moveLines: (direction: 'up' | 'down') => hybridRef.current?.moveLines(direction),
 			toggleComment: (prefix: string) => hybridRef.current?.toggleComment(prefix),
@@ -163,6 +171,8 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				pageGuideBackgroundColorHex={s.pageGuideBackgroundColor}
 				markedTextBackgroundColorHex={s.markedTextBackgroundColor}
 				pinchToZoom={s.pinchToZoom}
+				findColorHex={s.findColor}
+				findCurrentColorHex={s.findCurrentColor}
 				autoClosePairs={s.autoClosePairs}
 				isFindInteractionEnabled={s.isFindInteractionEnabled}
 				lineEndings={s.lineEndings}
@@ -171,6 +181,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeSelection={callback((line: number, column: number, length: number) => onSelectionChange?.(line, column, length))}
 				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}
 				onChangeFind={callback((isOpen: boolean) => onFindChange?.(isOpen))}
+				onChangeFindResult={callback((count: number, index: number) => onFindResult?.(count, index))}
 				onChangeFontSize={callback((fontSizePx: number) => onFontSizeChange?.(fontSizePx))}
 			/>
 		);

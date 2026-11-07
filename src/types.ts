@@ -111,6 +111,20 @@ export interface CodeEditorSettings {
 	/** @default 'lf' */
 	lineEndings?: 'lf' | 'crlf' | 'cr';
 	showMenuAfterNavigatingToHighlightedRange?: boolean;
+	/** `#RRGGBBAA` background behind every match of a `find`. @default '#ffd60a55' */
+	findColor?: string;
+	/** `#RRGGBBAA` background behind the current match of a `find`. @default '#ff9f0aaa' */
+	findCurrentColor?: string;
+}
+
+/** How a find matches its text. */
+export type FindMatchMethod = 'contains' | 'fullWord' | 'startsWith' | 'endsWith' | 'regex';
+
+export interface FindOptions {
+	/** @default 'contains' */
+	method?: FindMatchMethod;
+	/** @default false */
+	caseSensitive?: boolean;
 }
 
 export interface CodeEditorProps {
@@ -130,6 +144,8 @@ export interface CodeEditorProps {
 	onHistoryChange?: (canUndo: boolean, canRedo: boolean) => void;
 	/** The find bar opened or closed. iOS only. */
 	onFindChange?: (isOpen: boolean) => void;
+	/** The find in progress found `count` matches, `index` (1-based, 0 for none) being the current one. Fires as the query, the text or the current match changes. iOS only. */
+	onFindResult?: (count: number, index: number) => void;
 	/** A pinch ended at this font size — keep it and pass it back as `theme.fontSize`. Needs `settings.pinchToZoom`. iOS only. */
 	onFontSizeChange?: (fontSize: number) => void;
 	style?: StyleProp<ViewStyle>;
@@ -153,6 +169,17 @@ export interface CodeEditorHandle {
 	setLanguage(language: string): void;
 	/** Opens iOS's find bar, with the replace field when `replace` — needs `settings.isFindInteractionEnabled`. */
 	showFind(replace: boolean): void;
+	/** Finds `query`: every match is highlighted and the first from the caret is selected and scrolled to; the result comes through `onFindResult`. An empty query clears the find. iOS only. */
+	find(query: string, options?: FindOptions): void;
+	/** The next / previous match of the find, wrapping round. */
+	findNext(): void;
+	findPrevious(): void;
+	/** Replaces the current match (`$1` stands for a regex group) and moves to the next; one undo step. */
+	replaceMatch(replacement: string): void;
+	/** Replaces every match of the find; one undo step. */
+	replaceAllMatches(replacement: string): void;
+	/** Ends the find: the highlights go and the selection stays. */
+	clearFind(): void;
 	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */
 	goToLine(line: number): void;
 	/** Copies the selected lines (the caret's line) below themselves; the selection moves to the copy. */

@@ -438,6 +438,32 @@ abstract class HybridEditorSpec: HybridView() {
       onChangeFontSize = value
     }
   
+  abstract var onChangeFindResult: (count: Double, index: Double) -> Unit
+  
+  private var onChangeFindResult_cxx: Func_void_double_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_double_java(onChangeFindResult)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeFindResult = value
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var findColorHex: String
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var findCurrentColorHex: String
+  
   @get:DoNotStrip
   @get:Keep
   @set:DoNotStrip
@@ -510,6 +536,30 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun goToLine(line: Double): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun findText(query: String, method: String, caseSensitive: Boolean): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun findNext(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun findPrevious(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun replaceMatch(replacement: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun replaceAllMatches(replacement: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun clearFind(): Unit
 
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {

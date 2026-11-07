@@ -11,5 +11,7 @@ export {
 	type CursorDirection,
 	type CodeEditorProps,
 	type CodeEditorSettings,
+	type FindMatchMethod,
+	type FindOptions,
 	type CodeEditorTheme,
 } from './CodeEditor';

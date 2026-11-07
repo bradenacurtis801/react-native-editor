@@ -117,6 +117,28 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_double_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::function<void(double /* count */, double /* index */)>
+  /**
+   * Specialized version of `std::function<void(double, double)>`.
+   */
+  using Func_void_double_double = std::function<void(double /* count */, double /* index */)>;
+  /**
+   * Wrapper class for a `std::function<void(double / * count * /, double / * index * /)>`, this can be used from Swift.
+   */
+  class Func_void_double_double_Wrapper final {
+  public:
+    explicit Func_void_double_double_Wrapper(std::function<void(double /* count */, double /* index */)>&& func): _function(std::make_unique<std::function<void(double /* count */, double /* index */)>>(std::move(func))) {}
+    inline void call(double count, double index) const noexcept {
+      _function->operator()(count, index);
+    }
+  private:
+    std::unique_ptr<std::function<void(double /* count */, double /* index */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_double_double create_Func_void_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_Wrapper wrap_Func_void_double_double(Func_void_double_double value) noexcept {
+    return Func_void_double_double_Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::shared_ptr<HybridEditorSpec>
   /**
    * Specialized version of `std::shared_ptr<HybridEditorSpec>`.

@@ -72,6 +72,9 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void { get set }
+  var onChangeFindResult: (_ count: Double, _ index: Double) -> Void { get set }
+  var findColorHex: String { get set }
+  var findCurrentColorHex: String { get set }
   var pinchToZoom: Bool { get set }
   var autoClosePairs: Bool { get set }
 
@@ -91,6 +94,12 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func applyLanguage(language: String) throws -> Void
   func showFind(replace: Bool) throws -> Void
   func goToLine(line: Double) throws -> Void
+  func findText(query: String, method: String, caseSensitive: Bool) throws -> Void
+  func findNext() throws -> Void
+  func findPrevious() throws -> Void
+  func replaceMatch(replacement: String) throws -> Void
+  func replaceAllMatches(replacement: String) throws -> Void
+  func clearFind() throws -> Void
 }
 
 public extension HybridEditorSpec_protocol {

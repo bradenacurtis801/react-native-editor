@@ -150,6 +150,12 @@ export interface EditorProps extends HybridViewProps {
 	onChangeFind: (isOpen: boolean) => void;
 	/** A pinch on the text ended at this font size (only with `pinchToZoom`). The text follows the fingers meanwhile. */
 	onChangeFontSize: (fontSizePx: number) => void;
+	/** The matches of the find in progress: how many, and the current one (1-based; 0 when there are none). */
+	onChangeFindResult: (count: number, index: number) => void;
+	/** `#RRGGBBAA` background behind every match of a find. */
+	findColorHex: string;
+	/** `#RRGGBBAA` background behind the current match. */
+	findCurrentColorHex: string;
 	/** Pinching the text changes its size, 8 to 40. @default false */
 	pinchToZoom: boolean;
 	/** Typing `(`, `[`, `{`, `"` or a backtick types its closer too, typing the closer steps over it, and deleting the opener deletes the pair. @default false */
@@ -185,6 +191,17 @@ export interface EditorMethods extends HybridViewMethods {
 	showFind(replace: boolean): void;
 	/** Puts the caret at the start of the 1-based `line` and scrolls to it; a line past the end goes to the last one. */
 	goToLine(line: number): void;
+	/** Starts (or changes) a find: highlights every match, selects the first at or after the caret, reports `onChangeFindResult`. `method` is contains, fullWord, startsWith, endsWith or regex. An empty query clears it. */
+	findText(query: string, method: string, caseSensitive: boolean): void;
+	/** The next / previous match, wrapping round. */
+	findNext(): void;
+	findPrevious(): void;
+	/** Replaces the current match with `replacement` (`$1` is a regex group) and moves to the next. One undo step. */
+	replaceMatch(replacement: string): void;
+	/** Replaces every match. One undo step. */
+	replaceAllMatches(replacement: string): void;
+	/** Ends the find: the highlights go, the selection stays. */
+	clearFind(): void;
 }
 
 export type Editor = HybridView<EditorProps, EditorMethods>;

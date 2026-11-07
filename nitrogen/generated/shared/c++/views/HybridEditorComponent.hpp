@@ -104,6 +104,9 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> onChangeHistory;
     CachedProp<std::function<void(bool /* isOpen */)>> onChangeFind;
     CachedProp<std::function<void(double /* fontSizePx */)>> onChangeFontSize;
+    CachedProp<std::function<void(double /* count */, double /* index */)>> onChangeFindResult;
+    CachedProp<std::string> findColorHex;
+    CachedProp<std::string> findCurrentColorHex;
     CachedProp<bool> pinchToZoom;
     CachedProp<bool> autoClosePairs;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridEditorSpec>& /* ref */)>>> hybridRef;

@@ -16,6 +16,7 @@
 #include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_bool_bool.hpp"
 #include "JFunc_void_double.hpp"
+#include "JFunc_void_double_double.hpp"
 
 namespace margelo::nitro::editor {
 
@@ -645,6 +646,41 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onChangeFontSize */)>("setOnChangeFontSize_cxx");
     method(_javaPart, JFunc_void_double_cxx::fromCpp(onChangeFontSize));
   }
+  std::function<void(double /* count */, double /* index */)> JHybridEditorSpec::getOnChangeFindResult() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double::javaobject>()>("getOnChangeFindResult_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* count */, double /* index */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double_double, void(double, double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double::javaobject> /* onChangeFindResult */)>("setOnChangeFindResult_cxx");
+    method(_javaPart, JFunc_void_double_double_cxx::fromCpp(onChangeFindResult));
+  }
+  std::string JHybridEditorSpec::getFindColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getFindColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setFindColorHex(const std::string& findColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* findColorHex */)>("setFindColorHex");
+    method(_javaPart, jni::make_jstring(findColorHex));
+  }
+  std::string JHybridEditorSpec::getFindCurrentColorHex() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getFindCurrentColorHex");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setFindCurrentColorHex(const std::string& findCurrentColorHex) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* findCurrentColorHex */)>("setFindCurrentColorHex");
+    method(_javaPart, jni::make_jstring(findCurrentColorHex));
+  }
   bool JHybridEditorSpec::getPinchToZoom() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("getPinchToZoom");
     auto __result = method(_javaPart);
@@ -725,6 +761,30 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::goToLine(double line) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* line */)>("goToLine");
     method(_javaPart, line);
+  }
+  void JHybridEditorSpec::findText(const std::string& query, const std::string& method, bool caseSensitive) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JString> /* method */, jboolean /* caseSensitive */)>("findText");
+    method(_javaPart, jni::make_jstring(query), jni::make_jstring(method), caseSensitive);
+  }
+  void JHybridEditorSpec::findNext() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("findNext");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::findPrevious() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("findPrevious");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::replaceMatch(const std::string& replacement) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* replacement */)>("replaceMatch");
+    method(_javaPart, jni::make_jstring(replacement));
+  }
+  void JHybridEditorSpec::replaceAllMatches(const std::string& replacement) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* replacement */)>("replaceAllMatches");
+    method(_javaPart, jni::make_jstring(replacement));
+  }
+  void JHybridEditorSpec::clearFind() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("clearFind");
+    method(_javaPart);
   }
 
 } // namespace margelo::nitro::editor

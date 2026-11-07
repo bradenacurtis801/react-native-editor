@@ -66,6 +66,9 @@
     "onChangeHistory": true,
     "onChangeFind": true,
     "onChangeFontSize": true,
+    "onChangeFindResult": true,
+    "findColorHex": true,
+    "findCurrentColorHex": true,
     "pinchToZoom": true,
     "autoClosePairs": true,
     "hybridRef": true

@@ -174,6 +174,12 @@ namespace margelo::nitro::editor {
     void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) override;
     std::function<void(double /* fontSizePx */)> getOnChangeFontSize() override;
     void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) override;
+    std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() override;
+    void setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) override;
+    std::string getFindColorHex() override;
+    void setFindColorHex(const std::string& findColorHex) override;
+    std::string getFindCurrentColorHex() override;
+    void setFindCurrentColorHex(const std::string& findCurrentColorHex) override;
     bool getPinchToZoom() override;
     void setPinchToZoom(bool pinchToZoom) override;
     bool getAutoClosePairs() override;
@@ -196,6 +202,12 @@ namespace margelo::nitro::editor {
     void applyLanguage(const std::string& language) override;
     void showFind(bool replace) override;
     void goToLine(double line) override;
+    void findText(const std::string& query, const std::string& method, bool caseSensitive) override;
+    void findNext() override;
+    void findPrevious() override;
+    void replaceMatch(const std::string& replacement) override;
+    void replaceAllMatches(const std::string& replacement) override;
+    void clearFind() override;
 
   private:
     jni::global_ref<JHybridEditorSpec::JavaPart> _javaPart;
