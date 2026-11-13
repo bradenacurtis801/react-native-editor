@@ -843,6 +843,58 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var minimap: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.minimap)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.minimap = String(newValue)
+    }
+  }
+  
+  public final var lineStylesJson: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.lineStylesJson)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineStylesJson = String(newValue)
+    }
+  }
+  
+  public final var newLineKindsJson: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.newLineKindsJson)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.newLineKindsJson = String(newValue)
+    }
+  }
+  
+  public final var onChangeScroll: bridge.Func_void_double_double_double {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double_double_double in
+        let __closureWrapper = Func_void_double_double_double(self.__implementation.onChangeScroll)
+        return bridge.create_Func_void_double_double_double(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeScroll = { () -> (Double, Double, Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double_double(newValue)
+        return { (__topLine: Double, __bottomLine: Double, __lineCount: Double) -> Void in
+          __wrappedFunction.call(__topLine, __bottomLine, __lineCount)
+        }
+      }()
+    }
+  }
+  
   public final var onChangeFindResult: bridge.Func_void_double_double {
     @inline(__always)
     get {
@@ -1022,6 +1074,17 @@ open class HybridEditorSpec_cxx {
   public final func toggleComment(prefix: std.string) -> bridge.Result_void_ {
     do {
       try self.__implementation.toggleComment(prefix: String(prefix))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func setLineKinds(runs: bridge.std__vector_double_) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.setLineKinds(runs: runs.map({ __item in __item }))
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

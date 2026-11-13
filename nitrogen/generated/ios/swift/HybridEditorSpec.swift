@@ -72,6 +72,10 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void { get set }
+  var minimap: String { get set }
+  var lineStylesJson: String { get set }
+  var newLineKindsJson: String { get set }
+  var onChangeScroll: (_ topLine: Double, _ bottomLine: Double, _ lineCount: Double) -> Void { get set }
   var onChangeFindResult: (_ count: Double, _ index: Double) -> Void { get set }
   var findColorHex: String { get set }
   var findCurrentColorHex: String { get set }
@@ -90,6 +94,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func duplicateLines() throws -> Void
   func moveLines(direction: String) throws -> Void
   func toggleComment(prefix: String) throws -> Void
+  func setLineKinds(runs: [Double]) throws -> Void
   func moveCursor(direction: String) throws -> Void
   func applyLanguage(language: String) throws -> Void
   func showFind(replace: Bool) throws -> Void

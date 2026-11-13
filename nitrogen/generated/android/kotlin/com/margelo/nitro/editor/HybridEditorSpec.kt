@@ -438,6 +438,38 @@ abstract class HybridEditorSpec: HybridView() {
       onChangeFontSize = value
     }
   
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var minimap: String
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var lineStylesJson: String
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var newLineKindsJson: String
+  
+  abstract var onChangeScroll: (topLine: Double, bottomLine: Double, lineCount: Double) -> Unit
+  
+  private var onChangeScroll_cxx: Func_void_double_double_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_double_double_java(onChangeScroll)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeScroll = value
+    }
+  
   abstract var onChangeFindResult: (count: Double, index: Double) -> Unit
   
   private var onChangeFindResult_cxx: Func_void_double_double
@@ -520,6 +552,10 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun toggleComment(prefix: String): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun setLineKinds(runs: DoubleArray): Unit
   
   @DoNotStrip
   @Keep

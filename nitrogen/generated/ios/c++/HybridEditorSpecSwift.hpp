@@ -16,6 +16,7 @@ namespace ReactNativeEditor { class HybridEditorSpec_cxx; }
 
 #include <string>
 #include <functional>
+#include <vector>
 
 #include "ReactNativeEditor-Swift-Cxx-Umbrella.hpp"
 
@@ -475,6 +476,34 @@ namespace margelo::nitro::editor {
     inline void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) noexcept override {
       _swiftPart.setOnChangeFontSize(onChangeFontSize);
     }
+    inline std::string getMinimap() noexcept override {
+      auto __result = _swiftPart.getMinimap();
+      return __result;
+    }
+    inline void setMinimap(const std::string& minimap) noexcept override {
+      _swiftPart.setMinimap(minimap);
+    }
+    inline std::string getLineStylesJson() noexcept override {
+      auto __result = _swiftPart.getLineStylesJson();
+      return __result;
+    }
+    inline void setLineStylesJson(const std::string& lineStylesJson) noexcept override {
+      _swiftPart.setLineStylesJson(lineStylesJson);
+    }
+    inline std::string getNewLineKindsJson() noexcept override {
+      auto __result = _swiftPart.getNewLineKindsJson();
+      return __result;
+    }
+    inline void setNewLineKindsJson(const std::string& newLineKindsJson) noexcept override {
+      _swiftPart.setNewLineKindsJson(newLineKindsJson);
+    }
+    inline std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> getOnChangeScroll() noexcept override {
+      auto __result = _swiftPart.getOnChangeScroll();
+      return __result;
+    }
+    inline void setOnChangeScroll(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& onChangeScroll) noexcept override {
+      _swiftPart.setOnChangeScroll(onChangeScroll);
+    }
     inline std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() noexcept override {
       auto __result = _swiftPart.getOnChangeFindResult();
       return __result;
@@ -575,6 +604,12 @@ namespace margelo::nitro::editor {
     }
     inline void toggleComment(const std::string& prefix) override {
       auto __result = _swiftPart.toggleComment(prefix);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void setLineKinds(const std::vector<double>& runs) override {
+      auto __result = _swiftPart.setLineKinds(runs);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

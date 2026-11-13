@@ -389,6 +389,26 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setOnChangeFontSize(newViewProps.onChangeFontSize.value);
     newViewProps.onChangeFontSize.isDirty = false;
   }
+  // minimap: string
+  if (newViewProps.minimap.isDirty) {
+    swiftPart.setMinimap(newViewProps.minimap.value);
+    newViewProps.minimap.isDirty = false;
+  }
+  // lineStylesJson: string
+  if (newViewProps.lineStylesJson.isDirty) {
+    swiftPart.setLineStylesJson(newViewProps.lineStylesJson.value);
+    newViewProps.lineStylesJson.isDirty = false;
+  }
+  // newLineKindsJson: string
+  if (newViewProps.newLineKindsJson.isDirty) {
+    swiftPart.setNewLineKindsJson(newViewProps.newLineKindsJson.value);
+    newViewProps.newLineKindsJson.isDirty = false;
+  }
+  // onChangeScroll: function
+  if (newViewProps.onChangeScroll.isDirty) {
+    swiftPart.setOnChangeScroll(newViewProps.onChangeScroll.value);
+    newViewProps.onChangeScroll.isDirty = false;
+  }
   // onChangeFindResult: function
   if (newViewProps.onChangeFindResult.isDirty) {
     swiftPart.setOnChangeFindResult(newViewProps.onChangeFindResult.value);

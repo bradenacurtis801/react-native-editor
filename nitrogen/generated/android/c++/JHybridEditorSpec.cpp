@@ -17,6 +17,7 @@
 #include "JFunc_void_bool_bool.hpp"
 #include "JFunc_void_double.hpp"
 #include "JFunc_void_double_double.hpp"
+#include <vector>
 
 namespace margelo::nitro::editor {
 
@@ -646,6 +647,50 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onChangeFontSize */)>("setOnChangeFontSize_cxx");
     method(_javaPart, JFunc_void_double_cxx::fromCpp(onChangeFontSize));
   }
+  std::string JHybridEditorSpec::getMinimap() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getMinimap");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setMinimap(const std::string& minimap) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* minimap */)>("setMinimap");
+    method(_javaPart, jni::make_jstring(minimap));
+  }
+  std::string JHybridEditorSpec::getLineStylesJson() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getLineStylesJson");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setLineStylesJson(const std::string& lineStylesJson) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* lineStylesJson */)>("setLineStylesJson");
+    method(_javaPart, jni::make_jstring(lineStylesJson));
+  }
+  std::string JHybridEditorSpec::getNewLineKindsJson() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getNewLineKindsJson");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setNewLineKindsJson(const std::string& newLineKindsJson) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* newLineKindsJson */)>("setNewLineKindsJson");
+    method(_javaPart, jni::make_jstring(newLineKindsJson));
+  }
+  std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> JHybridEditorSpec::getOnChangeScroll() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_double::javaobject>()>("getOnChangeScroll_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double_double_double, void(double, double, double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeScroll(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& onChangeScroll) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_double::javaobject> /* onChangeScroll */)>("setOnChangeScroll_cxx");
+    method(_javaPart, JFunc_void_double_double_double_cxx::fromCpp(onChangeScroll));
+  }
   std::function<void(double /* count */, double /* index */)> JHybridEditorSpec::getOnChangeFindResult() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double::javaobject>()>("getOnChangeFindResult_cxx");
     auto __result = method(_javaPart);
@@ -745,6 +790,15 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::toggleComment(const std::string& prefix) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* prefix */)>("toggleComment");
     method(_javaPart, jni::make_jstring(prefix));
+  }
+  void JHybridEditorSpec::setLineKinds(const std::vector<double>& runs) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JArrayDouble> /* runs */)>("setLineKinds");
+    method(_javaPart, [&]() {
+      size_t __size = runs.size();
+      jni::local_ref<jni::JArrayDouble> __array = jni::JArrayDouble::newArray(__size);
+      __array->setRegion(0, __size, runs.data());
+      return __array;
+    }());
   }
   void JHybridEditorSpec::moveCursor(const std::string& direction) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveCursor");

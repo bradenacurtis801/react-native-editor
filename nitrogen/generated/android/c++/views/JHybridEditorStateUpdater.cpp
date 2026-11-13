@@ -285,6 +285,22 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setOnChangeFontSize(props->onChangeFontSize.value);
     props->onChangeFontSize.isDirty = false;
   }
+  if (props->minimap.isDirty) {
+    hybridView->setMinimap(props->minimap.value);
+    props->minimap.isDirty = false;
+  }
+  if (props->lineStylesJson.isDirty) {
+    hybridView->setLineStylesJson(props->lineStylesJson.value);
+    props->lineStylesJson.isDirty = false;
+  }
+  if (props->newLineKindsJson.isDirty) {
+    hybridView->setNewLineKindsJson(props->newLineKindsJson.value);
+    props->newLineKindsJson.isDirty = false;
+  }
+  if (props->onChangeScroll.isDirty) {
+    hybridView->setOnChangeScroll(props->onChangeScroll.value);
+    props->onChangeScroll.isDirty = false;
+  }
   if (props->onChangeFindResult.isDirty) {
     hybridView->setOnChangeFindResult(props->onChangeFindResult.value);
     props->onChangeFindResult.isDirty = false;

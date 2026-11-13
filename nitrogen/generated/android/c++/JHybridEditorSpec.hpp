@@ -174,6 +174,14 @@ namespace margelo::nitro::editor {
     void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) override;
     std::function<void(double /* fontSizePx */)> getOnChangeFontSize() override;
     void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) override;
+    std::string getMinimap() override;
+    void setMinimap(const std::string& minimap) override;
+    std::string getLineStylesJson() override;
+    void setLineStylesJson(const std::string& lineStylesJson) override;
+    std::string getNewLineKindsJson() override;
+    void setNewLineKindsJson(const std::string& newLineKindsJson) override;
+    std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> getOnChangeScroll() override;
+    void setOnChangeScroll(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& onChangeScroll) override;
     std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() override;
     void setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) override;
     std::string getFindColorHex() override;
@@ -198,6 +206,7 @@ namespace margelo::nitro::editor {
     void duplicateLines() override;
     void moveLines(const std::string& direction) override;
     void toggleComment(const std::string& prefix) override;
+    void setLineKinds(const std::vector<double>& runs) override;
     void moveCursor(const std::string& direction) override;
     void applyLanguage(const std::string& language) override;
     void showFind(bool replace) override;

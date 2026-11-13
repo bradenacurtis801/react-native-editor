@@ -50,9 +50,12 @@ Pod::Spec.new do |s|
   # add_nitrogen_files, below, appends its own generated specs/bridges).
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
+  # Follows the fork's `line-decorations` branch (line tints, scroll metrics, the minimap) until it is released as a tag, then:
+  # `requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.5.4" }`. To build against a clone next to this repo
+  # without pushing, point `url` at `file:///…/Runestone` (and commit in the clone after each change).
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/Runestone",
-    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.5.3" },
+    requirement: { kind: "branch", branch: "line-decorations" },
     products: ["Runestone"])
 
   # Tree-sitter grammars, bundled as Runestone bindings (parser + highlights

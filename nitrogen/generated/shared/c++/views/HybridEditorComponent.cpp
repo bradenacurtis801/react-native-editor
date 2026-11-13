@@ -646,6 +646,46 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onChangeFontSize: ") + exc.what());
       }
     }()),
+    minimap([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("minimap", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.minimap;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.minimap);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.minimap: ") + exc.what());
+      }
+    }()),
+    lineStylesJson([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineStylesJson", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineStylesJson;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.lineStylesJson);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.lineStylesJson: ") + exc.what());
+      }
+    }()),
+    newLineKindsJson([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("newLineKindsJson", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.newLineKindsJson;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.newLineKindsJson);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.newLineKindsJson: ") + exc.what());
+      }
+    }()),
+    onChangeScroll([&]() -> CachedProp<std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeScroll", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeScroll;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeScroll);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeScroll: ") + exc.what());
+      }
+    }()),
     onChangeFindResult([&]() -> CachedProp<std::function<void(double /* count */, double /* index */)>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onChangeFindResult", nullptr, nullptr);
@@ -771,6 +811,10 @@ namespace margelo::nitro::editor::views {
       case hashString("onChangeHistory"): return true;
       case hashString("onChangeFind"): return true;
       case hashString("onChangeFontSize"): return true;
+      case hashString("minimap"): return true;
+      case hashString("lineStylesJson"): return true;
+      case hashString("newLineKindsJson"): return true;
+      case hashString("onChangeScroll"): return true;
       case hashString("onChangeFindResult"): return true;
       case hashString("findColorHex"): return true;
       case hashString("findCurrentColorHex"): return true;

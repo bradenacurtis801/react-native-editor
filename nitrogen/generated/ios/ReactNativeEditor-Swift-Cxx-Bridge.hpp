@@ -22,6 +22,7 @@ namespace ReactNativeEditor { class HybridEditorSpec_cxx; }
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
 
 /**
  * Contains specialized versions of C++ templated types so they can be accessed from Swift,
@@ -137,6 +138,17 @@ namespace margelo::nitro::editor::bridge::swift {
   Func_void_double_double create_Func_void_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_double_double_Wrapper wrap_Func_void_double_double(Func_void_double_double value) noexcept {
     return Func_void_double_double_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::vector<double>
+  /**
+   * Specialized version of `std::vector<double>`.
+   */
+  using std__vector_double_ = std::vector<double>;
+  inline std::vector<double> create_std__vector_double_(size_t size) noexcept {
+    std::vector<double> vector;
+    vector.reserve(size);
+    return vector;
   }
   
   // pragma MARK: std::shared_ptr<HybridEditorSpec>

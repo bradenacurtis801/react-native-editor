@@ -104,6 +104,10 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> onChangeHistory;
     CachedProp<std::function<void(bool /* isOpen */)>> onChangeFind;
     CachedProp<std::function<void(double /* fontSizePx */)>> onChangeFontSize;
+    CachedProp<std::string> minimap;
+    CachedProp<std::string> lineStylesJson;
+    CachedProp<std::string> newLineKindsJson;
+    CachedProp<std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>> onChangeScroll;
     CachedProp<std::function<void(double /* count */, double /* index */)>> onChangeFindResult;
     CachedProp<std::string> findColorHex;
     CachedProp<std::string> findCurrentColorHex;

@@ -18,6 +18,7 @@ namespace margelo::nitro::editor { class HybridEditorSpec; }
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
 
 // C++ helpers for Swift
 #include "ReactNativeEditor-Swift-Cxx-Bridge.hpp"

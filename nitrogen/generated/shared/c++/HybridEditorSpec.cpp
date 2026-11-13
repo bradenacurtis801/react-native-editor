@@ -138,6 +138,14 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeFind", &HybridEditorSpec::setOnChangeFind);
       prototype.registerHybridGetter("onChangeFontSize", &HybridEditorSpec::getOnChangeFontSize);
       prototype.registerHybridSetter("onChangeFontSize", &HybridEditorSpec::setOnChangeFontSize);
+      prototype.registerHybridGetter("minimap", &HybridEditorSpec::getMinimap);
+      prototype.registerHybridSetter("minimap", &HybridEditorSpec::setMinimap);
+      prototype.registerHybridGetter("lineStylesJson", &HybridEditorSpec::getLineStylesJson);
+      prototype.registerHybridSetter("lineStylesJson", &HybridEditorSpec::setLineStylesJson);
+      prototype.registerHybridGetter("newLineKindsJson", &HybridEditorSpec::getNewLineKindsJson);
+      prototype.registerHybridSetter("newLineKindsJson", &HybridEditorSpec::setNewLineKindsJson);
+      prototype.registerHybridGetter("onChangeScroll", &HybridEditorSpec::getOnChangeScroll);
+      prototype.registerHybridSetter("onChangeScroll", &HybridEditorSpec::setOnChangeScroll);
       prototype.registerHybridGetter("onChangeFindResult", &HybridEditorSpec::getOnChangeFindResult);
       prototype.registerHybridSetter("onChangeFindResult", &HybridEditorSpec::setOnChangeFindResult);
       prototype.registerHybridGetter("findColorHex", &HybridEditorSpec::getFindColorHex);
@@ -159,6 +167,7 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("duplicateLines", &HybridEditorSpec::duplicateLines);
       prototype.registerHybridMethod("moveLines", &HybridEditorSpec::moveLines);
       prototype.registerHybridMethod("toggleComment", &HybridEditorSpec::toggleComment);
+      prototype.registerHybridMethod("setLineKinds", &HybridEditorSpec::setLineKinds);
       prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);
       prototype.registerHybridMethod("applyLanguage", &HybridEditorSpec::applyLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);

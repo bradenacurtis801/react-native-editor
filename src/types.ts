@@ -146,8 +146,16 @@ export interface CodeEditorProps {
 	onFindChange?: (isOpen: boolean) => void;
 	/** The find in progress found `count` matches, `index` (1-based, 0 for none) being the current one. Fires as the query, the text or the current match changes. iOS only. */
 	onFindResult?: (count: number, index: number) => void;
+	/** The text scrolled, or the number of lines changed: the first and last line showing and the line count (all 1-based). Fires only when one of them changes. iOS only. */
+	onScroll?: (topLine: number, bottomLine: number, lineCount: number) => void;
 	/** A pinch ended at this font size — keep it and pass it back as `theme.fontSize`. Needs `settings.pinchToZoom`. iOS only. */
 	onFontSizeChange?: (fontSize: number) => void;
+	/** A map of the whole file down the right edge with a slider over what shows; touch or drag it to scroll. `'strip'` is a narrow one (marks and the slider only), `'compact'` the real minimap in less room (for a phone), `'full'` the real minimap. iOS only. @default 'off' */
+	minimap?: 'off' | 'strip' | 'compact' | 'full';
+	/** How each line kind (a number above 0) is drawn: a colour behind the line's whole row, and one in the gutter, as `#RRGGBB` or `#RRGGBBAA`. Lines get their kind from `setLineKinds`. iOS only. */
+	lineStyles?: Record<number, { background?: string; gutterBackground?: string }>;
+	/** The kind a line gets when Return splits a line of another kind: `{ 3: 1 }`. A kind that is not listed passes to the new line unchanged. iOS only. */
+	newLineKinds?: Record<number, number>;
 	style?: StyleProp<ViewStyle>;
 }
 
@@ -182,6 +190,8 @@ export interface CodeEditorHandle {
 	clearFind(): void;
 	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */
 	goToLine(line: number): void;
+	/** Gives lines their kind (see `lineStyles`): each run is `[firstLine, count, kind]`, lines 1-based. Every line not in a run gets none. A kind stays with its line as the text around it is edited; `setText` clears them all, so send them again after it. iOS only. */
+	setLineKinds(runs: [firstLine: number, count: number, kind: number][]): void;
 	/** Copies the selected lines (the caret's line) below themselves; the selection moves to the copy. */
 	duplicateLines(): void;
 	/** Swaps the selected lines with the line above or below. */

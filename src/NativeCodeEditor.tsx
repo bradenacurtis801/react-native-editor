@@ -69,7 +69,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 };
 
 export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, onScroll, minimap, lineStyles, newLineKinds, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -91,6 +91,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			setLanguage: (language: string) => hybridRef.current?.applyLanguage(language),
 			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
 			goToLine: (line: number) => hybridRef.current?.goToLine(line),
+			setLineKinds: (runs) => hybridRef.current?.setLineKinds(runs.flat()),
 			find: (query: string, options?: FindOptions) => hybridRef.current?.findText(query, options?.method ?? 'contains', options?.caseSensitive ?? false),
 			findNext: () => hybridRef.current?.findNext(),
 			findPrevious: () => hybridRef.current?.findPrevious(),
@@ -110,6 +111,9 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			plain: theme.plain,
 		});
 
+		const lineStylesJson = JSON.stringify(lineStyles ?? {});
+		const newLineKindsJson = JSON.stringify(newLineKinds ?? {});
+
 		const s = { ...SETTINGS_DEFAULTS, ...settings };
 
 		return (
@@ -120,6 +124,9 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				language={language}
 				editable={editable}
 				syntaxColorsJson={syntaxColorsJson}
+				minimap={minimap ?? 'off'}
+				lineStylesJson={lineStylesJson}
+				newLineKindsJson={newLineKindsJson}
 				backgroundColor={theme.background}
 				textColor={theme.text}
 				fontSizePx={theme.fontSize ?? 13}
@@ -183,6 +190,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeFind={callback((isOpen: boolean) => onFindChange?.(isOpen))}
 				onChangeFindResult={callback((count: number, index: number) => onFindResult?.(count, index))}
 				onChangeFontSize={callback((fontSizePx: number) => onFontSizeChange?.(fontSizePx))}
+				onChangeScroll={callback((topLine: number, bottomLine: number, lineCount: number) => onScroll?.(topLine, bottomLine, lineCount))}
 			/>
 		);
 	},

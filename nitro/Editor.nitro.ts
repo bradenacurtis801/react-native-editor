@@ -150,6 +150,14 @@ export interface EditorProps extends HybridViewProps {
 	onChangeFind: (isOpen: boolean) => void;
 	/** A pinch on the text ended at this font size (only with `pinchToZoom`). The text follows the fingers meanwhile. */
 	onChangeFontSize: (fontSizePx: number) => void;
+	/** A map of the whole file down the right edge, with a slider over what shows; touching it scrolls there. `'strip'` is a narrow one (marks and the slider only), `'compact'` the real minimap in less room (for a phone), `'full'` the real minimap. @default 'off' */
+	minimap: string;
+	/** JSON: how each line kind is drawn — `{ "1": { "background": "#RRGGBBAA", "gutterBackground": "#RRGGBBAA" }, ... }`; either colour may be left out. A line gets its kind from `setLineKinds`. Kind 0 is none. @default '{}' */
+	lineStylesJson: string;
+	/** JSON: the kind of a line made by pressing Return in a line of another kind — `{ "3": 1 }` makes it 1 when the line was 3. A kind that isn't there gives the new line its own kind. @default '{}' */
+	newLineKindsJson: string;
+	/** The text scrolled (or its length changed): the first and last line that show, and how many lines there are, all 1-based. Fires at most when one of the three changes. */
+	onChangeScroll: (topLine: number, bottomLine: number, lineCount: number) => void;
 	/** The matches of the find in progress: how many, and the current one (1-based; 0 when there are none). */
 	onChangeFindResult: (count: number, index: number) => void;
 	/** `#RRGGBBAA` background behind every match of a find. */
@@ -183,6 +191,8 @@ export interface EditorMethods extends HybridViewMethods {
 	moveLines(direction: string): void;
 	/** Comments the selected lines with `prefix` (e.g. '//' or '#'), or uncomments them when every one has it. */
 	toggleComment(prefix: string): void;
+	/** Gives lines their kind (see `lineStylesJson`): `runs` is groups of three numbers — the 1-based first line, how many lines, the kind. Every line not in a run gets none. A kind stays with its line while text around it is edited, but `writeBuffer` clears them all. */
+	setLineKinds(runs: number[]): void;
 	/** Moves the caret, collapsing a selection: 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd'. */
 	moveCursor(direction: string): void;
 	/** Changes the syntax highlighting to `language` (the same ids as the `language` prop; an unknown id is plain text) without touching the text, the selection or the undo history. */

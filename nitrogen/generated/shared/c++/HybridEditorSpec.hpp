@@ -17,6 +17,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 
 namespace margelo::nitro::editor {
 
@@ -169,6 +170,14 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeFind(const std::function<void(bool /* isOpen */)>& onChangeFind) = 0;
       virtual std::function<void(double /* fontSizePx */)> getOnChangeFontSize() = 0;
       virtual void setOnChangeFontSize(const std::function<void(double /* fontSizePx */)>& onChangeFontSize) = 0;
+      virtual std::string getMinimap() = 0;
+      virtual void setMinimap(const std::string& minimap) = 0;
+      virtual std::string getLineStylesJson() = 0;
+      virtual void setLineStylesJson(const std::string& lineStylesJson) = 0;
+      virtual std::string getNewLineKindsJson() = 0;
+      virtual void setNewLineKindsJson(const std::string& newLineKindsJson) = 0;
+      virtual std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> getOnChangeScroll() = 0;
+      virtual void setOnChangeScroll(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& onChangeScroll) = 0;
       virtual std::function<void(double /* count */, double /* index */)> getOnChangeFindResult() = 0;
       virtual void setOnChangeFindResult(const std::function<void(double /* count */, double /* index */)>& onChangeFindResult) = 0;
       virtual std::string getFindColorHex() = 0;
@@ -193,6 +202,7 @@ namespace margelo::nitro::editor {
       virtual void duplicateLines() = 0;
       virtual void moveLines(const std::string& direction) = 0;
       virtual void toggleComment(const std::string& prefix) = 0;
+      virtual void setLineKinds(const std::vector<double>& runs) = 0;
       virtual void moveCursor(const std::string& direction) = 0;
       virtual void applyLanguage(const std::string& language) = 0;
       virtual void showFind(bool replace) = 0;

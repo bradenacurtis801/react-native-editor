@@ -236,6 +236,26 @@ private final class EditorTheme: Theme {
 
   private var syntaxColors: [String: UIColor] = [:]
 
+  /// A copy that nothing changes, for work on another queue.
+  func snapshot() -> EditorTheme {
+    let copy = EditorTheme()
+    copy.font = font
+    copy.textColor = textColor
+    copy.gutterBackgroundColor = gutterBackgroundColor
+    copy.gutterHairlineColor = gutterHairlineColor
+    copy.lineNumberColor = lineNumberColor
+    copy.lineNumberFont = lineNumberFont
+    copy.selectedLineBackgroundColor = selectedLineBackgroundColor
+    copy.selectedLinesLineNumberColor = selectedLinesLineNumberColor
+    copy.selectedLinesGutterBackgroundColor = selectedLinesGutterBackgroundColor
+    copy.invisibleCharactersColor = invisibleCharactersColor
+    copy.pageGuideHairlineColor = pageGuideHairlineColor
+    copy.pageGuideBackgroundColor = pageGuideBackgroundColor
+    copy.markedTextBackgroundColor = markedTextBackgroundColor
+    copy.syntaxColors = syntaxColors
+    return copy
+  }
+
   func configure(
     syntaxColorsJson: String,
     textColor: UIColor,
@@ -513,6 +533,26 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     }
   }
   private var lastSelection: (Int, Int, Int)?
+  var onScroll: ((Int, Int, Int) -> Void)?
+  let minimap = MinimapView()
+  /// Made on the main thread when the minimap is drawn: highlights a text with the language and colours as they are now, or nil for none.
+  var minimapColorizer: (() -> ((String) -> NSAttributedString?)?)?
+  private var minimapRefresh: DispatchWorkItem?
+  /// `nil` is no minimap.
+  var minimapMode: MinimapView.Mode? {
+    didSet {
+      guard minimapMode != oldValue else { return }
+      lastMap = nil
+      minimap.isHidden = minimapMode == nil
+      if let minimapMode { minimap.mode = minimapMode }
+      setNeedsLayout()
+      refreshMinimap()
+      reportScroll()
+    }
+  }
+  private var lastScroll: (Int, Int, Int)?
+  private var lineCount = 1
+  private var scrollObserver: NSKeyValueObservation?
   private var lastHistory: (Bool, Bool)?
   private var historyObservers: [NSObjectProtocol] = []
 
@@ -520,6 +560,10 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     super.init(frame: frame)
     textView.editorDelegate = self
     addSubview(textView)
+    scrollObserver = textView.observe(\.contentOffset) { [weak self] _, _ in self?.reportScroll() }
+    addSubview(minimap)
+    minimap.isHidden = true
+    minimap.onScrub = { [weak self] row, centered in self?.scrub(toLine: row, centered: centered) }
     pinch.delegate = self
     pinch.isEnabled = false
     textView.addGestureRecognizer(pinch)
@@ -542,6 +586,77 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     guard lastHistory == nil || lastHistory! != now else { return }
     lastHistory = now
     onHistoryChange?(now.0, now.1)
+  }
+
+  /// The lines at the top and bottom of what shows, and how many there are, told to JS when any of them changes.
+  /// Found by asking the text which line is under the top and the bottom edge (not from the text itself).
+  /// The 1-based line at `y` in the content. From the line heights, not a hit test: a hit test only knows lines that are laid out, and
+  /// when the scroll position changes the lines it moved to are not laid out yet.
+  private func line(atY y: CGFloat) -> Int {
+    textView.lineNumber(atContentOffsetY: y) + 1
+  }
+
+  private var lastMap: (Int, Int, Int)?
+
+  private func reportScroll() {
+    guard onScroll != nil || minimapMode != nil, textView.bounds.height > 0 else { return }
+    let inset = textView.adjustedContentInset
+    let top = line(atY: textView.contentOffset.y + inset.top)
+    if minimapMode != nil { reportMinimapViewport(top: top, inset: inset) }
+    guard onScroll != nil else { return }
+    let bottom = max(top, line(atY: textView.contentOffset.y + textView.bounds.height - inset.bottom - 1))
+    let now = (top, min(bottom, lineCount), lineCount)
+    guard lastScroll == nil || lastScroll! != now else { return }
+    lastScroll = now
+    onScroll?(now.0, now.1, now.2)
+  }
+
+  /// Tells the minimap where the window is: its top line, how many lines it holds (an average line, wrapped rows and all, so blank space
+  /// after the end counts too), and the top line when scrolled as far as it goes.
+  private func reportMinimapViewport(top: Int, inset: UIEdgeInsets) {
+    let average = max(textView.linesHeight / CGFloat(max(textView.lineCount, 1)), 1)
+    let capacity = Double((textView.bounds.height - inset.top - inset.bottom) / average)
+    let lowest = max(textView.contentSize.height - textView.bounds.height + inset.bottom, -inset.top)
+    let maxTop = max(line(atY: lowest + inset.top), top)
+    let now = (top, Int(capacity * 10), maxTop)
+    guard lastMap == nil || lastMap! != now else { return }
+    lastMap = now
+    minimap.setViewport(top: top, capacity: capacity, maxTop: maxTop)
+  }
+
+  /// Draws the minimap again from the text and the lines' kinds, shortly after the last change.
+  func refreshMinimap() {
+    guard minimapMode != nil else { return }
+    minimapRefresh?.cancel()
+    let work = DispatchWorkItem { [weak self] in self?.drawMinimap() }
+    minimapRefresh = work
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: work)
+  }
+
+  private func drawMinimap() {
+    guard minimapMode != nil else { return }
+    let kinds = (0 ..< lineCount).map { textView.lineDecoration(atRow: $0) }
+    var tints: [Int: UIColor] = [:]
+    for (kind, style) in textView.lineDecorationStyles {
+      if let color = style.gutterBackground ?? style.background { tints[kind] = color }
+    }
+    minimap.update(text: textView.text, kinds: kinds, tints: tints, colorize: minimapColorizer?())
+  }
+
+  /// Scrolls so the 0-based `row` is in the middle of the view, or at the top of it.
+  private func scrub(toLine row: Int, centered: Bool) {
+    let inset = textView.adjustedContentInset
+    let lowest = max(-inset.top, textView.contentSize.height - textView.bounds.height + inset.bottom)
+    let lineTop = textView.contentOffsetY(ofLine: row)
+    let wanted = centered ? lineTop - textView.bounds.height / 2 : lineTop - inset.top
+    let y = min(max(wanted, -inset.top), lowest)
+    textView.contentOffset = CGPoint(x: textView.contentOffset.x, y: y)
+  }
+
+  private func refreshLineCount(of text: String) {
+    lineCount = (textView.textLocation(at: (text as NSString).length)?.lineNumber ?? 0) + 1
+    refreshMinimap()
+    reportScroll()
   }
 
   private func reportSelection() {
@@ -711,7 +826,9 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    textView.frame = bounds
+    let mapWidth = minimapMode?.width ?? 0
+    textView.frame = CGRect(x: 0, y: 0, width: bounds.width - mapWidth, height: bounds.height)
+    minimap.frame = CGRect(x: bounds.width - mapWidth, y: 0, width: mapWidth, height: bounds.height)
   }
 
   func configure(text: String, language: String, theme: EditorTheme) {
@@ -720,6 +837,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     let state = treeSitterLanguage(for: language).map { TextViewState(text: text, theme: theme, language: $0) }
       ?? TextViewState(text: text, theme: theme)
     textView.setState(state)
+    refreshLineCount(of: text)
   }
 
   func textViewDidChangeSelection(_ textView: TextView) {
@@ -730,7 +848,9 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     reportSelection()
     reportHistory()
     refreshFindSoon()
-    let dirty = textView.text != baselineText
+    let current = textView.text
+    refreshLineCount(of: current)
+    let dirty = current != baselineText
     guard dirty != isDirty else { return }
     isDirty = dirty
     onDirtyChange?(dirty)
@@ -751,6 +871,7 @@ class HybridEditor: HybridEditorSpec {
   private let container = EditorContainerView()
   private var editorTheme = EditorTheme()
   private var appliedThemeKey = ""
+  private var appliedDecorationKey = ""
   private var shownFontSize: CGFloat = 13
   private var hasConfigured = false
 
@@ -766,6 +887,16 @@ class HybridEditor: HybridEditorSpec {
     }
     container.onHistoryChange = { [weak self] canUndo, canRedo in
       self?.onChangeHistory(canUndo, canRedo)
+    }
+    container.onScroll = { [weak self] top, bottom, count in self?.onChangeScroll(Double(top), Double(bottom), Double(count)) }
+    container.minimapColorizer = { [weak self] in
+      guard let self, let language = treeSitterLanguage(for: self.language) else { return nil }
+      let theme = self.editorTheme.snapshot()
+      return { text in
+        // A very large file stays one colour rather than being parsed again and again.
+        guard text.utf16.count <= 400_000 else { return nil }
+        return StringSyntaxHighlighter(theme: theme, language: language).syntaxHighlight(text)
+      }
     }
     container.onFindResult = { [weak self] count, index in
       self?.onChangeFindResult(Double(count), Double(index))
@@ -843,6 +974,10 @@ class HybridEditor: HybridEditorSpec {
   var findCurrentColorHex: String = "#ff9f0aaa"
   var onChangeFind: (_ isOpen: Bool) -> Void = { _ in }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void = { _ in }
+  var minimap: String = "off"
+  var lineStylesJson: String = "{}"
+  var newLineKindsJson: String = "{}"
+  var onChangeScroll: (_ topLine: Double, _ bottomLine: Double, _ lineCount: Double) -> Void = { _, _, _ in }
   var pinchToZoom: Bool = false
   var autoClosePairs: Bool = false
 
@@ -864,6 +999,7 @@ class HybridEditor: HybridEditorSpec {
       markedTextBackgroundColor: UIColor(hex: markedTextBackgroundColorHex))
     if replacing {
       container.textView.theme = editorTheme
+      container.refreshMinimap()
       // The theme only marks lines stale; this lays out the ones on screen now (the rest follow as they scroll in).
       container.textView.redisplayVisibleLines()
     }
@@ -933,6 +1069,15 @@ class HybridEditor: HybridEditorSpec {
     // iOS 16+ only — `isFindInteractionEnabled` doesn't exist below that.
     if #available(iOS 16.0, *) {
       textView.isFindInteractionEnabled = isFindInteractionEnabled
+    }
+    container.minimapMode = parsedMinimapMode(for: minimap)
+    let barBase = UIColor(hex: textColor)
+    container.minimap.barColor = barBase.withAlphaComponent(0.45)
+    container.minimap.sliderColor = barBase.withAlphaComponent(0.18)
+    let decorationKey = lineStylesJson + "|" + newLineKindsJson
+    if decorationKey != appliedDecorationKey {
+      appliedDecorationKey = decorationKey
+      applyLineDecorationStyles()
     }
 
     if !hasConfigured {
@@ -1031,6 +1176,7 @@ class HybridEditor: HybridEditorSpec {
       self.language = language
       let mode: LanguageMode = treeSitterLanguage(for: language).map { TreeSitterLanguageMode(language: $0) } ?? PlainTextLanguageMode()
       self.container.textView.setLanguageMode(mode)
+      self.container.refreshMinimap()
     }
   }
 
@@ -1041,6 +1187,54 @@ class HybridEditor: HybridEditorSpec {
         self.container.textView.findInteraction?.presentFindNavigator(showingReplace: replace)
         self.container.watchFind()
       }
+    }
+  }
+
+  /// The line kinds' colours and what a new line's kind is, from the two JSON props.
+  private func applyLineDecorationStyles() {
+    var styles: [Int: LineDecorationStyle] = [:]
+    if let data = lineStylesJson.data(using: .utf8),
+       let object = try? JSONSerialization.jsonObject(with: data) as? [String: [String: String]] {
+      for (key, value) in object {
+        guard let kind = Int(key) else { continue }
+        styles[kind] = LineDecorationStyle(
+          background: value["background"].map { UIColor(hex: $0) },
+          gutterBackground: value["gutterBackground"].map { UIColor(hex: $0) })
+      }
+    }
+    var newKinds: [Int: Int] = [:]
+    if let data = newLineKindsJson.data(using: .utf8),
+       let object = try? JSONSerialization.jsonObject(with: data) as? [String: Int] {
+      for (key, value) in object {
+        if let kind = Int(key) { newKinds[kind] = value }
+      }
+    }
+    let textView = container.textView
+    textView.lineDecorationForNewLine = { newKinds[$0] ?? $0 }
+    textView.lineDecorationStyles = styles
+    container.refreshMinimap()
+  }
+
+  private func parsedMinimapMode(for value: String) -> MinimapView.Mode? {
+    switch value {
+    case "strip": return .strip
+    case "compact": return .compact
+    case "full": return .full
+    default: return nil
+    }
+  }
+
+  func setLineKinds(runs: [Double]) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      var parsed: [LineDecorationRun] = []
+      var index = 0
+      while index + 2 < runs.count {
+        parsed.append(LineDecorationRun(firstRow: Int(runs[index]) - 1, count: Int(runs[index + 1]), kind: Int(runs[index + 2])))
+        index += 3
+      }
+      self.container.textView.setLineDecorations(parsed)
+      self.container.refreshMinimap()
     }
   }
 
