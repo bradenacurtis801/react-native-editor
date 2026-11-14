@@ -139,7 +139,15 @@ export interface CodeEditorProps {
 	/** Fires whenever the buffer transitions between matching/not-matching `initialText`. */
 	onDirtyChange?: (isDirty: boolean) => void;
 	/** The caret or selection moved. `line` and `column` are 1-based, of the selection's start; `length` is the selected character count. iOS only. */
-	onSelectionChange?: (line: number, column: number, length: number) => void;
+	onSelectionChange?: (line: number, column: number, length: number, endLine: number) => void;
+	/** A tap on the text or the gutter, with the 1-based line it landed on. The caret moves as usual. iOS only. */
+	onTapLine?: (line: number) => void;
+	/** Whether the text scrolls on its own (default true). Off, the view is as tall as its content — give it the height `onContentHeightChange` reports — for a screen that puts it in a list whose scrolling carries it. iOS only. */
+	scrollEnabled?: boolean;
+	/** The height of all the text in points, as it changes; lines not laid out yet count as an estimate, so it can change a little as they are. iOS only. */
+	onContentHeightChange?: (height: number) => void;
+	/** Kinds of line (see `lineStyles`) that refuse typing, pasting and deleting over them; `replaceLines` and `setText` still work. iOS only. */
+	readOnlyKinds?: number[];
 	/** Whether undo and redo have anything to do — fires when either changes. iOS only. */
 	onHistoryChange?: (canUndo: boolean, canRedo: boolean) => void;
 	/** The find bar opened or closed. iOS only. */
@@ -192,6 +200,14 @@ export interface CodeEditorHandle {
 	goToLine(line: number): void;
 	/** Gives lines their kind (see `lineStyles`): each run is `[firstLine, count, kind]`, lines 1-based. Every line not in a run gets none. A kind stays with its line as the text around it is edited; `setText` clears them all, so send them again after it. iOS only. */
 	setLineKinds(runs: [firstLine: number, count: number, kind: number][]): void;
+	/** Replaces `count` lines from the 1-based `firstLine` with `newCount` lines (`text`, joined by line breaks), keeping the caret, the selection and the scroll position on the text, clearing the undo history and leaving a clean buffer clean. `runs` (`[firstLine, count, kind]`, counting from 1 at the first new line) and `labels` (one gutter label per new line) are for the new lines. iOS only. */
+	replaceLines(firstLine: number, count: number, newCount: number, text: string, runs?: [firstLine: number, count: number, kind: number][], labels?: string[]): void;
+	/** Shows `labels` in the gutter instead of line numbers, the first on the 1-based `firstLine`; a line with none shows blank. iOS only. */
+	setGutterLabels(firstLine: number, labels: string[]): void;
+	/** Brings the line numbers back in the gutter. iOS only. */
+	clearGutterLabels(): void;
+	/** Takes the buffer as it is now as the saved text: clean until the next edit; undo history stays. iOS only. */
+	markClean(): void;
 	/** Copies the selected lines (the caret's line) below themselves; the selection moves to the copy. */
 	duplicateLines(): void;
 	/** Swaps the selected lines with the line above or below. */

@@ -273,6 +273,22 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setOnChangeSelection(props->onChangeSelection.value);
     props->onChangeSelection.isDirty = false;
   }
+  if (props->isScrollEnabled.isDirty) {
+    hybridView->setIsScrollEnabled(props->isScrollEnabled.value);
+    props->isScrollEnabled.isDirty = false;
+  }
+  if (props->onChangeContentHeight.isDirty) {
+    hybridView->setOnChangeContentHeight(props->onChangeContentHeight.value);
+    props->onChangeContentHeight.isDirty = false;
+  }
+  if (props->onTapLine.isDirty) {
+    hybridView->setOnTapLine(props->onTapLine.value);
+    props->onTapLine.isDirty = false;
+  }
+  if (props->readOnlyKindsJson.isDirty) {
+    hybridView->setReadOnlyKindsJson(props->readOnlyKindsJson.value);
+    props->readOnlyKindsJson.isDirty = false;
+  }
   if (props->onChangeHistory.isDirty) {
     hybridView->setOnChangeHistory(props->onChangeHistory.value);
     props->onChangeHistory.isDirty = false;

@@ -8,21 +8,21 @@
 import NitroModules
 
 /**
- * Wraps a Swift `(_ line: Double, _ column: Double, _ length: Double) -> Void` as a class.
+ * Wraps a Swift `(_ topLine: Double, _ bottomLine: Double, _ lineCount: Double) -> Void` as a class.
  * This class can be used from C++, e.g. to wrap the Swift closure as a `std::function`.
  */
 public final class Func_void_double_double_double {
   public typealias bridge = margelo.nitro.editor.bridge.swift
 
-  private let closure: (_ line: Double, _ column: Double, _ length: Double) -> Void
+  private let closure: (_ topLine: Double, _ bottomLine: Double, _ lineCount: Double) -> Void
 
-  public init(_ closure: @escaping (_ line: Double, _ column: Double, _ length: Double) -> Void) {
+  public init(_ closure: @escaping (_ topLine: Double, _ bottomLine: Double, _ lineCount: Double) -> Void) {
     self.closure = closure
   }
 
   @inline(__always)
-  public func call(line: Double, column: Double, length: Double) -> Void {
-    self.closure(line, column, length)
+  public func call(topLine: Double, bottomLine: Double, lineCount: Double) -> Void {
+    self.closure(topLine, bottomLine, lineCount)
   }
 
   /**

@@ -46,6 +46,16 @@ final class MinimapView: UIView {
       sliderLayer.borderColor = sliderColor.withAlphaComponent(0.6).cgColor
     }
   }
+  /// The colours of the marks: find matches, the current match, the line the caret is on.
+  var findColor = UIColor.systemYellow.withAlphaComponent(0.9) {
+    didSet { findLayer.fillColor = findColor.cgColor }
+  }
+  var currentFindColor = UIColor.systemOrange {
+    didSet { currentLayer.fillColor = currentFindColor.cgColor }
+  }
+  var caretColor = UIColor.gray.withAlphaComponent(0.5) {
+    didSet { caretLayer.fillColor = caretColor.cgColor }
+  }
   /// Where the finger is, as a 0-based line: `centered` says to put it in the middle of the editor, otherwise at the top.
   var onScrub: ((_ line: Int, _ centered: Bool) -> Void)?
 
@@ -66,6 +76,12 @@ final class MinimapView: UIView {
   private let content = CALayer()
   private let stripLayer = CALayer()
   private let sliderLayer = CALayer()
+  private let findLayer = CAShapeLayer()
+  private let currentLayer = CAShapeLayer()
+  private let caretLayer = CAShapeLayer()
+  private var findLines: [Int] = []
+  private var currentLine: Int?
+  private var caretLine: Int?
   private let queue = DispatchQueue(label: "react-native-editor.minimap", qos: .userInitiated)
   private let displayScale = UIScreen.main.scale
   private var shapes = Shapes()
@@ -92,8 +108,14 @@ final class MinimapView: UIView {
     sliderLayer.cornerRadius = 2
     sliderLayer.borderWidth = 1
     sliderLayer.borderColor = sliderColor.withAlphaComponent(0.6).cgColor
+    findLayer.fillColor = findColor.cgColor
+    currentLayer.fillColor = currentFindColor.cgColor
+    caretLayer.fillColor = caretColor.cgColor
     layer.addSublayer(content)
     layer.addSublayer(stripLayer)
+    layer.addSublayer(caretLayer)
+    layer.addSublayer(findLayer)
+    layer.addSublayer(currentLayer)
     layer.addSublayer(sliderLayer)
   }
 
@@ -131,6 +153,17 @@ final class MinimapView: UIView {
   func setViewport(top: Int, capacity: Double, maxTop: Int) {
     viewport = (top, capacity, maxTop)
     layoutMap()
+  }
+
+  /// The lines to mark, 0-based: those with a find match (ascending, each once), the current match's, and the caret's.
+  func setMarks(find: [Int], current: Int?, caret: Int?) {
+    findLines = find
+    currentLine = current
+    caretLine = caret
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
+    layoutMarks(shift: offset)
+    CATransaction.commit()
   }
 
   // MARK: Geometry
@@ -174,6 +207,7 @@ final class MinimapView: UIView {
     stripLayer.isHidden = mode != .strip
     content.isHidden = mode == .strip
     if mode != .strip { refreshChunks(visibleFrom: shift, to: shift + bounds.height) }
+    layoutMarks(shift: shift)
     guard let viewport else {
       sliderLayer.isHidden = true
       return
@@ -182,6 +216,44 @@ final class MinimapView: UIView {
     let top = CGFloat(max(viewport.top - 1, 0)) * rowHeight - shift
     sliderLayer.isHidden = false
     sliderLayer.frame = CGRect(x: 0, y: min(max(top, 0), max(bounds.height - height, 0)), width: bounds.width, height: height)
+  }
+
+  /// Draws the marks that are inside the map's window: a row for each line, at least two points tall so a mark is never lost.
+  private func layoutMarks(shift: CGFloat) {
+    let height = max(rowHeight, 2)
+    let width = bounds.width
+    func row(_ line: Int) -> CGRect { CGRect(x: 0, y: CGFloat(line) * rowHeight - shift - (height - rowHeight) / 2, width: width, height: height) }
+    let rowsInView = Int(bounds.height / max(rowHeight, 0.01)) + 2
+    let first = max(Int(shift / max(rowHeight, 0.01)) - 1, 0)
+    let last = first + rowsInView
+
+    let found = UIBezierPath()
+    // The first mark that is in view: the list is ascending.
+    var low = 0
+    var high = findLines.count
+    while low < high {
+      let mid = (low + high) / 2
+      if findLines[mid] < first { low = mid + 1 } else { high = mid }
+    }
+    var index = low
+    while index < findLines.count, findLines[index] <= last {
+      if findLines[index] != currentLine { found.append(UIBezierPath(rect: row(findLines[index]))) }
+      index += 1
+    }
+    findLayer.path = found.cgPath
+
+    let current = UIBezierPath()
+    if let currentLine, currentLine >= first, currentLine <= last { current.append(UIBezierPath(rect: row(currentLine))) }
+    currentLayer.path = current.cgPath
+
+    // The caret's line is a notch at the left edge, so it never hides the text beside it.
+    let caret = UIBezierPath()
+    if let caretLine, caretLine >= first, caretLine <= last {
+      var notch = row(caretLine)
+      notch.size.width = min(3, width)
+      caret.append(UIBezierPath(rect: notch))
+    }
+    caretLayer.path = caret.cgPath
   }
 
   // MARK: Drawing

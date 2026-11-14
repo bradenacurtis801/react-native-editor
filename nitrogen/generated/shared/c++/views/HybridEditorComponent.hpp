@@ -100,7 +100,11 @@ namespace margelo::nitro::editor::views {
     CachedProp<std::string> lineEndings;
     CachedProp<bool> showMenuAfterNavigatingToHighlightedRange;
     CachedProp<std::function<void(bool /* isDirty */)>> onChangeDirty;
-    CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>> onChangeSelection;
+    CachedProp<std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>> onChangeSelection;
+    CachedProp<bool> isScrollEnabled;
+    CachedProp<std::function<void(double /* height */)>> onChangeContentHeight;
+    CachedProp<std::function<void(double /* line */)>> onTapLine;
+    CachedProp<std::string> readOnlyKindsJson;
     CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> onChangeHistory;
     CachedProp<std::function<void(bool /* isOpen */)>> onChangeFind;
     CachedProp<std::function<void(double /* fontSizePx */)>> onChangeFontSize;

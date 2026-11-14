@@ -142,8 +142,16 @@ export interface EditorProps extends HybridViewProps {
 
 	/** Fires whenever the buffer transitions between matching/not-matching its initial `text` — cheap dirty-tracking without streaming every keystroke to JS. */
 	onChangeDirty: (isDirty: boolean) => void;
-	/** The caret or selection moved (or the text changed under it). `line` and `column` are 1-based, of the selection's start; `length` is how many characters are selected (0 for a caret). */
-	onChangeSelection: (line: number, column: number, length: number) => void;
+	/** The caret or selection moved (or the text changed under it). `line` and `column` are 1-based, of the selection's start; `length` is how many characters are selected (0 for a caret); `endLine` is the line the selection ends on. */
+	onChangeSelection: (line: number, column: number, length: number, endLine: number) => void;
+	/** Whether the text scrolls on its own. Off, it is as tall as its content (`onChangeContentHeight` says how tall) for a screen that puts it in a list of its own, whose scrolling carries it. @default true */
+	isScrollEnabled: boolean;
+	/** The height of all the text, in points (with the insets), when it changes. With scrolling off this is the height the view should be given. Lines not laid out yet count as an estimate, so it can change a little as they are. */
+	onChangeContentHeight: (height: number) => void;
+	/** A tap on the text or the gutter, with the 1-based line it landed on. The caret moves as usual; this is for a screen that wants the line (a bar to open, a hunk to pick). */
+	onTapLine: (line: number) => void;
+	/** JSON array of line kinds (see `lineStylesJson`) that refuse typing, pasting and deleting over them: `[2, 3]`. A change that touches such a line does nothing; `replaceLines` and `writeBuffer` still work. @default '[]' */
+	readOnlyKindsJson: string;
 	/** What undo and redo can do now — fires when either changes, so a button can enable and disable. */
 	onChangeHistory: (canUndo: boolean, canRedo: boolean) => void;
 	/** The find bar opened or closed (`showFind`, or the system's own). */
@@ -193,6 +201,14 @@ export interface EditorMethods extends HybridViewMethods {
 	toggleComment(prefix: string): void;
 	/** Gives lines their kind (see `lineStylesJson`): `runs` is groups of three numbers — the 1-based first line, how many lines, the kind. Every line not in a run gets none. A kind stays with its line while text around it is edited, but `writeBuffer` clears them all. */
 	setLineKinds(runs: number[]): void;
+	/** Replaces `count` lines from the 1-based `firstLine` with `newCount` lines (`text`, joined by line breaks; ignored for 0), for a screen that swaps part of the buffer — the caret, the selection and the scroll position stay where they were on the text, the undo history is cleared, and the buffer stays clean if it was. `runs` and `labels` are for the new lines only: `runs` as `setLineKinds` takes them but counting from 1 at the first new line, `labels` one per new line (empty for none), shown in the gutter in place of numbers once any labels are set. */
+	replaceLines(firstLine: number, count: number, newCount: number, text: string, runs: number[], labels: string[]): void;
+	/** Shows `labels` in the gutter in place of line numbers, the first on the 1-based `firstLine`; a line with none shows blank. */
+	setGutterLabels(firstLine: number, labels: string[]): void;
+	/** Brings the line numbers back in the gutter. */
+	clearGutterLabels(): void;
+	/** Takes the buffer as it is now as the saved text: it is clean, and an edit from here makes it dirty again. Undo history stays. */
+	markClean(): void;
 	/** Moves the caret, collapsing a selection: 'left' | 'right' | 'up' | 'down' | 'lineStart' | 'lineEnd' | 'documentStart' | 'documentEnd'. */
 	moveCursor(direction: string): void;
 	/** Changes the syntax highlighting to `language` (the same ids as the `language` prop; an unknown id is plain text) without touching the text, the selection or the undo history. */

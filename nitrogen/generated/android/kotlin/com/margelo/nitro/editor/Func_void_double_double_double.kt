@@ -14,7 +14,7 @@ import dalvik.annotation.optimization.FastNative
 
 
 /**
- * Represents the JavaScript callback `(line: number, column: number, length: number) => void`.
+ * Represents the JavaScript callback `(topLine: number, bottomLine: number, lineCount: number) => void`.
  * This can be either implemented in C++ (in which case it might be a callback coming from JS),
  * or in Kotlin/Java (in which case it is a native callback).
  */
@@ -28,11 +28,11 @@ fun interface Func_void_double_double_double: (Double, Double, Double) -> Unit {
    */
   @DoNotStrip
   @Keep
-  override fun invoke(line: Double, column: Double, length: Double): Unit
+  override fun invoke(topLine: Double, bottomLine: Double, lineCount: Double): Unit
 }
 
 /**
- * Represents the JavaScript callback `(line: number, column: number, length: number) => void`.
+ * Represents the JavaScript callback `(topLine: number, bottomLine: number, lineCount: number) => void`.
  * This is implemented in C++, via a `std::function<...>`.
  * The callback might be coming from JS.
  */
@@ -56,15 +56,15 @@ class Func_void_double_double_double_cxx: Func_void_double_double_double {
 
   @DoNotStrip
   @Keep
-  override fun invoke(line: Double, column: Double, length: Double): Unit
-    = invoke_cxx(line,column,length)
+  override fun invoke(topLine: Double, bottomLine: Double, lineCount: Double): Unit
+    = invoke_cxx(topLine,bottomLine,lineCount)
 
   @FastNative
-  private external fun invoke_cxx(line: Double, column: Double, length: Double): Unit
+  private external fun invoke_cxx(topLine: Double, bottomLine: Double, lineCount: Double): Unit
 }
 
 /**
- * Represents the JavaScript callback `(line: number, column: number, length: number) => void`.
+ * Represents the JavaScript callback `(topLine: number, bottomLine: number, lineCount: number) => void`.
  * This is implemented in Java/Kotlin, via a `(Double, Double, Double) -> Unit`.
  * The callback is always coming from native.
  */
@@ -74,7 +74,7 @@ class Func_void_double_double_double_cxx: Func_void_double_double_double {
 class Func_void_double_double_double_java(private val function: (Double, Double, Double) -> Unit): Func_void_double_double_double {
   @DoNotStrip
   @Keep
-  override fun invoke(line: Double, column: Double, length: Double): Unit {
-    return this.function(line, column, length)
+  override fun invoke(topLine: Double, bottomLine: Double, lineCount: Double): Unit {
+    return this.function(topLine, bottomLine, lineCount)
   }
 }

@@ -132,6 +132,14 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeDirty", &HybridEditorSpec::setOnChangeDirty);
       prototype.registerHybridGetter("onChangeSelection", &HybridEditorSpec::getOnChangeSelection);
       prototype.registerHybridSetter("onChangeSelection", &HybridEditorSpec::setOnChangeSelection);
+      prototype.registerHybridGetter("isScrollEnabled", &HybridEditorSpec::getIsScrollEnabled);
+      prototype.registerHybridSetter("isScrollEnabled", &HybridEditorSpec::setIsScrollEnabled);
+      prototype.registerHybridGetter("onChangeContentHeight", &HybridEditorSpec::getOnChangeContentHeight);
+      prototype.registerHybridSetter("onChangeContentHeight", &HybridEditorSpec::setOnChangeContentHeight);
+      prototype.registerHybridGetter("onTapLine", &HybridEditorSpec::getOnTapLine);
+      prototype.registerHybridSetter("onTapLine", &HybridEditorSpec::setOnTapLine);
+      prototype.registerHybridGetter("readOnlyKindsJson", &HybridEditorSpec::getReadOnlyKindsJson);
+      prototype.registerHybridSetter("readOnlyKindsJson", &HybridEditorSpec::setReadOnlyKindsJson);
       prototype.registerHybridGetter("onChangeHistory", &HybridEditorSpec::getOnChangeHistory);
       prototype.registerHybridSetter("onChangeHistory", &HybridEditorSpec::setOnChangeHistory);
       prototype.registerHybridGetter("onChangeFind", &HybridEditorSpec::getOnChangeFind);
@@ -168,6 +176,10 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("moveLines", &HybridEditorSpec::moveLines);
       prototype.registerHybridMethod("toggleComment", &HybridEditorSpec::toggleComment);
       prototype.registerHybridMethod("setLineKinds", &HybridEditorSpec::setLineKinds);
+      prototype.registerHybridMethod("replaceLines", &HybridEditorSpec::replaceLines);
+      prototype.registerHybridMethod("setGutterLabels", &HybridEditorSpec::setGutterLabels);
+      prototype.registerHybridMethod("clearGutterLabels", &HybridEditorSpec::clearGutterLabels);
+      prototype.registerHybridMethod("markClean", &HybridEditorSpec::markClean);
       prototype.registerHybridMethod("moveCursor", &HybridEditorSpec::moveCursor);
       prototype.registerHybridMethod("applyLanguage", &HybridEditorSpec::applyLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);

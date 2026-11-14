@@ -382,19 +382,59 @@ abstract class HybridEditorSpec: HybridView() {
       onChangeDirty = value
     }
   
-  abstract var onChangeSelection: (line: Double, column: Double, length: Double) -> Unit
+  abstract var onChangeSelection: (line: Double, column: Double, length: Double, endLine: Double) -> Unit
   
-  private var onChangeSelection_cxx: Func_void_double_double_double
+  private var onChangeSelection_cxx: Func_void_double_double_double_double
     @Keep
     @DoNotStrip
     get() {
-      return Func_void_double_double_double_java(onChangeSelection)
+      return Func_void_double_double_double_double_java(onChangeSelection)
     }
     @Keep
     @DoNotStrip
     set(value) {
       onChangeSelection = value
     }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var isScrollEnabled: Boolean
+  
+  abstract var onChangeContentHeight: (height: Double) -> Unit
+  
+  private var onChangeContentHeight_cxx: Func_void_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_java(onChangeContentHeight)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onChangeContentHeight = value
+    }
+  
+  abstract var onTapLine: (line: Double) -> Unit
+  
+  private var onTapLine_cxx: Func_void_double
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_java(onTapLine)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onTapLine = value
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var readOnlyKindsJson: String
   
   abstract var onChangeHistory: (canUndo: Boolean, canRedo: Boolean) -> Unit
   
@@ -556,6 +596,22 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun setLineKinds(runs: DoubleArray): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun replaceLines(firstLine: Double, count: Double, newCount: Double, text: String, runs: DoubleArray, labels: Array<String>): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun setGutterLabels(firstLine: Double, labels: Array<String>): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun clearGutterLabels(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun markClean(): Unit
   
   @DoNotStrip
   @Keep

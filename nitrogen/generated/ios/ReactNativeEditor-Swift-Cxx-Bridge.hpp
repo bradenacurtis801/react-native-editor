@@ -52,26 +52,48 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_bool_Wrapper(std::move(value));
   }
   
-  // pragma MARK: std::function<void(double /* line */, double /* column */, double /* length */)>
+  // pragma MARK: std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>
   /**
-   * Specialized version of `std::function<void(double, double, double)>`.
+   * Specialized version of `std::function<void(double, double, double, double)>`.
    */
-  using Func_void_double_double_double = std::function<void(double /* line */, double /* column */, double /* length */)>;
+  using Func_void_double_double_double_double = std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>;
   /**
-   * Wrapper class for a `std::function<void(double / * line * /, double / * column * /, double / * length * /)>`, this can be used from Swift.
+   * Wrapper class for a `std::function<void(double / * line * /, double / * column * /, double / * length * /, double / * endLine * /)>`, this can be used from Swift.
    */
-  class Func_void_double_double_double_Wrapper final {
+  class Func_void_double_double_double_double_Wrapper final {
   public:
-    explicit Func_void_double_double_double_Wrapper(std::function<void(double /* line */, double /* column */, double /* length */)>&& func): _function(std::make_unique<std::function<void(double /* line */, double /* column */, double /* length */)>>(std::move(func))) {}
-    inline void call(double line, double column, double length) const noexcept {
-      _function->operator()(line, column, length);
+    explicit Func_void_double_double_double_double_Wrapper(std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>&& func): _function(std::make_unique<std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>>(std::move(func))) {}
+    inline void call(double line, double column, double length, double endLine) const noexcept {
+      _function->operator()(line, column, length, endLine);
     }
   private:
-    std::unique_ptr<std::function<void(double /* line */, double /* column */, double /* length */)>> _function;
+    std::unique_ptr<std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void_double_double_double create_Func_void_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
-  inline Func_void_double_double_double_Wrapper wrap_Func_void_double_double_double(Func_void_double_double_double value) noexcept {
-    return Func_void_double_double_double_Wrapper(std::move(value));
+  Func_void_double_double_double_double create_Func_void_double_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_double_double_Wrapper wrap_Func_void_double_double_double_double(Func_void_double_double_double_double value) noexcept {
+    return Func_void_double_double_double_double_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::function<void(double /* height */)>
+  /**
+   * Specialized version of `std::function<void(double)>`.
+   */
+  using Func_void_double = std::function<void(double /* height */)>;
+  /**
+   * Wrapper class for a `std::function<void(double / * height * /)>`, this can be used from Swift.
+   */
+  class Func_void_double_Wrapper final {
+  public:
+    explicit Func_void_double_Wrapper(std::function<void(double /* height */)>&& func): _function(std::make_unique<std::function<void(double /* height */)>>(std::move(func))) {}
+    inline void call(double height) const noexcept {
+      _function->operator()(height);
+    }
+  private:
+    std::unique_ptr<std::function<void(double /* height */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_double create_Func_void_double(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_Wrapper wrap_Func_void_double(Func_void_double value) noexcept {
+    return Func_void_double_Wrapper(std::move(value));
   }
   
   // pragma MARK: std::function<void(bool /* canUndo */, bool /* canRedo */)>
@@ -96,26 +118,26 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_bool_bool_Wrapper(std::move(value));
   }
   
-  // pragma MARK: std::function<void(double /* fontSizePx */)>
+  // pragma MARK: std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>
   /**
-   * Specialized version of `std::function<void(double)>`.
+   * Specialized version of `std::function<void(double, double, double)>`.
    */
-  using Func_void_double = std::function<void(double /* fontSizePx */)>;
+  using Func_void_double_double_double = std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>;
   /**
-   * Wrapper class for a `std::function<void(double / * fontSizePx * /)>`, this can be used from Swift.
+   * Wrapper class for a `std::function<void(double / * topLine * /, double / * bottomLine * /, double / * lineCount * /)>`, this can be used from Swift.
    */
-  class Func_void_double_Wrapper final {
+  class Func_void_double_double_double_Wrapper final {
   public:
-    explicit Func_void_double_Wrapper(std::function<void(double /* fontSizePx */)>&& func): _function(std::make_unique<std::function<void(double /* fontSizePx */)>>(std::move(func))) {}
-    inline void call(double fontSizePx) const noexcept {
-      _function->operator()(fontSizePx);
+    explicit Func_void_double_double_double_Wrapper(std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>&& func): _function(std::make_unique<std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>>(std::move(func))) {}
+    inline void call(double topLine, double bottomLine, double lineCount) const noexcept {
+      _function->operator()(topLine, bottomLine, lineCount);
     }
   private:
-    std::unique_ptr<std::function<void(double /* fontSizePx */)>> _function;
+    std::unique_ptr<std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void_double create_Func_void_double(void* NON_NULL swiftClosureWrapper) noexcept;
-  inline Func_void_double_Wrapper wrap_Func_void_double(Func_void_double value) noexcept {
-    return Func_void_double_Wrapper(std::move(value));
+  Func_void_double_double_double create_Func_void_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_double_Wrapper wrap_Func_void_double_double_double(Func_void_double_double_double value) noexcept {
+    return Func_void_double_double_double_Wrapper(std::move(value));
   }
   
   // pragma MARK: std::function<void(double /* count */, double /* index */)>
@@ -147,6 +169,17 @@ namespace margelo::nitro::editor::bridge::swift {
   using std__vector_double_ = std::vector<double>;
   inline std::vector<double> create_std__vector_double_(size_t size) noexcept {
     std::vector<double> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::vector<std::string>
+  /**
+   * Specialized version of `std::vector<std::string>`.
+   */
+  using std__vector_std__string_ = std::vector<std::string>;
+  inline std::vector<std::string> create_std__vector_std__string_(size_t size) noexcept {
+    std::vector<std::string> vector;
     vector.reserve(size);
     return vector;
   }

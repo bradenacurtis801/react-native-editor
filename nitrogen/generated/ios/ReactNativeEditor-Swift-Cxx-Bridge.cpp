@@ -22,11 +22,19 @@ namespace margelo::nitro::editor::bridge::swift {
     };
   }
   
-  // pragma MARK: std::function<void(double /* line */, double /* column */, double /* length */)>
-  Func_void_double_double_double create_Func_void_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept {
-    auto swiftClosure = ReactNativeEditor::Func_void_double_double_double::fromUnsafe(swiftClosureWrapper);
-    return [swiftClosure = std::move(swiftClosure)](double line, double column, double length) mutable -> void {
-      swiftClosure.call(line, column, length);
+  // pragma MARK: std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>
+  Func_void_double_double_double_double create_Func_void_double_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = ReactNativeEditor::Func_void_double_double_double_double::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](double line, double column, double length, double endLine) mutable -> void {
+      swiftClosure.call(line, column, length, endLine);
+    };
+  }
+  
+  // pragma MARK: std::function<void(double /* height */)>
+  Func_void_double create_Func_void_double(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = ReactNativeEditor::Func_void_double::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](double height) mutable -> void {
+      swiftClosure.call(height);
     };
   }
   
@@ -38,11 +46,11 @@ namespace margelo::nitro::editor::bridge::swift {
     };
   }
   
-  // pragma MARK: std::function<void(double /* fontSizePx */)>
-  Func_void_double create_Func_void_double(void* NON_NULL swiftClosureWrapper) noexcept {
-    auto swiftClosure = ReactNativeEditor::Func_void_double::fromUnsafe(swiftClosureWrapper);
-    return [swiftClosure = std::move(swiftClosure)](double fontSizePx) mutable -> void {
-      swiftClosure.call(fontSizePx);
+  // pragma MARK: std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>
+  Func_void_double_double_double create_Func_void_double_double_double(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = ReactNativeEditor::Func_void_double_double_double::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](double topLine, double bottomLine, double lineCount) mutable -> void {
+      swiftClosure.call(topLine, bottomLine, lineCount);
     };
   }
   

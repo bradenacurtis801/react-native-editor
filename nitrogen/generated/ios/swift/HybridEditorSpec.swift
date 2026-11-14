@@ -68,7 +68,11 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var lineEndings: String { get set }
   var showMenuAfterNavigatingToHighlightedRange: Bool { get set }
   var onChangeDirty: (_ isDirty: Bool) -> Void { get set }
-  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void { get set }
+  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double, _ endLine: Double) -> Void { get set }
+  var isScrollEnabled: Bool { get set }
+  var onChangeContentHeight: (_ height: Double) -> Void { get set }
+  var onTapLine: (_ line: Double) -> Void { get set }
+  var readOnlyKindsJson: String { get set }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
   var onChangeFontSize: (_ fontSizePx: Double) -> Void { get set }
@@ -95,6 +99,10 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func moveLines(direction: String) throws -> Void
   func toggleComment(prefix: String) throws -> Void
   func setLineKinds(runs: [Double]) throws -> Void
+  func replaceLines(firstLine: Double, count: Double, newCount: Double, text: String, runs: [Double], labels: [String]) throws -> Void
+  func setGutterLabels(firstLine: Double, labels: [String]) throws -> Void
+  func clearGutterLabels() throws -> Void
+  func markClean() throws -> Void
   func moveCursor(direction: String) throws -> Void
   func applyLanguage(language: String) throws -> Void
   func showFind(replace: Bool) throws -> Void

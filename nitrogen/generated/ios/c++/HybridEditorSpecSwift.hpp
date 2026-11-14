@@ -448,12 +448,39 @@ namespace margelo::nitro::editor {
     inline void setOnChangeDirty(const std::function<void(bool /* isDirty */)>& onChangeDirty) noexcept override {
       _swiftPart.setOnChangeDirty(onChangeDirty);
     }
-    inline std::function<void(double /* line */, double /* column */, double /* length */)> getOnChangeSelection() noexcept override {
+    inline std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)> getOnChangeSelection() noexcept override {
       auto __result = _swiftPart.getOnChangeSelection();
       return __result;
     }
-    inline void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) noexcept override {
+    inline void setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>& onChangeSelection) noexcept override {
       _swiftPart.setOnChangeSelection(onChangeSelection);
+    }
+    inline bool getIsScrollEnabled() noexcept override {
+      return _swiftPart.isScrollEnabled();
+    }
+    inline void setIsScrollEnabled(bool isScrollEnabled) noexcept override {
+      _swiftPart.setIsScrollEnabled(std::forward<decltype(isScrollEnabled)>(isScrollEnabled));
+    }
+    inline std::function<void(double /* height */)> getOnChangeContentHeight() noexcept override {
+      auto __result = _swiftPart.getOnChangeContentHeight();
+      return __result;
+    }
+    inline void setOnChangeContentHeight(const std::function<void(double /* height */)>& onChangeContentHeight) noexcept override {
+      _swiftPart.setOnChangeContentHeight(onChangeContentHeight);
+    }
+    inline std::function<void(double /* line */)> getOnTapLine() noexcept override {
+      auto __result = _swiftPart.getOnTapLine();
+      return __result;
+    }
+    inline void setOnTapLine(const std::function<void(double /* line */)>& onTapLine) noexcept override {
+      _swiftPart.setOnTapLine(onTapLine);
+    }
+    inline std::string getReadOnlyKindsJson() noexcept override {
+      auto __result = _swiftPart.getReadOnlyKindsJson();
+      return __result;
+    }
+    inline void setReadOnlyKindsJson(const std::string& readOnlyKindsJson) noexcept override {
+      _swiftPart.setReadOnlyKindsJson(readOnlyKindsJson);
     }
     inline std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() noexcept override {
       auto __result = _swiftPart.getOnChangeHistory();
@@ -610,6 +637,30 @@ namespace margelo::nitro::editor {
     }
     inline void setLineKinds(const std::vector<double>& runs) override {
       auto __result = _swiftPart.setLineKinds(runs);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void replaceLines(double firstLine, double count, double newCount, const std::string& text, const std::vector<double>& runs, const std::vector<std::string>& labels) override {
+      auto __result = _swiftPart.replaceLines(std::forward<decltype(firstLine)>(firstLine), std::forward<decltype(count)>(count), std::forward<decltype(newCount)>(newCount), text, runs, labels);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void setGutterLabels(double firstLine, const std::vector<std::string>& labels) override {
+      auto __result = _swiftPart.setGutterLabels(std::forward<decltype(firstLine)>(firstLine), labels);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void clearGutterLabels() override {
+      auto __result = _swiftPart.clearGutterLabels();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void markClean() override {
+      auto __result = _swiftPart.markClean();
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

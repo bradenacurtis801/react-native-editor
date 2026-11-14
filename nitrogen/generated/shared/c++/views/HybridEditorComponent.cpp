@@ -606,14 +606,54 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onChangeDirty: ") + exc.what());
       }
     }()),
-    onChangeSelection([&]() -> CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>> {
+    onChangeSelection([&]() -> CachedProp<std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onChangeSelection", nullptr, nullptr);
         if (rawValue == nullptr) return sourceProps.onChangeSelection;
         const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::function<void(double /* line */, double /* column */, double /* length */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeSelection);
+        return CachedProp<std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeSelection);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("Editor.onChangeSelection: ") + exc.what());
+      }
+    }()),
+    isScrollEnabled([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("isScrollEnabled", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.isScrollEnabled;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.isScrollEnabled);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.isScrollEnabled: ") + exc.what());
+      }
+    }()),
+    onChangeContentHeight([&]() -> CachedProp<std::function<void(double /* height */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onChangeContentHeight", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onChangeContentHeight;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* height */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onChangeContentHeight);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onChangeContentHeight: ") + exc.what());
+      }
+    }()),
+    onTapLine([&]() -> CachedProp<std::function<void(double /* line */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onTapLine", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onTapLine;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* line */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onTapLine);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onTapLine: ") + exc.what());
+      }
+    }()),
+    readOnlyKindsJson([&]() -> CachedProp<std::string> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("readOnlyKindsJson", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.readOnlyKindsJson;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::string>::fromRawValue(*runtime, value, sourceProps.readOnlyKindsJson);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.readOnlyKindsJson: ") + exc.what());
       }
     }()),
     onChangeHistory([&]() -> CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> {
@@ -808,6 +848,10 @@ namespace margelo::nitro::editor::views {
       case hashString("showMenuAfterNavigatingToHighlightedRange"): return true;
       case hashString("onChangeDirty"): return true;
       case hashString("onChangeSelection"): return true;
+      case hashString("isScrollEnabled"): return true;
+      case hashString("onChangeContentHeight"): return true;
+      case hashString("onTapLine"): return true;
+      case hashString("readOnlyKindsJson"): return true;
       case hashString("onChangeHistory"): return true;
       case hashString("onChangeFind"): return true;
       case hashString("onChangeFontSize"): return true;

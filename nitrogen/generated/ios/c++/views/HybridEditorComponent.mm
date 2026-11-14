@@ -374,6 +374,26 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setOnChangeSelection(newViewProps.onChangeSelection.value);
     newViewProps.onChangeSelection.isDirty = false;
   }
+  // isScrollEnabled: boolean
+  if (newViewProps.isScrollEnabled.isDirty) {
+    swiftPart.setIsScrollEnabled(newViewProps.isScrollEnabled.value);
+    newViewProps.isScrollEnabled.isDirty = false;
+  }
+  // onChangeContentHeight: function
+  if (newViewProps.onChangeContentHeight.isDirty) {
+    swiftPart.setOnChangeContentHeight(newViewProps.onChangeContentHeight.value);
+    newViewProps.onChangeContentHeight.isDirty = false;
+  }
+  // onTapLine: function
+  if (newViewProps.onTapLine.isDirty) {
+    swiftPart.setOnTapLine(newViewProps.onTapLine.value);
+    newViewProps.onTapLine.isDirty = false;
+  }
+  // readOnlyKindsJson: string
+  if (newViewProps.readOnlyKindsJson.isDirty) {
+    swiftPart.setReadOnlyKindsJson(newViewProps.readOnlyKindsJson.value);
+    newViewProps.readOnlyKindsJson.isDirty = false;
+  }
   // onChangeHistory: function
   if (newViewProps.onChangeHistory.isDirty) {
     swiftPart.setOnChangeHistory(newViewProps.onChangeHistory.value);

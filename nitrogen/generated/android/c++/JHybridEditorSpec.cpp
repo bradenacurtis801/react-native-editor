@@ -13,9 +13,10 @@
 #include <functional>
 #include "JFunc_void_bool.hpp"
 #include <NitroModules/JNICallable.hpp>
-#include "JFunc_void_double_double_double.hpp"
-#include "JFunc_void_bool_bool.hpp"
+#include "JFunc_void_double_double_double_double.hpp"
 #include "JFunc_void_double.hpp"
+#include "JFunc_void_bool_bool.hpp"
+#include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_double_double.hpp"
 #include <vector>
 
@@ -579,22 +580,74 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_bool::javaobject> /* onChangeDirty */)>("setOnChangeDirty_cxx");
     method(_javaPart, JFunc_void_bool_cxx::fromCpp(onChangeDirty));
   }
-  std::function<void(double /* line */, double /* column */, double /* length */)> JHybridEditorSpec::getOnChangeSelection() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_double::javaobject>()>("getOnChangeSelection_cxx");
+  std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)> JHybridEditorSpec::getOnChangeSelection() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_double_double::javaobject>()>("getOnChangeSelection_cxx");
     auto __result = method(_javaPart);
-    return [&]() -> std::function<void(double /* line */, double /* column */, double /* length */)> {
-      if (__result->isInstanceOf(JFunc_void_double_double_double_cxx::javaClassStatic())) [[likely]] {
-        auto downcast = jni::static_ref_cast<JFunc_void_double_double_double_cxx::javaobject>(__result);
+    return [&]() -> std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_double_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_double_double_cxx::javaobject>(__result);
         return downcast->cthis()->getFunction();
       } else {
         auto __resultRef = jni::make_global(__result);
-        return JNICallable<JFunc_void_double_double_double, void(double, double, double)>(std::move(__resultRef));
+        return JNICallable<JFunc_void_double_double_double_double, void(double, double, double, double)>(std::move(__resultRef));
       }
     }();
   }
-  void JHybridEditorSpec::setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */)>& onChangeSelection) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_double::javaobject> /* onChangeSelection */)>("setOnChangeSelection_cxx");
-    method(_javaPart, JFunc_void_double_double_double_cxx::fromCpp(onChangeSelection));
+  void JHybridEditorSpec::setOnChangeSelection(const std::function<void(double /* line */, double /* column */, double /* length */, double /* endLine */)>& onChangeSelection) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_double_double::javaobject> /* onChangeSelection */)>("setOnChangeSelection_cxx");
+    method(_javaPart, JFunc_void_double_double_double_double_cxx::fromCpp(onChangeSelection));
+  }
+  bool JHybridEditorSpec::getIsScrollEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isScrollEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsScrollEnabled(bool isScrollEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isScrollEnabled */)>("setScrollEnabled");
+    method(_javaPart, isScrollEnabled);
+  }
+  std::function<void(double /* height */)> JHybridEditorSpec::getOnChangeContentHeight() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double::javaobject>()>("getOnChangeContentHeight_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* height */)> {
+      if (__result->isInstanceOf(JFunc_void_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double, void(double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnChangeContentHeight(const std::function<void(double /* height */)>& onChangeContentHeight) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onChangeContentHeight */)>("setOnChangeContentHeight_cxx");
+    method(_javaPart, JFunc_void_double_cxx::fromCpp(onChangeContentHeight));
+  }
+  std::function<void(double /* line */)> JHybridEditorSpec::getOnTapLine() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double::javaobject>()>("getOnTapLine_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* line */)> {
+      if (__result->isInstanceOf(JFunc_void_double_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double, void(double)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnTapLine(const std::function<void(double /* line */)>& onTapLine) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onTapLine */)>("setOnTapLine_cxx");
+    method(_javaPart, JFunc_void_double_cxx::fromCpp(onTapLine));
+  }
+  std::string JHybridEditorSpec::getReadOnlyKindsJson() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getReadOnlyKindsJson");
+    auto __result = method(_javaPart);
+    return __result->toStdString();
+  }
+  void JHybridEditorSpec::setReadOnlyKindsJson(const std::string& readOnlyKindsJson) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* readOnlyKindsJson */)>("setReadOnlyKindsJson");
+    method(_javaPart, jni::make_jstring(readOnlyKindsJson));
   }
   std::function<void(bool /* canUndo */, bool /* canRedo */)> JHybridEditorSpec::getOnChangeHistory() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_bool_bool::javaobject>()>("getOnChangeHistory_cxx");
@@ -799,6 +852,45 @@ namespace margelo::nitro::editor {
       __array->setRegion(0, __size, runs.data());
       return __array;
     }());
+  }
+  void JHybridEditorSpec::replaceLines(double firstLine, double count, double newCount, const std::string& text, const std::vector<double>& runs, const std::vector<std::string>& labels) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* firstLine */, double /* count */, double /* newCount */, jni::alias_ref<jni::JString> /* text */, jni::alias_ref<jni::JArrayDouble> /* runs */, jni::alias_ref<jni::JArrayClass<jni::JString>> /* labels */)>("replaceLines");
+    method(_javaPart, firstLine, count, newCount, jni::make_jstring(text), [&]() {
+      size_t __size = runs.size();
+      jni::local_ref<jni::JArrayDouble> __array = jni::JArrayDouble::newArray(__size);
+      __array->setRegion(0, __size, runs.data());
+      return __array;
+    }(), [&](auto&& __input) {
+      size_t __size = __input.size();
+      jni::local_ref<jni::JArrayClass<jni::JString>> __array = jni::JArrayClass<jni::JString>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = __input[__i];
+        auto __elementJni = jni::make_jstring(__element);
+        __array->setElement(__i, *__elementJni);
+      }
+      return __array;
+    }(labels));
+  }
+  void JHybridEditorSpec::setGutterLabels(double firstLine, const std::vector<std::string>& labels) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* firstLine */, jni::alias_ref<jni::JArrayClass<jni::JString>> /* labels */)>("setGutterLabels");
+    method(_javaPart, firstLine, [&](auto&& __input) {
+      size_t __size = __input.size();
+      jni::local_ref<jni::JArrayClass<jni::JString>> __array = jni::JArrayClass<jni::JString>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = __input[__i];
+        auto __elementJni = jni::make_jstring(__element);
+        __array->setElement(__i, *__elementJni);
+      }
+      return __array;
+    }(labels));
+  }
+  void JHybridEditorSpec::clearGutterLabels() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("clearGutterLabels");
+    method(_javaPart);
+  }
+  void JHybridEditorSpec::markClean() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("markClean");
+    method(_javaPart);
   }
   void JHybridEditorSpec::moveCursor(const std::string& direction) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* direction */)>("moveCursor");

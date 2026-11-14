@@ -767,22 +767,82 @@ open class HybridEditorSpec_cxx {
     }
   }
   
-  public final var onChangeSelection: bridge.Func_void_double_double_double {
+  public final var onChangeSelection: bridge.Func_void_double_double_double_double {
     @inline(__always)
     get {
-      return { () -> bridge.Func_void_double_double_double in
-        let __closureWrapper = Func_void_double_double_double(self.__implementation.onChangeSelection)
-        return bridge.create_Func_void_double_double_double(__closureWrapper.toUnsafe())
+      return { () -> bridge.Func_void_double_double_double_double in
+        let __closureWrapper = Func_void_double_double_double_double(self.__implementation.onChangeSelection)
+        return bridge.create_Func_void_double_double_double_double(__closureWrapper.toUnsafe())
       }()
     }
     @inline(__always)
     set {
-      self.__implementation.onChangeSelection = { () -> (Double, Double, Double) -> Void in
-        let __wrappedFunction = bridge.wrap_Func_void_double_double_double(newValue)
-        return { (__line: Double, __column: Double, __length: Double) -> Void in
-          __wrappedFunction.call(__line, __column, __length)
+      self.__implementation.onChangeSelection = { () -> (Double, Double, Double, Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double_double_double(newValue)
+        return { (__line: Double, __column: Double, __length: Double, __endLine: Double) -> Void in
+          __wrappedFunction.call(__line, __column, __length, __endLine)
         }
       }()
+    }
+  }
+  
+  public final var isScrollEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isScrollEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isScrollEnabled = newValue
+    }
+  }
+  
+  public final var onChangeContentHeight: bridge.Func_void_double {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double in
+        let __closureWrapper = Func_void_double(self.__implementation.onChangeContentHeight)
+        return bridge.create_Func_void_double(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onChangeContentHeight = { () -> (Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double(newValue)
+        return { (__height: Double) -> Void in
+          __wrappedFunction.call(__height)
+        }
+      }()
+    }
+  }
+  
+  public final var onTapLine: bridge.Func_void_double {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double in
+        let __closureWrapper = Func_void_double(self.__implementation.onTapLine)
+        return bridge.create_Func_void_double(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onTapLine = { () -> (Double) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double(newValue)
+        return { (__line: Double) -> Void in
+          __wrappedFunction.call(__line)
+        }
+      }()
+    }
+  }
+  
+  public final var readOnlyKindsJson: std.string {
+    @inline(__always)
+    get {
+      return std.string(self.__implementation.readOnlyKindsJson)
+    }
+    @inline(__always)
+    set {
+      self.__implementation.readOnlyKindsJson = String(newValue)
     }
   }
   
@@ -1085,6 +1145,50 @@ open class HybridEditorSpec_cxx {
   public final func setLineKinds(runs: bridge.std__vector_double_) -> bridge.Result_void_ {
     do {
       try self.__implementation.setLineKinds(runs: runs.map({ __item in __item }))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func replaceLines(firstLine: Double, count: Double, newCount: Double, text: std.string, runs: bridge.std__vector_double_, labels: bridge.std__vector_std__string_) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.replaceLines(firstLine: firstLine, count: count, newCount: newCount, text: String(text), runs: runs.map({ __item in __item }), labels: labels.map({ __item in String(__item) }))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func setGutterLabels(firstLine: Double, labels: bridge.std__vector_std__string_) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.setGutterLabels(firstLine: firstLine, labels: labels.map({ __item in String(__item) }))
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func clearGutterLabels() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.clearGutterLabels()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func markClean() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.markClean()
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

@@ -483,6 +483,11 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     set { pinch.isEnabled = newValue }
   }
 
+  @objc private func tapped(_ gesture: UITapGestureRecognizer) {
+    guard gesture.state == .ended, let onTapLine else { return }
+    onTapLine(textView.lineNumber(atContentOffsetY: gesture.location(in: textView).y) + 1)
+  }
+
   @objc private func pinched(_ gesture: UIPinchGestureRecognizer) {
     switch gesture.state {
     case .began:
@@ -502,7 +507,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   private var baselineText = ""
   private var isDirty = false
   var onDirtyChange: ((Bool) -> Void)?
-  var onSelectionChange: ((Int, Int, Int) -> Void)?
+  var onSelectionChange: ((Int, Int, Int, Int) -> Void)?
   var onHistoryChange: ((Bool, Bool) -> Void)?
   var onFindChange: ((Bool) -> Void)?
   private var findWatch: Timer?
@@ -532,8 +537,16 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
       }
     }
   }
-  private var lastSelection: (Int, Int, Int)?
+  private var lastSelection: (Int, Int, Int, Int)?
   var onScroll: ((Int, Int, Int) -> Void)?
+  var onTapLine: ((Int) -> Void)?
+  var onContentHeight: ((Double) -> Void)?
+  private var lastContentHeight: Double = -1
+  private var contentSizeObserver: NSKeyValueObservation?
+  /// Kinds of line that refuse a change (`readOnlyKindsJson`).
+  var readOnlyKinds: Set<Int> = []
+  /// True while `replaceLines` changes the text itself: neither refused nor counted as an edit.
+  private var isReplacing = false
   let minimap = MinimapView()
   /// Made on the main thread when the minimap is drawn: highlights a text with the language and colours as they are now, or nil for none.
   var minimapColorizer: (() -> ((String) -> NSAttributedString?)?)?
@@ -544,6 +557,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
       guard minimapMode != oldValue else { return }
       lastMap = nil
       minimap.isHidden = minimapMode == nil
+      updateMinimapMarks()
       if let minimapMode { minimap.mode = minimapMode }
       setNeedsLayout()
       refreshMinimap()
@@ -561,12 +575,17 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     textView.editorDelegate = self
     addSubview(textView)
     scrollObserver = textView.observe(\.contentOffset) { [weak self] _, _ in self?.reportScroll() }
+    contentSizeObserver = textView.observe(\.contentSize) { [weak self] _, _ in self?.reportContentHeight() }
     addSubview(minimap)
     minimap.isHidden = true
     minimap.onScrub = { [weak self] row, centered in self?.scrub(toLine: row, centered: centered) }
     pinch.delegate = self
     pinch.isEnabled = false
     textView.addGestureRecognizer(pinch)
+    let tap = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
+    tap.cancelsTouchesInView = false
+    tap.delegate = self
+    textView.addGestureRecognizer(tap)
     // Undo and redo change what can be undone without the text view being told.
     let center = NotificationCenter.default
     let names: [Notification.Name] = [.NSUndoManagerDidUndoChange, .NSUndoManagerDidRedoChange, .NSUndoManagerDidCloseUndoGroup, .NSUndoManagerCheckpoint]
@@ -598,6 +617,14 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
 
   private var lastMap: (Int, Int, Int)?
 
+  /// Tells JS how tall the text is, for a view that is as tall as its text (`isScrollEnabled` off).
+  private func reportContentHeight() {
+    let height = Double(textView.contentSize.height.rounded(.up))
+    guard height != lastContentHeight, let onContentHeight else { return }
+    lastContentHeight = height
+    onContentHeight(height)
+  }
+
   private func reportScroll() {
     guard onScroll != nil || minimapMode != nil, textView.bounds.height > 0 else { return }
     let inset = textView.adjustedContentInset
@@ -622,6 +649,19 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     guard lastMap == nil || lastMap! != now else { return }
     lastMap = now
     minimap.setViewport(top: top, capacity: capacity, maxTop: maxTop)
+  }
+
+  /// Tells the minimap which lines to mark: those with a find match, the current match's, and the caret's.
+  func updateMinimapMarks() {
+    guard minimapMode != nil else { return }
+    var lines: [Int] = []
+    for range in findMatches {
+      if let line = textView.textLocation(at: range.location)?.lineNumber { lines.append(line) }
+    }
+    lines = Array(Set(lines)).sorted()
+    let current = findIndex >= 0 && findIndex < findMatches.count ? textView.textLocation(at: findMatches[findIndex].location)?.lineNumber : nil
+    let caret = textView.textLocation(at: textView.selectedRange.location)?.lineNumber
+    minimap.setMarks(find: lines, current: current, caret: caret)
   }
 
   /// Draws the minimap again from the text and the lines' kinds, shortly after the last change.
@@ -662,10 +702,12 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   private func reportSelection() {
     let range = textView.selectedRange
     let at = textView.textLocation(at: range.location)
-    let now = ((at?.lineNumber ?? 0) + 1, (at?.column ?? 0) + 1, range.length)
+    let endLine = (textView.textLocation(at: range.location + range.length)?.lineNumber ?? at?.lineNumber ?? 0) + 1
+    let now = ((at?.lineNumber ?? 0) + 1, (at?.column ?? 0) + 1, range.length, endLine)
     guard lastSelection == nil || lastSelection! != now else { return }
     lastSelection = now
-    onSelectionChange?(now.0, now.1, now.2)
+    updateMinimapMarks()
+    onSelectionChange?(now.0, now.1, now.2, now.3)
   }
 
   /// Applies a line command as one undo step and selects what it says.
@@ -727,6 +769,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
       textView.selectedRange = range
       textView.scrollRangeToVisible(range)
     }
+    updateMinimapMarks()
     onFindResult?(findMatches.count, findIndex + 1)
   }
 
@@ -772,6 +815,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     findMatches = []
     findIndex = -1
     textView.highlightedRanges = []
+    updateMinimapMarks()
     onFindResult?(0, 0)
   }
 
@@ -850,10 +894,134 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     refreshFindSoon()
     let current = textView.text
     refreshLineCount(of: current)
+    guard !isReplacing else { return }
     let dirty = current != baselineText
     guard dirty != isDirty else { return }
     isDirty = dirty
     onDirtyChange?(dirty)
+  }
+
+  /// A change that touches a line of a read-only kind (a removed line, a bar) does nothing.
+  func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    guard !isReplacing, !readOnlyKinds.isEmpty else { return true }
+    let first = textView.textLocation(at: range.location)?.lineNumber ?? 0
+    let last = max(first, textView.textLocation(at: range.location + range.length)?.lineNumber ?? first)
+    for row in first ... last where readOnlyKinds.contains(textView.lineDecoration(atRow: row)) { return false }
+    return true
+  }
+
+  /// Takes the text as it is as the saved text.
+  func markClean() {
+    baselineText = textView.text
+    if isDirty {
+      isDirty = false
+      onDirtyChange?(false)
+    }
+  }
+
+  /// Replaces `count` lines from the 0-based row `startRow` with `newCount` lines of `text`, and puts back what was there: the caret and
+  /// selection on the text, the scroll position on the line that was at the top, a clean buffer clean. The undo history goes — what it held
+  /// points at text that is no more.
+  func replaceLines(startRow: Int, count: Int, newCount: Int, text: String, runs: [LineDecorationRun], labels: [String]) {
+    let tv = textView
+    let total = tv.lineCount
+    let start = min(max(startRow, 0), total)
+    let removed = max(0, min(count, total - start))
+    let end = start + removed
+    let source = tv.text as NSString
+    let length = source.length
+    func rowStart(_ row: Int) -> Int {
+      row < total ? (tv.location(at: TextLocation(lineNumber: row, column: 0)) ?? length) : length
+    }
+    /// How long the line break is that ends just before `location` (0 when there is none).
+    func breakLength(before location: Int) -> Int {
+      guard location > 0 else { return 0 }
+      let last = source.character(at: location - 1)
+      if last == 10 { return location > 1 && source.character(at: location - 2) == 13 ? 2 : 1 }
+      return last == 13 ? 1 : 0
+    }
+    // The cut is made at the end of a line's text, never past its line break: Runestone keeps a record per line, and a cut that ends at
+    // the start of the next line merges that line's record into this one, losing the gutter label and tint it carries.
+    func textEnd(ofRow row: Int) -> Int {
+      row + 1 < total ? rowStart(row + 1) - breakLength(before: rowStart(row + 1)) : length
+    }
+    var from: Int
+    var to: Int
+    var replacement = ""
+    if newCount > 0 && removed > 0 {
+      from = rowStart(start)
+      to = textEnd(ofRow: end - 1)
+      replacement = text
+    } else if newCount > 0 {
+      if start >= total {
+        from = length
+        to = length
+        replacement = length > 0 ? "\n" + text : text
+      } else if start > 0 {
+        from = textEnd(ofRow: start - 1)
+        to = from
+        replacement = "\n" + text
+      } else {
+        from = 0
+        to = 0
+        replacement = text + "\n"
+      }
+    } else if start > 0 {
+      from = textEnd(ofRow: start - 1)
+      to = textEnd(ofRow: end - 1)
+    } else {
+      from = 0
+      to = end < total ? rowStart(end) : length
+    }
+
+    let inset = tv.adjustedContentInset
+    let topRow = tv.lineNumber(atContentOffsetY: tv.contentOffset.y + inset.top)
+    let intra = tv.contentOffset.y + inset.top - tv.contentOffsetY(ofLine: topRow)
+    let selection = tv.selectedRange
+    let wasClean = !isDirty
+
+    isReplacing = true
+    tv.undoManager?.disableUndoRegistration()
+    tv.replace(NSRange(location: from, length: to - from), withText: replacement)
+    tv.undoManager?.enableUndoRegistration()
+    tv.undoManager?.removeAllActions()
+    isReplacing = false
+
+    if newCount > 0 {
+      let shifted = runs.map { LineDecorationRun(firstRow: start + $0.firstRow - 1, count: $0.count, kind: $0.kind) }
+      tv.setLineDecorations(shifted, inRows: start ..< start + newCount)
+      if !labels.isEmpty { tv.setGutterLabels(labels, startingAt: start) }
+    }
+    let newLength = (tv.text as NSString).length
+    let delta = newLength - length
+    if selection.location >= to {
+      tv.selectedRange = NSRange(location: min(max(selection.location + delta, 0), newLength), length: min(selection.length, newLength))
+    } else if selection.location >= from {
+      tv.selectedRange = NSRange(location: min(from, newLength), length: 0)
+    }
+    let newTop: Int
+    var offsetWithin = intra
+    if topRow < start {
+      newTop = topRow
+    } else if topRow >= end {
+      newTop = topRow + newCount - removed
+    } else {
+      newTop = start
+      offsetWithin = 0
+    }
+    let y = tv.contentOffsetY(ofLine: newTop) + offsetWithin - inset.top
+    tv.contentOffset = CGPoint(x: tv.contentOffset.x, y: max(y, -inset.top))
+    if wasClean {
+      markClean()
+    } else {
+      let dirty = tv.text != baselineText
+      if dirty != isDirty {
+        isDirty = dirty
+        onDirtyChange?(dirty)
+      }
+    }
+    refreshMinimap()
+    updateMinimapMarks()
   }
 }
 
@@ -882,8 +1050,10 @@ class HybridEditor: HybridEditorSpec {
     container.onDirtyChange = { [weak self] isDirty in
       self?.onChangeDirty(isDirty)
     }
-    container.onSelectionChange = { [weak self] line, column, length in
-      self?.onChangeSelection(Double(line), Double(column), Double(length))
+    container.onTapLine = { [weak self] line in self?.onTapLine(Double(line)) }
+    container.onContentHeight = { [weak self] height in self?.onChangeContentHeight(height) }
+    container.onSelectionChange = { [weak self] line, column, length, endLine in
+      self?.onChangeSelection(Double(line), Double(column), Double(length), Double(endLine))
     }
     container.onHistoryChange = { [weak self] canUndo, canRedo in
       self?.onChangeHistory(canUndo, canRedo)
@@ -967,7 +1137,11 @@ class HybridEditor: HybridEditorSpec {
   var lineEndings: String = "lf"
   var showMenuAfterNavigatingToHighlightedRange: Bool = true
   var onChangeDirty: (_ isDirty: Bool) -> Void = { _ in }
-  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double) -> Void = { _, _, _ in }
+  var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double, _ endLine: Double) -> Void = { _, _, _, _ in }
+  var onTapLine: (_ line: Double) -> Void = { _ in }
+  var isScrollEnabled: Bool = true
+  var onChangeContentHeight: (_ height: Double) -> Void = { _ in }
+  var readOnlyKindsJson: String = "[]"
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void = { _, _ in }
   var onChangeFindResult: (_ count: Double, _ index: Double) -> Void = { _, _ in }
   var findColorHex: String = "#ffd60a55"
@@ -1070,10 +1244,17 @@ class HybridEditor: HybridEditorSpec {
     if #available(iOS 16.0, *) {
       textView.isFindInteractionEnabled = isFindInteractionEnabled
     }
+    textView.isScrollEnabled = isScrollEnabled
     container.minimapMode = parsedMinimapMode(for: minimap)
     let barBase = UIColor(hex: textColor)
     container.minimap.barColor = barBase.withAlphaComponent(0.45)
     container.minimap.sliderColor = barBase.withAlphaComponent(0.18)
+    container.minimap.caretColor = barBase.withAlphaComponent(0.6)
+    container.minimap.findColor = container.findColor.withAlphaComponent(0.9)
+    container.minimap.currentFindColor = container.findCurrentColor.withAlphaComponent(1)
+    if let data = readOnlyKindsJson.data(using: .utf8), let kinds = try? JSONSerialization.jsonObject(with: data) as? [Int] {
+      container.readOnlyKinds = Set(kinds)
+    }
     let decorationKey = lineStylesJson + "|" + newLineKindsJson
     if decorationKey != appliedDecorationKey {
       appliedDecorationKey = decorationKey
@@ -1086,8 +1267,11 @@ class HybridEditor: HybridEditorSpec {
     }
   }
 
+  /// The text as it is now. Read on the main thread, and after what was queued there before it: a read that did not wait could come back
+  /// before a `replaceLines` or `writeBuffer` sent just ahead of it had run.
   func readBuffer() throws -> String {
-    container.textView.text
+    if Thread.isMainThread { return container.textView.text }
+    return DispatchQueue.main.sync { container.textView.text }
   }
 
   // Nitro calls these on the JS thread; UIKit's text input must be driven from the main one (off it, the keyboard's task queue asserts and aborts).
@@ -1238,6 +1422,31 @@ class HybridEditor: HybridEditorSpec {
     }
   }
 
+  func replaceLines(firstLine: Double, count: Double, newCount: Double, text: String, runs: [Double], labels: [String]) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      var parsed: [LineDecorationRun] = []
+      var index = 0
+      while index + 2 < runs.count {
+        parsed.append(LineDecorationRun(firstRow: Int(runs[index]), count: Int(runs[index + 1]), kind: Int(runs[index + 2])))
+        index += 3
+      }
+      self.container.replaceLines(startRow: Int(firstLine) - 1, count: Int(count), newCount: Int(newCount), text: text, runs: parsed, labels: labels)
+    }
+  }
+
+  func setGutterLabels(firstLine: Double, labels: [String]) throws {
+    onMain { [weak self] in self?.container.textView.setGutterLabels(labels, startingAt: Int(firstLine) - 1) }
+  }
+
+  func clearGutterLabels() throws {
+    onMain { [weak self] in self?.container.textView.setGutterLabels(nil) }
+  }
+
+  func markClean() throws {
+    onMain { [weak self] in self?.container.markClean() }
+  }
+
   func goToLine(line: Double) throws {
     onMain { [weak self] in
       guard let self else { return }
@@ -1249,7 +1458,11 @@ class HybridEditor: HybridEditorSpec {
   }
 
   func writeBuffer(text: String) throws {
-    self.text = text
-    container.configure(text: text, language: language, theme: editorTheme)
+    // On the main thread, in turn with the other calls: this ran at once on the JS thread, and met the main thread's own work inside UIKit.
+    onMain { [weak self] in
+      guard let self else { return }
+      self.text = text
+      self.container.configure(text: text, language: self.language, theme: self.editorTheme)
+    }
   }
 }

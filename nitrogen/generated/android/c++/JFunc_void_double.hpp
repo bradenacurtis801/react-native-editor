@@ -18,7 +18,7 @@ namespace margelo::nitro::editor {
   using namespace facebook;
 
   /**
-   * Represents the Java/Kotlin callback `(fontSizePx: Double) -> Unit`.
+   * Represents the Java/Kotlin callback `(height: Double) -> Unit`.
    * This can be passed around between C++ and Java/Kotlin.
    */
   struct JFunc_void_double: public jni::JavaClass<JFunc_void_double> {
@@ -29,9 +29,9 @@ namespace margelo::nitro::editor {
     /**
      * Invokes the function this `JFunc_void_double` instance holds through JNI.
      */
-    void invoke(double fontSizePx) const {
-      static const auto method = javaClassStatic()->getMethod<void(double /* fontSizePx */)>("invoke");
-      method(self(), fontSizePx);
+    void invoke(double height) const {
+      static const auto method = javaClassStatic()->getMethod<void(double /* height */)>("invoke");
+      method(self(), height);
     }
   };
 
@@ -40,7 +40,7 @@ namespace margelo::nitro::editor {
    */
   class JFunc_void_double_cxx final: public jni::HybridClass<JFunc_void_double_cxx, JFunc_void_double> {
   public:
-    static jni::local_ref<JFunc_void_double::javaobject> fromCpp(const std::function<void(double /* fontSizePx */)>& func) {
+    static jni::local_ref<JFunc_void_double::javaobject> fromCpp(const std::function<void(double /* height */)>& func) {
       return JFunc_void_double_cxx::newObjectCxxArgs(func);
     }
 
@@ -48,13 +48,13 @@ namespace margelo::nitro::editor {
     /**
      * Invokes the C++ `std::function<...>` this `JFunc_void_double_cxx` instance holds.
      */
-    void invoke_cxx(double fontSizePx) {
-      _func(fontSizePx);
+    void invoke_cxx(double height) {
+      _func(height);
     }
 
   public:
     [[nodiscard]]
-    inline const std::function<void(double /* fontSizePx */)>& getFunction() const {
+    inline const std::function<void(double /* height */)>& getFunction() const {
       return _func;
     }
 
@@ -65,11 +65,11 @@ namespace margelo::nitro::editor {
     }
 
   private:
-    explicit JFunc_void_double_cxx(const std::function<void(double /* fontSizePx */)>& func): _func(func) { }
+    explicit JFunc_void_double_cxx(const std::function<void(double /* height */)>& func): _func(func) { }
 
   private:
     friend HybridBase;
-    std::function<void(double /* fontSizePx */)> _func;
+    std::function<void(double /* height */)> _func;
   };
 
 } // namespace margelo::nitro::editor

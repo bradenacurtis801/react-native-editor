@@ -17,9 +17,10 @@
 
 #include "JHybridEditorSpec.hpp"
 #include "JFunc_void_bool.hpp"
-#include "JFunc_void_double_double_double.hpp"
-#include "JFunc_void_bool_bool.hpp"
+#include "JFunc_void_double_double_double_double.hpp"
 #include "JFunc_void_double.hpp"
+#include "JFunc_void_bool_bool.hpp"
+#include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_double_double.hpp"
 #include "views/JHybridEditorStateUpdater.hpp"
 #include <NitroModules/DefaultConstructableObject.hpp>
@@ -48,9 +49,10 @@ void registerAllNatives() {
   // Register native JNI methods
   margelo::nitro::editor::JHybridEditorSpec::CxxPart::registerNatives();
   margelo::nitro::editor::JFunc_void_bool_cxx::registerNatives();
-  margelo::nitro::editor::JFunc_void_double_double_double_cxx::registerNatives();
-  margelo::nitro::editor::JFunc_void_bool_bool_cxx::registerNatives();
+  margelo::nitro::editor::JFunc_void_double_double_double_double_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_cxx::registerNatives();
+  margelo::nitro::editor::JFunc_void_bool_bool_cxx::registerNatives();
+  margelo::nitro::editor::JFunc_void_double_double_double_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_double_cxx::registerNatives();
   margelo::nitro::editor::views::JHybridEditorStateUpdater::registerNatives();
 

@@ -18,7 +18,7 @@ namespace margelo::nitro::editor {
   using namespace facebook;
 
   /**
-   * Represents the Java/Kotlin callback `(line: Double, column: Double, length: Double) -> Unit`.
+   * Represents the Java/Kotlin callback `(topLine: Double, bottomLine: Double, lineCount: Double) -> Unit`.
    * This can be passed around between C++ and Java/Kotlin.
    */
   struct JFunc_void_double_double_double: public jni::JavaClass<JFunc_void_double_double_double> {
@@ -29,9 +29,9 @@ namespace margelo::nitro::editor {
     /**
      * Invokes the function this `JFunc_void_double_double_double` instance holds through JNI.
      */
-    void invoke(double line, double column, double length) const {
-      static const auto method = javaClassStatic()->getMethod<void(double /* line */, double /* column */, double /* length */)>("invoke");
-      method(self(), line, column, length);
+    void invoke(double topLine, double bottomLine, double lineCount) const {
+      static const auto method = javaClassStatic()->getMethod<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>("invoke");
+      method(self(), topLine, bottomLine, lineCount);
     }
   };
 
@@ -40,7 +40,7 @@ namespace margelo::nitro::editor {
    */
   class JFunc_void_double_double_double_cxx final: public jni::HybridClass<JFunc_void_double_double_double_cxx, JFunc_void_double_double_double> {
   public:
-    static jni::local_ref<JFunc_void_double_double_double::javaobject> fromCpp(const std::function<void(double /* line */, double /* column */, double /* length */)>& func) {
+    static jni::local_ref<JFunc_void_double_double_double::javaobject> fromCpp(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& func) {
       return JFunc_void_double_double_double_cxx::newObjectCxxArgs(func);
     }
 
@@ -48,13 +48,13 @@ namespace margelo::nitro::editor {
     /**
      * Invokes the C++ `std::function<...>` this `JFunc_void_double_double_double_cxx` instance holds.
      */
-    void invoke_cxx(double line, double column, double length) {
-      _func(line, column, length);
+    void invoke_cxx(double topLine, double bottomLine, double lineCount) {
+      _func(topLine, bottomLine, lineCount);
     }
 
   public:
     [[nodiscard]]
-    inline const std::function<void(double /* line */, double /* column */, double /* length */)>& getFunction() const {
+    inline const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& getFunction() const {
       return _func;
     }
 
@@ -65,11 +65,11 @@ namespace margelo::nitro::editor {
     }
 
   private:
-    explicit JFunc_void_double_double_double_cxx(const std::function<void(double /* line */, double /* column */, double /* length */)>& func): _func(func) { }
+    explicit JFunc_void_double_double_double_cxx(const std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)>& func): _func(func) { }
 
   private:
     friend HybridBase;
-    std::function<void(double /* line */, double /* column */, double /* length */)> _func;
+    std::function<void(double /* topLine */, double /* bottomLine */, double /* lineCount */)> _func;
   };
 
 } // namespace margelo::nitro::editor
