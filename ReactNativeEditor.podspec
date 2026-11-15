@@ -71,6 +71,7 @@ Pod::Spec.new do |s|
       TreeSitterJSONRunestone
       TreeSitterJavaScriptRunestone
       TreeSitterTypeScriptRunestone
+      TreeSitterTSXRunestone
       TreeSitterCSharpRunestone
       TreeSitterPythonRunestone
       TreeSitterRubyRunestone

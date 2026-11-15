@@ -9,6 +9,13 @@ export interface CodeEditorTheme {
 	comment: string;
 	number: string;
 	plain: string;
+	/**
+	 * More colors, by the name of what the grammar found: `function`, `function.method`, `type`, `type.builtin`, `constructor`, `variable`,
+	 * `variable.parameter`, `property`, `tag`, `attribute`, `constant`, `constant.builtin`, `operator`, `punctuation`, `string.special`…
+	 * A name takes its own color, else its parent's (`function.method` → `function`), else the old rules (a name with `keyword` in it
+	 * takes `keyword`; `constant` takes `number`), else `plain`. These also override `keyword`, `string`, `comment` and `number`. iOS only.
+	 */
+	syntax?: Record<string, string>;
 	fontSize?: number;
 }
 

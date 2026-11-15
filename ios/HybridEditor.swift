@@ -11,6 +11,7 @@ import UIKit
 import TreeSitterJSONRunestone
 import TreeSitterJavaScriptRunestone
 import TreeSitterTypeScriptRunestone
+import TreeSitterTSXRunestone
 import TreeSitterCSharpRunestone
 import TreeSitterPythonRunestone
 import TreeSitterRubyRunestone
@@ -54,9 +55,45 @@ private extension UIColor {
 /// calls). Anything unmapped (kotlin, xml, plaintext, unrecognized) returns nil,
 /// which `EditorContainerView.configure` treats as plain text — not an error.
 private func treeSitterLanguage(for id: String) -> TreeSitterLanguage? {
+  languageCache.language(for: id)
+}
+
+/// Each language made once: a preset reads its query files and compiles them each time it is asked for, and this is asked for on every
+/// minimap draw and language change.
+private final class LanguageCache {
+  private let lock = NSLock()
+  private var made: [String: TreeSitterLanguage?] = [:]
+
+  func language(for id: String) -> TreeSitterLanguage? {
+    lock.lock()
+    defer { lock.unlock() }
+    if let known = made[id] { return known }
+    let language = baseTreeSitterLanguage(for: id).map { withExtraHighlights($0, for: id) }
+    made[id] = .some(language)
+    return language
+  }
+}
+
+private let languageCache = LanguageCache()
+
+/// A preset with a few more highlight patterns after its own (see `ExtraHighlights`), so the grammar can name what it leaves unnamed — the
+/// words that declare something, the names of modules, a class being extended — for a theme that colors them apart. Where a pattern and
+/// the preset's capture the same text, the name with more parts is applied last (`keyword.storage` over `keyword`).
+private func withExtraHighlights(_ base: TreeSitterLanguage, for id: String) -> TreeSitterLanguage {
+  guard let extra = ExtraHighlights.queries[id], let own = base.highlightsQuery?.string else { return base }
+  return TreeSitterLanguage(
+    base.languagePointer,
+    highlightsQuery: TreeSitterLanguage.Query(string: own + "\n" + extra),
+    injectionsQuery: base.injectionsQuery,
+    indentationScopes: base.indentationScopes)
+}
+
+private func baseTreeSitterLanguage(for id: String) -> TreeSitterLanguage? {
   switch id {
   case "javascript": return .javaScript
+  case "jsx": return .jsx
   case "typescript": return .typeScript
+  case "tsx": return .tsx
   case "csharp": return .cSharp
   case "python": return .python
   case "ruby": return .ruby
@@ -288,6 +325,13 @@ private final class EditorTheme: Theme {
   }
 
   func textColor(for highlightName: String) -> UIColor? {
+    // The name's own color, else its parent's: `function.method` is `function`'s when it has none of its own.
+    var name = Substring(highlightName)
+    while true {
+      if let color = syntaxColors[String(name)] { return color }
+      guard let dot = name.lastIndex(of: ".") else { break }
+      name = name[..<dot]
+    }
     if highlightName.contains("keyword") { return syntaxColors["keyword"] }
     if highlightName.contains("string") { return syntaxColors["string"] }
     if highlightName.contains("comment") { return syntaxColors["comment"] }

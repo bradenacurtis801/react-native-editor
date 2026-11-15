@@ -114,6 +114,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			comment: theme.comment,
 			number: theme.number,
 			plain: theme.plain,
+			...theme.syntax,
 		});
 
 		const lineStylesJson = JSON.stringify(lineStyles ?? {});
