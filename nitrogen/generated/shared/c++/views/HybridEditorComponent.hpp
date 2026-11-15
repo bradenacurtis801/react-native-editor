@@ -104,6 +104,8 @@ namespace margelo::nitro::editor::views {
     CachedProp<bool> isScrollEnabled;
     CachedProp<std::function<void(double /* height */)>> onChangeContentHeight;
     CachedProp<std::function<void(double /* line */)>> onTapLine;
+    CachedProp<bool> isGutterSelectEnabled;
+    CachedProp<std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>> onGutterSelect;
     CachedProp<std::string> readOnlyKindsJson;
     CachedProp<std::function<void(bool /* canUndo */, bool /* canRedo */)>> onChangeHistory;
     CachedProp<std::function<void(bool /* isOpen */)>> onChangeFind;

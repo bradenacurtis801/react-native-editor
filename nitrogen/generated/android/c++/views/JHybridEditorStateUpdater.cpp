@@ -285,6 +285,14 @@ void JHybridEditorStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* c
     hybridView->setOnTapLine(props->onTapLine.value);
     props->onTapLine.isDirty = false;
   }
+  if (props->isGutterSelectEnabled.isDirty) {
+    hybridView->setIsGutterSelectEnabled(props->isGutterSelectEnabled.value);
+    props->isGutterSelectEnabled.isDirty = false;
+  }
+  if (props->onGutterSelect.isDirty) {
+    hybridView->setOnGutterSelect(props->onGutterSelect.value);
+    props->onGutterSelect.isDirty = false;
+  }
   if (props->readOnlyKindsJson.isDirty) {
     hybridView->setReadOnlyKindsJson(props->readOnlyKindsJson.value);
     props->readOnlyKindsJson.isDirty = false;

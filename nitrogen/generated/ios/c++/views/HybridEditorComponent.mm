@@ -389,6 +389,16 @@ using namespace margelo::nitro::editor::views;
     swiftPart.setOnTapLine(newViewProps.onTapLine.value);
     newViewProps.onTapLine.isDirty = false;
   }
+  // isGutterSelectEnabled: boolean
+  if (newViewProps.isGutterSelectEnabled.isDirty) {
+    swiftPart.setIsGutterSelectEnabled(newViewProps.isGutterSelectEnabled.value);
+    newViewProps.isGutterSelectEnabled.isDirty = false;
+  }
+  // onGutterSelect: function
+  if (newViewProps.onGutterSelect.isDirty) {
+    swiftPart.setOnGutterSelect(newViewProps.onGutterSelect.value);
+    newViewProps.onGutterSelect.isDirty = false;
+  }
   // readOnlyKindsJson: string
   if (newViewProps.readOnlyKindsJson.isDirty) {
     swiftPart.setReadOnlyKindsJson(newViewProps.readOnlyKindsJson.value);

@@ -38,6 +38,14 @@ namespace margelo::nitro::editor::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>
+  Func_void_double_double_bool create_Func_void_double_double_bool(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = ReactNativeEditor::Func_void_double_double_bool::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](double firstLine, double lastLine, bool isFinal) mutable -> void {
+      swiftClosure.call(firstLine, lastLine, isFinal);
+    };
+  }
+  
   // pragma MARK: std::function<void(bool /* canUndo */, bool /* canRedo */)>
   Func_void_bool_bool create_Func_void_bool_bool(void* NON_NULL swiftClosureWrapper) noexcept {
     auto swiftClosure = ReactNativeEditor::Func_void_bool_bool::fromUnsafe(swiftClosureWrapper);

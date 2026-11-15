@@ -69,7 +69,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 };
 
 export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, onScroll, onTapLine, scrollEnabled, onContentHeightChange, readOnlyKinds, minimap, lineStyles, newLineKinds, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, onScroll, onTapLine, gutterSelect, onGutterSelect, scrollEnabled, onContentHeightChange, readOnlyKinds, minimap, lineStyles, newLineKinds, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -91,6 +91,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			setLanguage: (language: string) => hybridRef.current?.applyLanguage(language),
 			showFind: (replace: boolean) => hybridRef.current?.showFind(replace),
 			goToLine: (line: number) => hybridRef.current?.goToLine(line),
+			setPickedLines: (firstLine: number, lastLine: number) => hybridRef.current?.setPickedLines(firstLine, lastLine),
 			setLineKinds: (runs) => hybridRef.current?.setLineKinds(runs.flat()),
 			replaceLines: (firstLine, count, newCount, text, runs, labels) => hybridRef.current?.replaceLines(firstLine, count, newCount, text, (runs ?? []).flat(), labels ?? []),
 			setGutterLabels: (firstLine, labels) => hybridRef.current?.setGutterLabels(firstLine, labels),
@@ -134,6 +135,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				newLineKindsJson={newLineKindsJson}
 				readOnlyKindsJson={readOnlyKindsJson}
 				isScrollEnabled={scrollEnabled ?? true}
+				isGutterSelectEnabled={gutterSelect ?? false}
 				backgroundColor={theme.background}
 				textColor={theme.text}
 				fontSizePx={theme.fontSize ?? 13}
@@ -194,6 +196,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeDirty={callback((isDirty: boolean) => onDirtyChange?.(isDirty))}
 				onChangeSelection={callback((line: number, column: number, length: number, endLine: number) => onSelectionChange?.(line, column, length, endLine))}
 				onTapLine={callback((line: number) => onTapLine?.(line))}
+				onGutterSelect={callback((firstLine: number, lastLine: number, isFinal: boolean) => onGutterSelect?.(firstLine, lastLine, isFinal))}
 				onChangeContentHeight={callback((height: number) => onContentHeightChange?.(height))}
 				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}
 				onChangeFind={callback((isOpen: boolean) => onFindChange?.(isOpen))}

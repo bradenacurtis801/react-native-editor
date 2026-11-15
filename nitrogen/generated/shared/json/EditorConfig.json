@@ -66,6 +66,8 @@
     "isScrollEnabled": true,
     "onChangeContentHeight": true,
     "onTapLine": true,
+    "isGutterSelectEnabled": true,
+    "onGutterSelect": true,
     "readOnlyKindsJson": true,
     "onChangeHistory": true,
     "onChangeFind": true,

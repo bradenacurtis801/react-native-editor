@@ -15,6 +15,7 @@
 #include <NitroModules/JNICallable.hpp>
 #include "JFunc_void_double_double_double_double.hpp"
 #include "JFunc_void_double.hpp"
+#include "JFunc_void_double_double_bool.hpp"
 #include "JFunc_void_bool_bool.hpp"
 #include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_double_double.hpp"
@@ -640,6 +641,32 @@ namespace margelo::nitro::editor {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double::javaobject> /* onTapLine */)>("setOnTapLine_cxx");
     method(_javaPart, JFunc_void_double_cxx::fromCpp(onTapLine));
   }
+  bool JHybridEditorSpec::getIsGutterSelectEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isGutterSelectEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsGutterSelectEnabled(bool isGutterSelectEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isGutterSelectEnabled */)>("setGutterSelectEnabled");
+    method(_javaPart, isGutterSelectEnabled);
+  }
+  std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> JHybridEditorSpec::getOnGutterSelect() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_bool::javaobject>()>("getOnGutterSelect_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_bool_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_bool_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double_double_bool, void(double, double, bool)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_bool::javaobject> /* onGutterSelect */)>("setOnGutterSelect_cxx");
+    method(_javaPart, JFunc_void_double_double_bool_cxx::fromCpp(onGutterSelect));
+  }
   std::string JHybridEditorSpec::getReadOnlyKindsJson() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getReadOnlyKindsJson");
     auto __result = method(_javaPart);
@@ -907,6 +934,10 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::goToLine(double line) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* line */)>("goToLine");
     method(_javaPart, line);
+  }
+  void JHybridEditorSpec::setPickedLines(double firstLine, double lastLine) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(double /* firstLine */, double /* lastLine */)>("setPickedLines");
+    method(_javaPart, firstLine, lastLine);
   }
   void JHybridEditorSpec::findText(const std::string& query, const std::string& method, bool caseSensitive) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JString> /* method */, jboolean /* caseSensitive */)>("findText");

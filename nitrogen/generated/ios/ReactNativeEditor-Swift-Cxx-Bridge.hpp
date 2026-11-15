@@ -96,6 +96,28 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_double_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>
+  /**
+   * Specialized version of `std::function<void(double, double, bool)>`.
+   */
+  using Func_void_double_double_bool = std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>;
+  /**
+   * Wrapper class for a `std::function<void(double / * firstLine * /, double / * lastLine * /, bool / * isFinal * /)>`, this can be used from Swift.
+   */
+  class Func_void_double_double_bool_Wrapper final {
+  public:
+    explicit Func_void_double_double_bool_Wrapper(std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>&& func): _function(std::make_unique<std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>>(std::move(func))) {}
+    inline void call(double firstLine, double lastLine, bool isFinal) const noexcept {
+      _function->operator()(firstLine, lastLine, isFinal);
+    }
+  private:
+    std::unique_ptr<std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_double_double_bool create_Func_void_double_double_bool(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_bool_Wrapper wrap_Func_void_double_double_bool(Func_void_double_double_bool value) noexcept {
+    return Func_void_double_double_bool_Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::function<void(bool /* canUndo */, bool /* canRedo */)>
   /**
    * Specialized version of `std::function<void(bool, bool)>`.

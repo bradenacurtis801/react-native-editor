@@ -142,6 +142,10 @@ export interface CodeEditorProps {
 	onSelectionChange?: (line: number, column: number, length: number, endLine: number) => void;
 	/** A tap on the text or the gutter, with the 1-based line it landed on. The caret moves as usual. iOS only. */
 	onTapLine?: (line: number) => void;
+	/** Whether dragging down the gutter (the line numbers) picks whole lines, drawn with kind 100 of `lineStyles` — add it there to say how. A drag that starts in the gutter takes the touch from scrolling; an edit to the text lets the pick go. Default false. iOS only. */
+	gutterSelect?: boolean;
+	/** The lines picked in the gutter changed: the 1-based `firstLine` to `lastLine` (0 and 0 for none); `isFinal` when the finger lifted. A tap on the one line picked takes the pick away. iOS only. */
+	onGutterSelect?: (firstLine: number, lastLine: number, isFinal: boolean) => void;
 	/** Whether the text scrolls on its own (default true). Off, the view is as tall as its content — give it the height `onContentHeightChange` reports — for a screen that puts it in a list whose scrolling carries it. iOS only. */
 	scrollEnabled?: boolean;
 	/** The height of all the text in points, as it changes; lines not laid out yet count as an estimate, so it can change a little as they are. iOS only. */
@@ -198,6 +202,8 @@ export interface CodeEditorHandle {
 	clearFind(): void;
 	/** Puts the caret at the start of the 1-based `line`, scrolled into view; past the end goes to the last line. */
 	goToLine(line: number): void;
+	/** Picks the 1-based lines `firstLine` to `lastLine`, as a drag in the gutter does; 0 and 0 clears the pick. iOS only. */
+	setPickedLines(firstLine: number, lastLine: number): void;
 	/** Gives lines their kind (see `lineStyles`): each run is `[firstLine, count, kind]`, lines 1-based. Every line not in a run gets none. A kind stays with its line as the text around it is edited; `setText` clears them all, so send them again after it. iOS only. */
 	setLineKinds(runs: [firstLine: number, count: number, kind: number][]): void;
 	/** Replaces `count` lines from the 1-based `firstLine` with `newCount` lines (`text`, joined by line breaks), keeping the caret, the selection and the scroll position on the text, clearing the undo history and leaving a clean buffer clean. `runs` (`[firstLine, count, kind]`, counting from 1 at the first new line) and `labels` (one gutter label per new line) are for the new lines. iOS only. */

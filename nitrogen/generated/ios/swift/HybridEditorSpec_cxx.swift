@@ -835,6 +835,36 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var isGutterSelectEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isGutterSelectEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isGutterSelectEnabled = newValue
+    }
+  }
+  
+  public final var onGutterSelect: bridge.Func_void_double_double_bool {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double_double_bool in
+        let __closureWrapper = Func_void_double_double_bool(self.__implementation.onGutterSelect)
+        return bridge.create_Func_void_double_double_bool(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onGutterSelect = { () -> (Double, Double, Bool) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double_bool(newValue)
+        return { (__firstLine: Double, __lastLine: Double, __isFinal: Bool) -> Void in
+          __wrappedFunction.call(__firstLine, __lastLine, __isFinal)
+        }
+      }()
+    }
+  }
+  
   public final var readOnlyKindsJson: std.string {
     @inline(__always)
     get {
@@ -1233,6 +1263,17 @@ open class HybridEditorSpec_cxx {
   public final func goToLine(line: Double) -> bridge.Result_void_ {
     do {
       try self.__implementation.goToLine(line: line)
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func setPickedLines(firstLine: Double, lastLine: Double) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.setPickedLines(firstLine: firstLine, lastLine: lastLine)
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

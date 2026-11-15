@@ -475,6 +475,19 @@ namespace margelo::nitro::editor {
     inline void setOnTapLine(const std::function<void(double /* line */)>& onTapLine) noexcept override {
       _swiftPart.setOnTapLine(onTapLine);
     }
+    inline bool getIsGutterSelectEnabled() noexcept override {
+      return _swiftPart.isGutterSelectEnabled();
+    }
+    inline void setIsGutterSelectEnabled(bool isGutterSelectEnabled) noexcept override {
+      _swiftPart.setIsGutterSelectEnabled(std::forward<decltype(isGutterSelectEnabled)>(isGutterSelectEnabled));
+    }
+    inline std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> getOnGutterSelect() noexcept override {
+      auto __result = _swiftPart.getOnGutterSelect();
+      return __result;
+    }
+    inline void setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) noexcept override {
+      _swiftPart.setOnGutterSelect(onGutterSelect);
+    }
     inline std::string getReadOnlyKindsJson() noexcept override {
       auto __result = _swiftPart.getReadOnlyKindsJson();
       return __result;
@@ -685,6 +698,12 @@ namespace margelo::nitro::editor {
     }
     inline void goToLine(double line) override {
       auto __result = _swiftPart.goToLine(std::forward<decltype(line)>(line));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline void setPickedLines(double firstLine, double lastLine) override {
+      auto __result = _swiftPart.setPickedLines(std::forward<decltype(firstLine)>(firstLine), std::forward<decltype(lastLine)>(lastLine));
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

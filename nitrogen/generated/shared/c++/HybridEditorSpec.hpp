@@ -170,6 +170,10 @@ namespace margelo::nitro::editor {
       virtual void setOnChangeContentHeight(const std::function<void(double /* height */)>& onChangeContentHeight) = 0;
       virtual std::function<void(double /* line */)> getOnTapLine() = 0;
       virtual void setOnTapLine(const std::function<void(double /* line */)>& onTapLine) = 0;
+      virtual bool getIsGutterSelectEnabled() = 0;
+      virtual void setIsGutterSelectEnabled(bool isGutterSelectEnabled) = 0;
+      virtual std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> getOnGutterSelect() = 0;
+      virtual void setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) = 0;
       virtual std::string getReadOnlyKindsJson() = 0;
       virtual void setReadOnlyKindsJson(const std::string& readOnlyKindsJson) = 0;
       virtual std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() = 0;
@@ -219,6 +223,7 @@ namespace margelo::nitro::editor {
       virtual void applyLanguage(const std::string& language) = 0;
       virtual void showFind(bool replace) = 0;
       virtual void goToLine(double line) = 0;
+      virtual void setPickedLines(double firstLine, double lastLine) = 0;
       virtual void findText(const std::string& query, const std::string& method, bool caseSensitive) = 0;
       virtual void findNext() = 0;
       virtual void findPrevious() = 0;

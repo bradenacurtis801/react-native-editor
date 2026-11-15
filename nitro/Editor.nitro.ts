@@ -150,6 +150,10 @@ export interface EditorProps extends HybridViewProps {
 	onChangeContentHeight: (height: number) => void;
 	/** A tap on the text or the gutter, with the 1-based line it landed on. The caret moves as usual; this is for a screen that wants the line (a bar to open, a hunk to pick). */
 	onTapLine: (line: number) => void;
+	/** Whether dragging down the gutter (the line numbers) picks whole lines, as the git sheet does: the lines picked are drawn with kind 100 of `lineStylesJson`, and `onGutterSelect` reports them. A drag that starts in the gutter takes the touch from scrolling; an edit to the text lets the pick go. @default false */
+	isGutterSelectEnabled: boolean;
+	/** The lines picked in the gutter changed: the 1-based `firstLine` to `lastLine`, both 0 for none. `isFinal` is true when the finger lifted (or the pick was cleared). A tap on the one line picked takes the pick away. */
+	onGutterSelect: (firstLine: number, lastLine: number, isFinal: boolean) => void;
 	/** JSON array of line kinds (see `lineStylesJson`) that refuse typing, pasting and deleting over them: `[2, 3]`. A change that touches such a line does nothing; `replaceLines` and `writeBuffer` still work. @default '[]' */
 	readOnlyKindsJson: string;
 	/** What undo and redo can do now — fires when either changes, so a button can enable and disable. */
@@ -217,6 +221,8 @@ export interface EditorMethods extends HybridViewMethods {
 	showFind(replace: boolean): void;
 	/** Puts the caret at the start of the 1-based `line` and scrolls to it; a line past the end goes to the last one. */
 	goToLine(line: number): void;
+	/** Picks the 1-based `firstLine` to `lastLine` (as a drag in the gutter does) — both 0 clears the pick. */
+	setPickedLines(firstLine: number, lastLine: number): void;
 	/** Starts (or changes) a find: highlights every match, selects the first at or after the caret, reports `onChangeFindResult`. `method` is contains, fullWord, startsWith, endsWith or regex. An empty query clears it. */
 	findText(query: string, method: string, caseSensitive: boolean): void;
 	/** The next / previous match, wrapping round. */

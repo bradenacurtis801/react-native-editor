@@ -72,6 +72,8 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var isScrollEnabled: Bool { get set }
   var onChangeContentHeight: (_ height: Double) -> Void { get set }
   var onTapLine: (_ line: Double) -> Void { get set }
+  var isGutterSelectEnabled: Bool { get set }
+  var onGutterSelect: (_ firstLine: Double, _ lastLine: Double, _ isFinal: Bool) -> Void { get set }
   var readOnlyKindsJson: String { get set }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
@@ -107,6 +109,7 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   func applyLanguage(language: String) throws -> Void
   func showFind(replace: Bool) throws -> Void
   func goToLine(line: Double) throws -> Void
+  func setPickedLines(firstLine: Double, lastLine: Double) throws -> Void
   func findText(query: String, method: String, caseSensitive: Bool) throws -> Void
   func findNext() throws -> Void
   func findPrevious() throws -> Void

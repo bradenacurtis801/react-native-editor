@@ -483,6 +483,133 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     set { pinch.isEnabled = newValue }
   }
 
+  /// Dragging down the gutter picks whole lines (`textView.pickedRows`, drawn natively as the finger moves), reported as `onGutterSelect`
+  /// (1-based first and last line, 0 and 0 for none). The press begins on touch-down, so the scroll views around it give the touch up.
+  private lazy var gutterPress: UILongPressGestureRecognizer = {
+    let press = UILongPressGestureRecognizer(target: self, action: #selector(gutterPressed(_:)))
+    press.minimumPressDuration = 0
+    press.allowableMovement = .greatestFiniteMagnitude
+    press.isEnabled = false
+    return press
+  }()
+  var onGutterSelect: ((Int, Int, Bool) -> Void)?
+  var isGutterSelectEnabled: Bool {
+    get { gutterPress.isEnabled }
+    set { gutterPress.isEnabled = newValue }
+  }
+  private var gutterAnchor = 0
+  private var gutterMoved = false
+  private var gutterTappedPicked = false
+
+  @objc private func gutterPressed(_ gesture: UILongPressGestureRecognizer) {
+    let line = textView.lineNumber(atContentOffsetY: gesture.location(in: textView).y)
+    switch gesture.state {
+    case .began:
+      gutterGesture = gesture
+      gutterAnchor = line
+      gutterMoved = false
+      gutterTappedPicked = textView.pickedRows == line...line
+      // A pick replaces a text selection.
+      let selected = textView.selectedRange
+      if selected.length > 0 { textView.selectedRange = NSRange(location: selected.location, length: 0) }
+      pick(line...line, isFinal: false)
+      startAutoScroll()
+    case .changed:
+      extendPick(to: line)
+    case .ended, .cancelled:
+      stopAutoScroll()
+      // A tap on the one line picked takes the pick away.
+      if !gutterMoved && gutterTappedPicked { textView.pickedRows = nil }
+      reportPick(isFinal: true)
+    default:
+      break
+    }
+  }
+
+  private func extendPick(to line: Int) {
+    let range = min(gutterAnchor, line)...max(gutterAnchor, line)
+    if range != textView.pickedRows {
+      gutterMoved = true
+      pick(range, isFinal: false)
+    }
+  }
+
+  // MARK: Scrolling while the pick is dragged
+
+  private weak var gutterGesture: UILongPressGestureRecognizer?
+  private var autoScroll: CADisplayLink?
+  /// How close to the edge of what is visible, in points, the finger starts to scroll it, and the most it scrolls in a frame.
+  private let autoScrollZone: CGFloat = 70
+  private let autoScrollMaxStep: CGFloat = 16
+
+  private func startAutoScroll() {
+    guard autoScroll == nil else { return }
+    let link = CADisplayLink(target: self, selector: #selector(autoScrollTick))
+    link.add(to: .main, forMode: .common)
+    autoScroll = link
+  }
+
+  private func stopAutoScroll() {
+    autoScroll?.invalidate()
+    autoScroll = nil
+    gutterGesture = nil
+  }
+
+  /// What scrolls the text: the text view itself, or — when it is as tall as its text and a list carries it (`isScrollEnabled` off) — the
+  /// scroll view it sits in.
+  private func scrollTarget() -> UIScrollView? {
+    if textView.isScrollEnabled { return textView }
+    var view = textView.superview
+    while let current = view {
+      if let scroll = current as? UIScrollView { return scroll }
+      view = current.superview
+    }
+    return nil
+  }
+
+  @objc private func autoScrollTick() {
+    guard let gesture = gutterGesture, gesture.state == .began || gesture.state == .changed, let scroll = scrollTarget(), let host = scroll.superview else {
+      return
+    }
+    // The finger against the visible part of what scrolls, both in the coordinates of its parent.
+    let y = gesture.location(in: host).y
+    let top = scroll.frame.minY + autoScrollZone
+    let bottom = scroll.frame.maxY - autoScrollZone
+    var step: CGFloat = 0
+    if y > bottom {
+      step = min((y - bottom) / autoScrollZone, 1.5) / 1.5 * autoScrollMaxStep
+    } else if y < top {
+      step = -min((top - y) / autoScrollZone, 1.5) / 1.5 * autoScrollMaxStep
+    }
+    guard step != 0 else { return }
+    let lowest = -scroll.adjustedContentInset.top
+    let highest = max(lowest, scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)
+    let next = min(max(scroll.contentOffset.y + step, lowest), highest)
+    guard next != scroll.contentOffset.y else { return }
+    scroll.contentOffset.y = next
+    // The text moved under the finger: the line it is on is another.
+    extendPick(to: textView.lineNumber(atContentOffsetY: gesture.location(in: textView).y))
+  }
+
+  func pick(_ rows: ClosedRange<Int>?, isFinal: Bool) {
+    textView.pickedRows = rows
+    reportPick(isFinal: isFinal)
+  }
+
+  private func reportPick(isFinal: Bool) {
+    if let rows = textView.pickedRows {
+      onGutterSelect?(rows.lowerBound + 1, rows.upperBound + 1, isFinal)
+    } else {
+      onGutterSelect?(0, 0, isFinal)
+    }
+  }
+
+  /// Only a touch in the gutter begins the pick.
+  override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard gestureRecognizer === gutterPress else { return super.gestureRecognizerShouldBegin(gestureRecognizer) }
+    return gestureRecognizer.location(in: self).x < textView.gutterWidth + textView.safeAreaInsets.left
+  }
+
   @objc private func tapped(_ gesture: UITapGestureRecognizer) {
     guard gesture.state == .ended, let onTapLine else { return }
     onTapLine(textView.lineNumber(atContentOffsetY: gesture.location(in: textView).y) + 1)
@@ -503,7 +630,10 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     }
   }
 
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
+    // The gutter pick has the touch to itself: no scrolling, tapping or text selection along with it.
+    gestureRecognizer !== gutterPress && other !== gutterPress
+  }
   private var baselineText = ""
   private var isDirty = false
   var onDirtyChange: ((Bool) -> Void)?
@@ -582,6 +712,8 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     pinch.delegate = self
     pinch.isEnabled = false
     textView.addGestureRecognizer(pinch)
+    gutterPress.delegate = self
+    textView.addGestureRecognizer(gutterPress)
     let tap = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
     tap.cancelsTouchesInView = false
     tap.delegate = self
@@ -885,10 +1017,14 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   }
 
   func textViewDidChangeSelection(_ textView: TextView) {
+    // Selecting text replaces a pick of lines.
+    if textView.selectedRange.length > 0, self.textView.pickedRows != nil { pick(nil, isFinal: true) }
     reportSelection()
   }
 
   func textViewDidChange(_ textView: TextView) {
+    // Lines picked in the gutter are lines of the text as it was: an edit lets them go.
+    if self.textView.pickedRows != nil { pick(nil, isFinal: true) }
     reportSelection()
     reportHistory()
     refreshFindSoon()
@@ -1051,6 +1187,7 @@ class HybridEditor: HybridEditorSpec {
       self?.onChangeDirty(isDirty)
     }
     container.onTapLine = { [weak self] line in self?.onTapLine(Double(line)) }
+    container.onGutterSelect = { [weak self] first, last, isFinal in self?.onGutterSelect(Double(first), Double(last), isFinal) }
     container.onContentHeight = { [weak self] height in self?.onChangeContentHeight(height) }
     container.onSelectionChange = { [weak self] line, column, length, endLine in
       self?.onChangeSelection(Double(line), Double(column), Double(length), Double(endLine))
@@ -1139,6 +1276,8 @@ class HybridEditor: HybridEditorSpec {
   var onChangeDirty: (_ isDirty: Bool) -> Void = { _ in }
   var onChangeSelection: (_ line: Double, _ column: Double, _ length: Double, _ endLine: Double) -> Void = { _, _, _, _ in }
   var onTapLine: (_ line: Double) -> Void = { _ in }
+  var isGutterSelectEnabled: Bool = false
+  var onGutterSelect: (_ firstLine: Double, _ lastLine: Double, _ isFinal: Bool) -> Void = { _, _, _ in }
   var isScrollEnabled: Bool = true
   var onChangeContentHeight: (_ height: Double) -> Void = { _ in }
   var readOnlyKindsJson: String = "[]"
@@ -1188,6 +1327,7 @@ class HybridEditor: HybridEditorSpec {
       applyTheme(fontSize: CGFloat(fontSizePx), replacing: hasConfigured)
     }
     container.isZoomEnabled = pinchToZoom
+    container.isGutterSelectEnabled = isGutterSelectEnabled
     let bg = UIColor(hex: backgroundColor)
     container.backgroundColor = bg
     container.textView.backgroundColor = bg
@@ -1396,6 +1536,8 @@ class HybridEditor: HybridEditorSpec {
     let textView = container.textView
     textView.lineDecorationForNewLine = { newKinds[$0] ?? $0 }
     textView.lineDecorationStyles = styles
+    // Kind 100 is how a line picked in the gutter looks.
+    textView.pickedLineStyle = styles[100]
     container.refreshMinimap()
   }
 
@@ -1445,6 +1587,15 @@ class HybridEditor: HybridEditorSpec {
 
   func markClean() throws {
     onMain { [weak self] in self?.container.markClean() }
+  }
+
+  func setPickedLines(firstLine: Double, lastLine: Double) throws {
+    onMain { [weak self] in
+      guard let self else { return }
+      let first = Int(firstLine) - 1
+      let last = Int(lastLine) - 1
+      self.container.pick(first >= 0 && last >= first ? first...last : nil, isFinal: true)
+    }
   }
 
   func goToLine(line: Double) throws {

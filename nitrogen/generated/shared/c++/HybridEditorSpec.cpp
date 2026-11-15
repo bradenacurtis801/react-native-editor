@@ -138,6 +138,10 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("onChangeContentHeight", &HybridEditorSpec::setOnChangeContentHeight);
       prototype.registerHybridGetter("onTapLine", &HybridEditorSpec::getOnTapLine);
       prototype.registerHybridSetter("onTapLine", &HybridEditorSpec::setOnTapLine);
+      prototype.registerHybridGetter("isGutterSelectEnabled", &HybridEditorSpec::getIsGutterSelectEnabled);
+      prototype.registerHybridSetter("isGutterSelectEnabled", &HybridEditorSpec::setIsGutterSelectEnabled);
+      prototype.registerHybridGetter("onGutterSelect", &HybridEditorSpec::getOnGutterSelect);
+      prototype.registerHybridSetter("onGutterSelect", &HybridEditorSpec::setOnGutterSelect);
       prototype.registerHybridGetter("readOnlyKindsJson", &HybridEditorSpec::getReadOnlyKindsJson);
       prototype.registerHybridSetter("readOnlyKindsJson", &HybridEditorSpec::setReadOnlyKindsJson);
       prototype.registerHybridGetter("onChangeHistory", &HybridEditorSpec::getOnChangeHistory);
@@ -184,6 +188,7 @@ namespace margelo::nitro::editor {
       prototype.registerHybridMethod("applyLanguage", &HybridEditorSpec::applyLanguage);
       prototype.registerHybridMethod("showFind", &HybridEditorSpec::showFind);
       prototype.registerHybridMethod("goToLine", &HybridEditorSpec::goToLine);
+      prototype.registerHybridMethod("setPickedLines", &HybridEditorSpec::setPickedLines);
       prototype.registerHybridMethod("findText", &HybridEditorSpec::findText);
       prototype.registerHybridMethod("findNext", &HybridEditorSpec::findNext);
       prototype.registerHybridMethod("findPrevious", &HybridEditorSpec::findPrevious);

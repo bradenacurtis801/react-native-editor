@@ -174,6 +174,10 @@ namespace margelo::nitro::editor {
     void setOnChangeContentHeight(const std::function<void(double /* height */)>& onChangeContentHeight) override;
     std::function<void(double /* line */)> getOnTapLine() override;
     void setOnTapLine(const std::function<void(double /* line */)>& onTapLine) override;
+    bool getIsGutterSelectEnabled() override;
+    void setIsGutterSelectEnabled(bool isGutterSelectEnabled) override;
+    std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> getOnGutterSelect() override;
+    void setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) override;
     std::string getReadOnlyKindsJson() override;
     void setReadOnlyKindsJson(const std::string& readOnlyKindsJson) override;
     std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() override;
@@ -223,6 +227,7 @@ namespace margelo::nitro::editor {
     void applyLanguage(const std::string& language) override;
     void showFind(bool replace) override;
     void goToLine(double line) override;
+    void setPickedLines(double firstLine, double lastLine) override;
     void findText(const std::string& query, const std::string& method, bool caseSensitive) override;
     void findNext() override;
     void findPrevious() override;

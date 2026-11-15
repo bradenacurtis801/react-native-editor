@@ -434,6 +434,26 @@ abstract class HybridEditorSpec: HybridView() {
   @get:Keep
   @set:DoNotStrip
   @set:Keep
+  abstract var isGutterSelectEnabled: Boolean
+  
+  abstract var onGutterSelect: (firstLine: Double, lastLine: Double, isFinal: Boolean) -> Unit
+  
+  private var onGutterSelect_cxx: Func_void_double_double_bool
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_double_bool_java(onGutterSelect)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onGutterSelect = value
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
   abstract var readOnlyKindsJson: String
   
   abstract var onChangeHistory: (canUndo: Boolean, canRedo: Boolean) -> Unit
@@ -628,6 +648,10 @@ abstract class HybridEditorSpec: HybridView() {
   @DoNotStrip
   @Keep
   abstract fun goToLine(line: Double): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun setPickedLines(firstLine: Double, lastLine: Double): Unit
   
   @DoNotStrip
   @Keep

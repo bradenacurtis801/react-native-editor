@@ -35,6 +35,7 @@ export const FallbackCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 			replaceAllMatches: () => {},
 			clearFind: () => {},
 			goToLine: () => {},
+			setPickedLines: () => {},
 			setLineKinds: () => {},
 			replaceLines: () => {},
 			setGutterLabels: () => {},
