@@ -16,6 +16,7 @@
 #include "JFunc_void_double_double_double_double.hpp"
 #include "JFunc_void_double.hpp"
 #include "JFunc_void_double_double_bool.hpp"
+#include "JFunc_void_double_double_double_bool.hpp"
 #include "JFunc_void_bool_bool.hpp"
 #include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_double_double.hpp"
@@ -666,6 +667,32 @@ namespace margelo::nitro::editor {
   void JHybridEditorSpec::setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_bool::javaobject> /* onGutterSelect */)>("setOnGutterSelect_cxx");
     method(_javaPart, JFunc_void_double_double_bool_cxx::fromCpp(onGutterSelect));
+  }
+  bool JHybridEditorSpec::getIsLineTouchEnabled() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isLineTouchEnabled");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  void JHybridEditorSpec::setIsLineTouchEnabled(bool isLineTouchEnabled) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jboolean /* isLineTouchEnabled */)>("setLineTouchEnabled");
+    method(_javaPart, isLineTouchEnabled);
+  }
+  std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)> JHybridEditorSpec::getOnLineTouch() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_double_double_double_bool::javaobject>()>("getOnLineTouch_cxx");
+    auto __result = method(_javaPart);
+    return [&]() -> std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)> {
+      if (__result->isInstanceOf(JFunc_void_double_double_double_bool_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_double_double_double_bool_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_double_double_double_bool, void(double, double, double, bool)>(std::move(__resultRef));
+      }
+    }();
+  }
+  void JHybridEditorSpec::setOnLineTouch(const std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>& onLineTouch) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_double_double_double_bool::javaobject> /* onLineTouch */)>("setOnLineTouch_cxx");
+    method(_javaPart, JFunc_void_double_double_double_bool_cxx::fromCpp(onLineTouch));
   }
   std::string JHybridEditorSpec::getReadOnlyKindsJson() {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getReadOnlyKindsJson");

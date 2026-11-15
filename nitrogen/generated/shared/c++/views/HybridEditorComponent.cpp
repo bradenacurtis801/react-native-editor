@@ -666,6 +666,26 @@ namespace margelo::nitro::editor::views {
         throw std::runtime_error(std::string("Editor.onGutterSelect: ") + exc.what());
       }
     }()),
+    isLineTouchEnabled([&]() -> CachedProp<bool> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("isLineTouchEnabled", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.isLineTouchEnabled;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<bool>::fromRawValue(*runtime, value, sourceProps.isLineTouchEnabled);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.isLineTouchEnabled: ") + exc.what());
+      }
+    }()),
+    onLineTouch([&]() -> CachedProp<std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onLineTouch", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onLineTouch;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onLineTouch);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("Editor.onLineTouch: ") + exc.what());
+      }
+    }()),
     readOnlyKindsJson([&]() -> CachedProp<std::string> {
       try {
         const react::RawValue* rawValue = rawProps.at("readOnlyKindsJson", nullptr, nullptr);
@@ -873,6 +893,8 @@ namespace margelo::nitro::editor::views {
       case hashString("onTapLine"): return true;
       case hashString("isGutterSelectEnabled"): return true;
       case hashString("onGutterSelect"): return true;
+      case hashString("isLineTouchEnabled"): return true;
+      case hashString("onLineTouch"): return true;
       case hashString("readOnlyKindsJson"): return true;
       case hashString("onChangeHistory"): return true;
       case hashString("onChangeFind"): return true;

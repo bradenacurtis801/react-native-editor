@@ -142,6 +142,10 @@ namespace margelo::nitro::editor {
       prototype.registerHybridSetter("isGutterSelectEnabled", &HybridEditorSpec::setIsGutterSelectEnabled);
       prototype.registerHybridGetter("onGutterSelect", &HybridEditorSpec::getOnGutterSelect);
       prototype.registerHybridSetter("onGutterSelect", &HybridEditorSpec::setOnGutterSelect);
+      prototype.registerHybridGetter("isLineTouchEnabled", &HybridEditorSpec::getIsLineTouchEnabled);
+      prototype.registerHybridSetter("isLineTouchEnabled", &HybridEditorSpec::setIsLineTouchEnabled);
+      prototype.registerHybridGetter("onLineTouch", &HybridEditorSpec::getOnLineTouch);
+      prototype.registerHybridSetter("onLineTouch", &HybridEditorSpec::setOnLineTouch);
       prototype.registerHybridGetter("readOnlyKindsJson", &HybridEditorSpec::getReadOnlyKindsJson);
       prototype.registerHybridSetter("readOnlyKindsJson", &HybridEditorSpec::setReadOnlyKindsJson);
       prototype.registerHybridGetter("onChangeHistory", &HybridEditorSpec::getOnChangeHistory);

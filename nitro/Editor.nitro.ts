@@ -154,6 +154,10 @@ export interface EditorProps extends HybridViewProps {
 	isGutterSelectEnabled: boolean;
 	/** The lines picked in the gutter changed: the 1-based `firstLine` to `lastLine`, both 0 for none. `isFinal` is true when the finger lifted (or the pick was cleared). A tap on the one line picked takes the pick away. */
 	onGutterSelect: (firstLine: number, lastLine: number, isFinal: boolean) => void;
+	/** Whether a touch on the text reports the line it is on (`onLineTouch`), for a screen that shows something over a line. Off by default: no touch costs a call into JS. @default false */
+	isLineTouchEnabled: boolean;
+	/** A tap, or a finger held still for a moment, on a line: its 1-based `line`, and its `top` and `bottom` in this view's own coordinates (points; a wrapped line spans all its rows). `cancelled` (the rest 0) when that touch became a drag or the text scrolled — what was shown over the line should go. */
+	onLineTouch: (line: number, top: number, bottom: number, cancelled: boolean) => void;
 	/** JSON array of line kinds (see `lineStylesJson`) that refuse typing, pasting and deleting over them: `[2, 3]`. A change that touches such a line does nothing; `replaceLines` and `writeBuffer` still work. @default '[]' */
 	readOnlyKindsJson: string;
 	/** What undo and redo can do now — fires when either changes, so a button can enable and disable. */

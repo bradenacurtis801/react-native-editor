@@ -118,6 +118,28 @@ namespace margelo::nitro::editor::bridge::swift {
     return Func_void_double_double_bool_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>
+  /**
+   * Specialized version of `std::function<void(double, double, double, bool)>`.
+   */
+  using Func_void_double_double_double_bool = std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>;
+  /**
+   * Wrapper class for a `std::function<void(double / * line * /, double / * top * /, double / * bottom * /, bool / * cancelled * /)>`, this can be used from Swift.
+   */
+  class Func_void_double_double_double_bool_Wrapper final {
+  public:
+    explicit Func_void_double_double_double_bool_Wrapper(std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>&& func): _function(std::make_unique<std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>>(std::move(func))) {}
+    inline void call(double line, double top, double bottom, bool cancelled) const noexcept {
+      _function->operator()(line, top, bottom, cancelled);
+    }
+  private:
+    std::unique_ptr<std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_double_double_double_bool create_Func_void_double_double_double_bool(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_double_double_double_bool_Wrapper wrap_Func_void_double_double_double_bool(Func_void_double_double_double_bool value) noexcept {
+    return Func_void_double_double_double_bool_Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::function<void(bool /* canUndo */, bool /* canRedo */)>
   /**
    * Specialized version of `std::function<void(bool, bool)>`.

@@ -20,6 +20,7 @@
 #include "JFunc_void_double_double_double_double.hpp"
 #include "JFunc_void_double.hpp"
 #include "JFunc_void_double_double_bool.hpp"
+#include "JFunc_void_double_double_double_bool.hpp"
 #include "JFunc_void_bool_bool.hpp"
 #include "JFunc_void_double_double_double.hpp"
 #include "JFunc_void_double_double.hpp"
@@ -53,6 +54,7 @@ void registerAllNatives() {
   margelo::nitro::editor::JFunc_void_double_double_double_double_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_double_bool_cxx::registerNatives();
+  margelo::nitro::editor::JFunc_void_double_double_double_bool_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_bool_bool_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_double_double_cxx::registerNatives();
   margelo::nitro::editor::JFunc_void_double_double_cxx::registerNatives();

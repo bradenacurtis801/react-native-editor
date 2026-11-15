@@ -454,6 +454,26 @@ abstract class HybridEditorSpec: HybridView() {
   @get:Keep
   @set:DoNotStrip
   @set:Keep
+  abstract var isLineTouchEnabled: Boolean
+  
+  abstract var onLineTouch: (line: Double, top: Double, bottom: Double, cancelled: Boolean) -> Unit
+  
+  private var onLineTouch_cxx: Func_void_double_double_double_bool
+    @Keep
+    @DoNotStrip
+    get() {
+      return Func_void_double_double_double_bool_java(onLineTouch)
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onLineTouch = value
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
   abstract var readOnlyKindsJson: String
   
   abstract var onChangeHistory: (canUndo: Boolean, canRedo: Boolean) -> Unit

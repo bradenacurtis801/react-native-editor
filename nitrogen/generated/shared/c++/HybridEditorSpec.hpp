@@ -174,6 +174,10 @@ namespace margelo::nitro::editor {
       virtual void setIsGutterSelectEnabled(bool isGutterSelectEnabled) = 0;
       virtual std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)> getOnGutterSelect() = 0;
       virtual void setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) = 0;
+      virtual bool getIsLineTouchEnabled() = 0;
+      virtual void setIsLineTouchEnabled(bool isLineTouchEnabled) = 0;
+      virtual std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)> getOnLineTouch() = 0;
+      virtual void setOnLineTouch(const std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>& onLineTouch) = 0;
       virtual std::string getReadOnlyKindsJson() = 0;
       virtual void setReadOnlyKindsJson(const std::string& readOnlyKindsJson) = 0;
       virtual std::function<void(bool /* canUndo */, bool /* canRedo */)> getOnChangeHistory() = 0;

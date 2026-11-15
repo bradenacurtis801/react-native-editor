@@ -488,6 +488,19 @@ namespace margelo::nitro::editor {
     inline void setOnGutterSelect(const std::function<void(double /* firstLine */, double /* lastLine */, bool /* isFinal */)>& onGutterSelect) noexcept override {
       _swiftPart.setOnGutterSelect(onGutterSelect);
     }
+    inline bool getIsLineTouchEnabled() noexcept override {
+      return _swiftPart.isLineTouchEnabled();
+    }
+    inline void setIsLineTouchEnabled(bool isLineTouchEnabled) noexcept override {
+      _swiftPart.setIsLineTouchEnabled(std::forward<decltype(isLineTouchEnabled)>(isLineTouchEnabled));
+    }
+    inline std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)> getOnLineTouch() noexcept override {
+      auto __result = _swiftPart.getOnLineTouch();
+      return __result;
+    }
+    inline void setOnLineTouch(const std::function<void(double /* line */, double /* top */, double /* bottom */, bool /* cancelled */)>& onLineTouch) noexcept override {
+      _swiftPart.setOnLineTouch(onLineTouch);
+    }
     inline std::string getReadOnlyKindsJson() noexcept override {
       auto __result = _swiftPart.getReadOnlyKindsJson();
       return __result;

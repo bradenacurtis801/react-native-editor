@@ -153,6 +153,10 @@ export interface CodeEditorProps {
 	gutterSelect?: boolean;
 	/** The lines picked in the gutter changed: the 1-based `firstLine` to `lastLine` (0 and 0 for none); `isFinal` when the finger lifted. A tap on the one line picked takes the pick away. iOS only. */
 	onGutterSelect?: (firstLine: number, lastLine: number, isFinal: boolean) => void;
+	/** Report the line a touch is on (`onLineTouch`). Off by default. iOS only. */
+	lineTouch?: boolean;
+	/** A tap, or a finger held still for a moment, on a line: its 1-based `line`, and its `top` and `bottom` in the editor's own coordinates (points; a wrapped line spans all its rows). `cancelled` (the rest 0) when the touch became a drag or the text scrolled — what was shown over the line should go. iOS only. */
+	onLineTouch?: (line: number, top: number, bottom: number, cancelled: boolean) => void;
 	/** Whether the text scrolls on its own (default true). Off, the view is as tall as its content — give it the height `onContentHeightChange` reports — for a screen that puts it in a list whose scrolling carries it. iOS only. */
 	scrollEnabled?: boolean;
 	/** The height of all the text in points, as it changes; lines not laid out yet count as an estimate, so it can change a little as they are. iOS only. */

@@ -865,6 +865,36 @@ open class HybridEditorSpec_cxx {
     }
   }
   
+  public final var isLineTouchEnabled: Bool {
+    @inline(__always)
+    get {
+      return self.__implementation.isLineTouchEnabled
+    }
+    @inline(__always)
+    set {
+      self.__implementation.isLineTouchEnabled = newValue
+    }
+  }
+  
+  public final var onLineTouch: bridge.Func_void_double_double_double_bool {
+    @inline(__always)
+    get {
+      return { () -> bridge.Func_void_double_double_double_bool in
+        let __closureWrapper = Func_void_double_double_double_bool(self.__implementation.onLineTouch)
+        return bridge.create_Func_void_double_double_double_bool(__closureWrapper.toUnsafe())
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onLineTouch = { () -> (Double, Double, Double, Bool) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_double_double_double_bool(newValue)
+        return { (__line: Double, __top: Double, __bottom: Double, __cancelled: Bool) -> Void in
+          __wrappedFunction.call(__line, __top, __bottom, __cancelled)
+        }
+      }()
+    }
+  }
+  
   public final var readOnlyKindsJson: std.string {
     @inline(__always)
     get {

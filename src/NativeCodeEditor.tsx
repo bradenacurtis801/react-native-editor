@@ -69,7 +69,7 @@ const SETTINGS_DEFAULTS: Required<Omit<CodeEditorSettings, 'indentation' | 'inse
 };
 
 export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
-	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, onScroll, onTapLine, gutterSelect, onGutterSelect, scrollEnabled, onContentHeightChange, readOnlyKinds, minimap, lineStyles, newLineKinds, style }, ref) => {
+	({ initialText, language, editable = true, theme, settings, onDirtyChange, onSelectionChange, onHistoryChange, onFindChange, onFindResult, onFontSizeChange, onScroll, onTapLine, gutterSelect, onGutterSelect, lineTouch, onLineTouch, scrollEnabled, onContentHeightChange, readOnlyKinds, minimap, lineStyles, newLineKinds, style }, ref) => {
 		// The React `ref` on a Nitro HostComponent is just the RN view instance
 		// (no custom methods) — `readBuffer`/`writeBuffer` live on the
 		// HybridObject, reached separately via `hybridRef`. See getHostComponent.ts.
@@ -137,6 +137,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				readOnlyKindsJson={readOnlyKindsJson}
 				isScrollEnabled={scrollEnabled ?? true}
 				isGutterSelectEnabled={gutterSelect ?? false}
+				isLineTouchEnabled={lineTouch ?? false}
 				backgroundColor={theme.background}
 				textColor={theme.text}
 				fontSizePx={theme.fontSize ?? 13}
@@ -197,6 +198,7 @@ export const NativeCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
 				onChangeDirty={callback((isDirty: boolean) => onDirtyChange?.(isDirty))}
 				onChangeSelection={callback((line: number, column: number, length: number, endLine: number) => onSelectionChange?.(line, column, length, endLine))}
 				onTapLine={callback((line: number) => onTapLine?.(line))}
+				onLineTouch={callback((line: number, top: number, bottom: number, cancelled: boolean) => onLineTouch?.(line, top, bottom, cancelled))}
 				onGutterSelect={callback((firstLine: number, lastLine: number, isFinal: boolean) => onGutterSelect?.(firstLine, lastLine, isFinal))}
 				onChangeContentHeight={callback((height: number) => onContentHeightChange?.(height))}
 				onChangeHistory={callback((canUndo: boolean, canRedo: boolean) => onHistoryChange?.(canUndo, canRedo))}

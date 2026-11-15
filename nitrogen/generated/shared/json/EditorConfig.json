@@ -68,6 +68,8 @@
     "onTapLine": true,
     "isGutterSelectEnabled": true,
     "onGutterSelect": true,
+    "isLineTouchEnabled": true,
+    "onLineTouch": true,
     "readOnlyKindsJson": true,
     "onChangeHistory": true,
     "onChangeFind": true,

@@ -545,6 +545,87 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     return press
   }()
   var onGutterSelect: ((Int, Int, Bool) -> Void)?
+  // MARK: Line touch
+  //
+  // Reports where a line is when it is touched, so whoever uses the editor can show something over it (a menu, buttons). A tap, or a finger
+  // held still for a moment, is one touch; a finger that moves, or text that scrolls, is a cancel. Nothing is drawn here.
+
+  /// `(line, top, bottom, cancelled)`: the 1-based line and its top and bottom in this view's coordinates; `cancelled` (the rest 0) when the touch
+  /// became a drag or the text scrolled.
+  var onLineTouch: ((Int, CGFloat, CGFloat, Bool) -> Void)?
+  var isLineTouchEnabled: Bool {
+    get { lineTouch.isEnabled }
+    set { lineTouch.isEnabled = newValue }
+  }
+  private var lineTouchStart: CGPoint = .zero
+  private var lineTouchMoved = false
+  private var lineTouchReported = false
+  private var lineTouchRow = 0
+  private var lineTouchWork: DispatchWorkItem?
+  private var offsetObserver: NSKeyValueObservation?
+
+  private lazy var lineTouch: UILongPressGestureRecognizer = {
+    let press = UILongPressGestureRecognizer(target: self, action: #selector(lineTouched(_:)))
+    press.minimumPressDuration = 0
+    press.allowableMovement = .greatestFiniteMagnitude
+    press.cancelsTouchesInView = false
+    press.isEnabled = false
+    return press
+  }()
+
+  private func installLineTouch() {
+    lineTouch.delegate = self
+    textView.addGestureRecognizer(lineTouch)
+    // Scrolling moves the lines from under what was shown.
+    offsetObserver = textView.observe(\.contentOffset) { [weak self] _, _ in
+      if self?.lineTouchReported == true { self?.cancelLineTouch() }
+    }
+  }
+
+  private func reportLineTouch() {
+    guard !lineTouchMoved, !lineTouchReported else { return }
+    lineTouchReported = true
+    let row = lineTouchRow
+    let offsetY = textView.contentOffset.y - textView.frame.minY
+    let top = textView.contentOffsetY(ofLine: row) - offsetY
+    let end = row + 1 < textView.lineCount ? textView.contentOffsetY(ofLine: row + 1) : textView.contentSize.height
+    onLineTouch?(row + 1, top, end - offsetY, false)
+  }
+
+  private func cancelLineTouch() {
+    lineTouchWork?.cancel()
+    guard lineTouchReported else { return }
+    lineTouchReported = false
+    onLineTouch?(0, 0, 0, true)
+  }
+
+  @objc private func lineTouched(_ gesture: UILongPressGestureRecognizer) {
+    switch gesture.state {
+    case .began:
+      lineTouchStart = gesture.location(in: self)
+      lineTouchMoved = false
+      lineTouchReported = false
+      lineTouchRow = textView.lineNumber(atContentOffsetY: gesture.location(in: textView).y)
+      // A held touch is reported soon; a tap, as it lifts.
+      let work = DispatchWorkItem { [weak self] in self?.reportLineTouch() }
+      lineTouchWork = work
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: work)
+    case .changed:
+      let at = gesture.location(in: self)
+      if hypot(at.x - lineTouchStart.x, at.y - lineTouchStart.y) > 10 {
+        // A drag is a scroll or a selection, not a touch on a line.
+        lineTouchMoved = true
+        cancelLineTouch()
+      }
+    case .ended:
+      lineTouchWork?.cancel()
+      reportLineTouch()
+    case .cancelled:
+      cancelLineTouch()
+    default:
+      break
+    }
+  }
   var isGutterSelectEnabled: Bool {
     get { gutterPress.isEnabled }
     set { gutterPress.isEnabled = newValue }
@@ -683,8 +764,10 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   }
 
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
+    // A line touch only reports, and goes along with everything.
+    if gestureRecognizer === lineTouch || other === lineTouch { return true }
     // The gutter pick has the touch to itself: no scrolling, tapping or text selection along with it.
-    gestureRecognizer !== gutterPress && other !== gutterPress
+    return gestureRecognizer !== gutterPress && other !== gutterPress
   }
   private var baselineText = ""
   private var isDirty = false
@@ -762,6 +845,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     minimap.isHidden = true
     minimap.onScrub = { [weak self] row, centered in self?.scrub(toLine: row, centered: centered) }
     pinch.delegate = self
+    installLineTouch()
     pinch.isEnabled = false
     textView.addGestureRecognizer(pinch)
     gutterPress.delegate = self
@@ -1077,6 +1161,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   func textViewDidChange(_ textView: TextView) {
     // Lines picked in the gutter are lines of the text as it was: an edit lets them go.
     if self.textView.pickedRows != nil { pick(nil, isFinal: true) }
+    cancelLineTouch()
     reportSelection()
     reportHistory()
     refreshFindSoon()
@@ -1240,6 +1325,7 @@ class HybridEditor: HybridEditorSpec {
     }
     container.onTapLine = { [weak self] line in self?.onTapLine(Double(line)) }
     container.onGutterSelect = { [weak self] first, last, isFinal in self?.onGutterSelect(Double(first), Double(last), isFinal) }
+    container.onLineTouch = { [weak self] line, top, bottom, cancelled in self?.onLineTouch(Double(line), Double(top), Double(bottom), cancelled) }
     container.onContentHeight = { [weak self] height in self?.onChangeContentHeight(height) }
     container.onSelectionChange = { [weak self] line, column, length, endLine in
       self?.onChangeSelection(Double(line), Double(column), Double(length), Double(endLine))
@@ -1330,6 +1416,8 @@ class HybridEditor: HybridEditorSpec {
   var onTapLine: (_ line: Double) -> Void = { _ in }
   var isGutterSelectEnabled: Bool = false
   var onGutterSelect: (_ firstLine: Double, _ lastLine: Double, _ isFinal: Bool) -> Void = { _, _, _ in }
+  var isLineTouchEnabled: Bool = false
+  var onLineTouch: (_ line: Double, _ top: Double, _ bottom: Double, _ cancelled: Bool) -> Void = { _, _, _, _ in }
   var isScrollEnabled: Bool = true
   var onChangeContentHeight: (_ height: Double) -> Void = { _ in }
   var readOnlyKindsJson: String = "[]"
@@ -1380,6 +1468,7 @@ class HybridEditor: HybridEditorSpec {
     }
     container.isZoomEnabled = pinchToZoom
     container.isGutterSelectEnabled = isGutterSelectEnabled
+    container.isLineTouchEnabled = isLineTouchEnabled
     let bg = UIColor(hex: backgroundColor)
     container.backgroundColor = bg
     container.textView.backgroundColor = bg

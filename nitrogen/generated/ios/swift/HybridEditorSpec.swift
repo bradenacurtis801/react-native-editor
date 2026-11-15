@@ -74,6 +74,8 @@ public protocol HybridEditorSpec_protocol: HybridObject, HybridView {
   var onTapLine: (_ line: Double) -> Void { get set }
   var isGutterSelectEnabled: Bool { get set }
   var onGutterSelect: (_ firstLine: Double, _ lastLine: Double, _ isFinal: Bool) -> Void { get set }
+  var isLineTouchEnabled: Bool { get set }
+  var onLineTouch: (_ line: Double, _ top: Double, _ bottom: Double, _ cancelled: Bool) -> Void { get set }
   var readOnlyKindsJson: String { get set }
   var onChangeHistory: (_ canUndo: Bool, _ canRedo: Bool) -> Void { get set }
   var onChangeFind: (_ isOpen: Bool) -> Void { get set }
