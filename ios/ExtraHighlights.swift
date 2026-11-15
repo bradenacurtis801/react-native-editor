@@ -8,6 +8,11 @@
 /// - `variable.module`: the names of modules in an import.
 /// - `type.class`: the class a class extends.
 /// - `variable.builtin`: `self` and `cls` in Python.
+/// - `type.class` / `constant.name`: a class being instantiated (`new Foo()`, `Foo()`), and an ALL_CAPS name — both are captured by the preset
+///   as `constructor` / `constant`, which tie with its catch-all `variable` in the same way.
+/// - `function.call` / `function.definition`: the same names the preset already captures as plain `function`, but with a name of two parts.
+///   The presets' own queries end with `(identifier) @variable`, which captures the very same text with the same number of name parts, and
+///   Runestone breaks that tie by capture order — so a function's name could come out as a variable. A longer name always wins.
 enum ExtraHighlights {
   static let queries: [String: String] = [
     "python": python,
@@ -27,6 +32,10 @@ enum ExtraHighlights {
   ((identifier) @variable.builtin (#match? @variable.builtin "^(self|cls)$"))
   (class_definition name: (identifier) @type.class)
   (class_definition superclasses: (argument_list (identifier) @type.class))
+  (function_definition name: (identifier) @function.definition)
+  (call function: (identifier) @function.call (#not-match? @function.call "^[A-Z]"))
+  (call function: (identifier) @type.class (#match? @type.class "^[A-Z]"))
+  ((identifier) @constant.name (#match? @constant.name "^[A-Z][A-Z_0-9]+$"))
   """
 
   private static let javaScript = """
@@ -35,6 +44,14 @@ enum ExtraHighlights {
   (namespace_import (identifier) @variable.module)
   ["const" "let" "var" "function" "class" "extends" "new" "typeof" "instanceof" "in" "of" "delete" "async" "static" "get" "set"] @keyword.storage
   (class_heritage (identifier) @type.class)
+  (function name: (identifier) @function.definition)
+  (function_declaration name: (identifier) @function.definition)
+  (variable_declarator name: (identifier) @function.definition value: [(function) (arrow_function)])
+  (assignment_expression left: (identifier) @function.definition right: [(function) (arrow_function)])
+  (call_expression function: (identifier) @function.call (#not-match? @function.call "^[A-Z]"))
+  (call_expression function: (identifier) @type.class (#match? @type.class "^[A-Z]"))
+  (new_expression constructor: (identifier) @type.class)
+  ((identifier) @constant.name (#match? @constant.name "^[A-Z][A-Z_0-9]+$"))
   """
 
   private static let typeScript = """
@@ -43,5 +60,13 @@ enum ExtraHighlights {
   (namespace_import (identifier) @variable.module)
   ["const" "let" "var" "function" "class" "extends" "new" "typeof" "instanceof" "in" "of" "delete" "async" "static" "get" "set" "interface" "type" "enum" "namespace" "declare" "abstract" "implements" "readonly" "public" "private" "protected" "keyof"] @keyword.storage
   (extends_clause value: (identifier) @type.class)
+  (function name: (identifier) @function.definition)
+  (function_declaration name: (identifier) @function.definition)
+  (variable_declarator name: (identifier) @function.definition value: [(function) (arrow_function)])
+  (assignment_expression left: (identifier) @function.definition right: [(function) (arrow_function)])
+  (call_expression function: (identifier) @function.call (#not-match? @function.call "^[A-Z]"))
+  (call_expression function: (identifier) @type.class (#match? @type.class "^[A-Z]"))
+  (new_expression constructor: (identifier) @type.class)
+  ((identifier) @constant.name (#match? @constant.name "^[A-Z][A-Z_0-9]+$"))
   """
 }

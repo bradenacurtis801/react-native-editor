@@ -87,6 +87,10 @@ Pod::Spec.new do |s|
       TreeSitterSQLRunestone
       TreeSitterBashRunestone
       TreeSitterMarkdownRunestone
+      TreeSitterTOMLRunestone
+      TreeSitterDockerfileRunestone
+      TreeSitterHCLRunestone
+      TreeSitterMakeRunestone
     ])
 
   # React-Core / ReactCommon (turbomodule/core for ObjCTurboModule), Folly, etc.

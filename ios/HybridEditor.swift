@@ -27,6 +27,10 @@ import TreeSitterYAMLRunestone
 import TreeSitterSQLRunestone
 import TreeSitterBashRunestone
 import TreeSitterMarkdownRunestone
+import TreeSitterTOMLRunestone
+import TreeSitterDockerfileRunestone
+import TreeSitterHCLRunestone
+import TreeSitterMakeRunestone
 
 private extension UIColor {
   /// Parses `#rgb`/`#rrggbb`/`#rrggbbaa` — the same hex strings the JS side's
@@ -110,6 +114,10 @@ private func baseTreeSitterLanguage(for id: String) -> TreeSitterLanguage? {
   case "sql": return .sql
   case "bash": return .bash
   case "markdown": return .markdown
+  case "toml": return .toml
+  case "dockerfile": return .dockerfile
+  case "hcl": return .hcl
+  case "make": return .make
   default: return nil
   }
 }
