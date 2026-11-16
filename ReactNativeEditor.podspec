@@ -55,7 +55,7 @@ Pod::Spec.new do |s|
   # commit in the clone after each change) — and put this back before a release.
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/Runestone",
-    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.5.4" },
+    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.6.0" },
     products: ["Runestone"])
 
   # Tree-sitter grammars, bundled as Runestone bindings (parser + highlights
@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
   # HybridEditor.swift's language switch, not a build error.
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/TreeSitterLanguages",
-    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.1.12" },
+    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.2.0" },
     products: %w[
       TreeSitterJSONRunestone
       TreeSitterJavaScriptRunestone

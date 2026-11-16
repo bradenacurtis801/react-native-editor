@@ -89,7 +89,8 @@ private func withExtraHighlights(_ base: TreeSitterLanguage, for id: String) -> 
     base.languagePointer,
     highlightsQuery: TreeSitterLanguage.Query(string: own + "\n" + extra),
     injectionsQuery: base.injectionsQuery,
-    indentationScopes: base.indentationScopes)
+    indentationScopes: base.indentationScopes,
+    foldsQuery: base.foldsQuery)
 }
 
 private func baseTreeSitterLanguage(for id: String) -> TreeSitterLanguage? {
