@@ -1149,8 +1149,15 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   override func layoutSubviews() {
     super.layoutSubviews()
     let mapWidth = minimapMode?.width ?? 0
-    textView.frame = CGRect(x: 0, y: 0, width: bounds.width - mapWidth, height: bounds.height)
-    minimap.frame = CGRect(x: bounds.width - mapWidth, y: 0, width: mapWidth, height: bounds.height)
+    // The map keeps inside the safe area (under a header, beside a notch); the text scrolls beneath it by its own inset.
+    let safe = mapWidth > 0 ? safeAreaInsets : .zero
+    textView.frame = CGRect(x: 0, y: 0, width: bounds.width - mapWidth - safe.right, height: bounds.height)
+    minimap.frame = CGRect(x: bounds.width - mapWidth - safe.right, y: safe.top, width: mapWidth, height: max(bounds.height - safe.top - safe.bottom, 0))
+  }
+
+  override func safeAreaInsetsDidChange() {
+    super.safeAreaInsetsDidChange()
+    setNeedsLayout()
   }
 
   func configure(text: String, language: String, theme: EditorTheme) {
