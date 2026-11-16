@@ -856,6 +856,10 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     minimap.onScrub = { [weak self] row, centered in self?.scrub(toLine: row, centered: centered) }
     pinch.delegate = self
     installLineTouch()
+    // Dragging a selection to an edge scrolls (Runestone does it); the list scrolls the text when it is embedded, and a gutter pick has its own.
+    textView.isSelectionAutoscrollEnabled = true
+    textView.selectionAutoscrollScrollView = { [weak self] in self?.scrollTarget() }
+    textView.isSelectionAutoscrollSuspended = { [weak self] in self?.gutterGesture != nil }
     pinch.isEnabled = false
     textView.addGestureRecognizer(pinch)
     gutterPress.delegate = self
