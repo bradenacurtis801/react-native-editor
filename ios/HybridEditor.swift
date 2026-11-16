@@ -688,10 +688,20 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     gutterGesture = nil
   }
 
-  /// What scrolls the text: the text view itself, or — when it is as tall as its text and a list carries it (`isScrollEnabled` off) — the
-  /// scroll view it sits in.
+  /// The view is as tall as its text and a list carries it (`isScrollEnabled` off). The text view still scrolls, but only sideways — for
+  /// text that is not wrapped — and the list scrolls it up and down.
+  var embedded = false {
+    didSet {
+      textView.isScrollEnabled = true
+      textView.isDirectionalLockEnabled = embedded
+      textView.alwaysBounceVertical = !embedded
+      textView.showsVerticalScrollIndicator = !embedded
+    }
+  }
+
+  /// What scrolls the text: the text view itself, or — when it is embedded — the scroll view it sits in.
   private func scrollTarget() -> UIScrollView? {
-    if textView.isScrollEnabled { return textView }
+    if !embedded { return textView }
     var view = textView.superview
     while let current = view {
       if let scroll = current as? UIScrollView { return scroll }
@@ -1525,7 +1535,7 @@ class HybridEditor: HybridEditorSpec {
     if #available(iOS 16.0, *) {
       textView.isFindInteractionEnabled = isFindInteractionEnabled
     }
-    textView.isScrollEnabled = isScrollEnabled
+    container.embedded = !isScrollEnabled
     container.minimapMode = parsedMinimapMode(for: minimap)
     let barBase = UIColor(hex: textColor)
     container.minimap.barColor = barBase.withAlphaComponent(0.45)
