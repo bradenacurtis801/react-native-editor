@@ -748,10 +748,10 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     }
   }
 
-  /// Only a touch in the gutter begins the pick.
+  /// Only a touch in the gutter begins the pick — at least a fingertip wide, however small the text makes the gutter.
   override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     guard gestureRecognizer === gutterPress else { return super.gestureRecognizerShouldBegin(gestureRecognizer) }
-    return gestureRecognizer.location(in: self).x < textView.gutterWidth + textView.safeAreaInsets.left
+    return gestureRecognizer.location(in: self).x < max(textView.gutterWidth, 44) + textView.safeAreaInsets.left
   }
 
   @objc private func tapped(_ gesture: UITapGestureRecognizer) {
