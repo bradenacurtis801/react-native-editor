@@ -50,12 +50,12 @@ Pod::Spec.new do |s|
   # add_nitrogen_files, below, appends its own generated specs/bridges).
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
-  # Follows the fork's `line-decorations` branch (line tints, scroll metrics, the minimap) until it is released as a tag, then:
-  # `requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.5.4" }`. To build against a clone next to this repo
-  # without pushing, point `url` at `file:///…/Runestone` (and commit in the clone after each change).
+  # The fork's release with line tints, scroll metrics, the minimap and gutter picking. To build against a clone next to this repo
+  # without pushing, point `url` at `file:///…/Runestone` with `requirement: { kind: "branch", branch: "line-decorations" }` (and
+  # commit in the clone after each change) — and put this back before a release.
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/Runestone",
-    requirement: { kind: "branch", branch: "line-decorations" },
+    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.5.4" },
     products: ["Runestone"])
 
   # Tree-sitter grammars, bundled as Runestone bindings (parser + highlights
@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
   # HybridEditor.swift's language switch, not a build error.
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/TreeSitterLanguages",
-    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.1.11" },
+    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.1.12" },
     products: %w[
       TreeSitterJSONRunestone
       TreeSitterJavaScriptRunestone
