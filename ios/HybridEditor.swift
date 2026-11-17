@@ -561,6 +561,8 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   private var lineTouchStart: CGPoint = .zero
   private var lineTouchMoved = false
   private var lineTouchReported = false
+  /// Where the text was scrolled to when the touch was reported: a later change of it that leaves it there is not a scroll.
+  private var lineTouchOffset: CGPoint = .zero
   private var lineTouchRow = 0
   private var lineTouchWork: DispatchWorkItem?
   private var offsetObserver: NSKeyValueObservation?
@@ -578,14 +580,17 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     lineTouch.delegate = self
     textView.addGestureRecognizer(lineTouch)
     // Scrolling moves the lines from under what was shown.
-    offsetObserver = textView.observe(\.contentOffset) { [weak self] _, _ in
-      if self?.lineTouchReported == true { self?.cancelLineTouch() }
+    offsetObserver = textView.observe(\.contentOffset) { [weak self] view, _ in
+      // The text view sets its offset again (to the same place) as a tap puts the caret down; only a move is a scroll.
+      guard let self, self.lineTouchReported, hypot(view.contentOffset.x - self.lineTouchOffset.x, view.contentOffset.y - self.lineTouchOffset.y) > 0.5 else { return }
+      self.cancelLineTouch()
     }
   }
 
   private func reportLineTouch() {
     guard !lineTouchMoved, !lineTouchReported else { return }
     lineTouchReported = true
+    lineTouchOffset = textView.contentOffset
     let row = lineTouchRow
     let offsetY = textView.contentOffset.y - textView.frame.minY
     let top = textView.contentOffsetY(ofLine: row) - offsetY
@@ -603,6 +608,8 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
   @objc private func lineTouched(_ gesture: UILongPressGestureRecognizer) {
     switch gesture.state {
     case .began:
+      // A new finger takes away what the last one showed: a drag to scroll would otherwise leave it behind, with nothing left to cancel it.
+      if lineTouchReported { cancelLineTouch() }
       lineTouchStart = gesture.location(in: self)
       lineTouchMoved = false
       lineTouchReported = false
