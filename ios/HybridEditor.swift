@@ -885,9 +885,26 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
         self.reportHistory()
       }
     }
+    keyboardObserver = center.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { [weak self] note in
+      self?.keyboardFrame = (note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
+    }
   }
 
-  deinit { historyObservers.forEach(NotificationCenter.default.removeObserver) }
+  deinit {
+    historyObservers.forEach(NotificationCenter.default.removeObserver)
+    keyboardObserver.map(NotificationCenter.default.removeObserver)
+  }
+
+  private var keyboardObserver: NSObjectProtocol?
+  /// The keyboard's frame in screen coordinates.
+  private var keyboardFrame: CGRect = .zero
+
+  /// How much of the text view's bottom the keyboard covers.
+  private var keyboardCover: CGFloat {
+    guard let screen = window?.screen, !keyboardFrame.isEmpty else { return 0 }
+    let hit = textView.bounds.intersection(textView.convert(keyboardFrame, from: screen.coordinateSpace))
+    return hit.isNull ? 0 : hit.height
+  }
 
   private func reportHistory() {
     guard let manager = textView.undoManager else { return }
@@ -1050,17 +1067,63 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     showFind(select: select)
   }
 
-  private func showFind(select: Bool) {
+  /// `animated`: the scroll to the match eases there (stepping with the arrows) instead of jumping (a query being typed).
+  private func showFind(select: Bool, animated: Bool = false) {
     textView.highlightedRanges = findMatches.enumerated().map { i, range in
       HighlightedRange(range: range, color: i == findIndex ? findCurrentColor : findColor, cornerRadius: 3)
     }
     if select, findIndex >= 0 {
       let range = findMatches[findIndex]
       textView.selectedRange = range
+      let start = textView.contentOffset
       textView.scrollRangeToVisible(range)
+      // Stepping centres the match every time; a typed query centres it only on an axis Runestone had to scroll, or when the keyboard hides it.
+      let bottom = textView.contentOffset.y + textView.bounds.height - max(textView.adjustedContentInset.bottom, keyboardCover)
+      let underKeyboard = textView.selectedTextRange.map { textView.caretRect(for: $0.end).maxY > bottom } ?? false
+      let centerX = animated || textView.contentOffset.x != start.x
+      let centerY = animated || textView.contentOffset.y != start.y || underKeyboard
+      if centerX || centerY, let selection = textView.selectedTextRange { center(on: selection, horizontally: centerX, vertically: centerY) }
+      // Runestone sets the offset outright: ease to it instead.
+      let target = textView.contentOffset
+      if animated, target != start {
+        textView.contentOffset = start
+        textView.setContentOffset(target, animated: true)
+      }
     }
     updateMinimapMarks()
     onFindResult?(findMatches.count, findIndex + 1)
+  }
+
+  /// Scrolls `selection` to the middle of the text area on the axes asked for (one larger than the area starts at the top or left).
+  private func center(on selection: UITextRange, horizontally: Bool, vertically: Bool) {
+    let first = textView.caretRect(for: selection.start)
+    let last = textView.caretRect(for: selection.end)
+    let inset = textView.adjustedContentInset
+    var offset = textView.contentOffset
+    if horizontally {
+      let textLeft = inset.left + textView.gutterWidth
+      let viewportWidth = textView.bounds.width - textLeft - inset.right
+      if viewportWidth > 0 {
+        let minX = min(first.minX, last.minX)
+        let maxX = max(first.maxX, last.maxX)
+        let target = maxX - minX >= viewportWidth ? minX - textLeft : (minX + maxX) / 2 - textLeft - viewportWidth / 2
+        let lowest = -inset.left
+        let highest = max(lowest, textView.contentSize.width - textView.bounds.width + inset.right)
+        offset.x = min(max(target, lowest), highest)
+      }
+    }
+    if vertically {
+      let viewportHeight = textView.bounds.height - inset.top - max(inset.bottom, keyboardCover)
+      if viewportHeight > 0 {
+        let minY = min(first.minY, last.minY)
+        let maxY = max(first.maxY, last.maxY)
+        let target = maxY - minY >= viewportHeight ? minY - inset.top : (minY + maxY) / 2 - inset.top - viewportHeight / 2
+        let lowest = -inset.top
+        let highest = max(lowest, textView.contentSize.height - textView.bounds.height + inset.bottom)
+        offset.y = min(max(target, lowest), highest)
+      }
+    }
+    textView.contentOffset = offset
   }
 
   func find(query: String, method: String, caseSensitive: Bool) {
@@ -1077,7 +1140,7 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
       : FindNav.previous(findMatches, current: findIndex, selection: selection)
     guard let target else { return }
     findIndex = target
-    showFind(select: true)
+    showFind(select: true, animated: true)
   }
 
   /// Replaces the current match (one undo step) and moves on to the next.
@@ -1165,6 +1228,39 @@ private final class EditorContainerView: UIView, TextViewDelegate, UIGestureReco
     let safe = mapWidth > 0 ? safeAreaInsets : .zero
     textView.frame = CGRect(x: 0, y: 0, width: bounds.width - mapWidth - safe.right, height: bounds.height)
     minimap.frame = CGRect(x: bounds.width - mapWidth - safe.right, y: safe.top, width: mapWidth, height: max(bounds.height - safe.top - safe.bottom, 0))
+    applyPendingLine()
+  }
+
+  /// A line asked for before the text view had a size (a file just opened), gone to at its first layout.
+  private var pendingLine: Int?
+
+  /// Goes to the 0-based `line` once the text view has a size.
+  func goToLine(_ line: Int) {
+    pendingLine = line
+    applyPendingLine()
+  }
+
+  private func applyPendingLine() {
+    guard let line = pendingLine, textView.bounds.width > 0, textView.bounds.height > 0 else { return }
+    pendingLine = nil
+    // Runestone refuses a line past the end: clamp to the last.
+    let last = max(0, (textView.text as NSString).components(separatedBy: "\n").count - 1)
+    textView.layoutIfNeeded()
+    textView.goToLine(min(max(0, line), last))
+    centerCaret()
+  }
+
+  /// Centres the caret's line; Runestone only brings it into view.
+  private func centerCaret() {
+    guard let start = textView.selectedTextRange?.start else { return }
+    let rect = textView.caretRect(for: start)
+    let inset = textView.adjustedContentInset
+    let visible = textView.bounds.height - inset.top - max(inset.bottom, keyboardCover)
+    guard visible > 0 else { return }
+    let minY = -inset.top
+    let maxY = max(minY, textView.contentSize.height - textView.bounds.height + inset.bottom)
+    let target = rect.midY - inset.top - visible / 2
+    textView.contentOffset = CGPoint(x: textView.contentOffset.x, y: min(max(target, minY), maxY))
   }
 
   override func safeAreaInsetsDidChange() {
@@ -1770,11 +1866,7 @@ class HybridEditor: HybridEditorSpec {
 
   func goToLine(line: Double) throws {
     onMain { [weak self] in
-      guard let self else { return }
-      let textView = self.container.textView
-      // Runestone counts lines from 0 and refuses one past the end: clamp to the last.
-      let last = max(0, (textView.text as NSString).components(separatedBy: "\n").count - 1)
-      textView.goToLine(min(max(0, Int(line) - 1), last))
+      self?.container.goToLine(Int(line) - 1)
     }
   }
 
