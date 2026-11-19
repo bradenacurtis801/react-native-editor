@@ -13,6 +13,8 @@
 /// - `function.call` / `function.definition`: the same names the preset already captures as plain `function`, but with a name of two parts.
 ///   The presets' own queries end with `(identifier) @variable`, which captures the very same text with the same number of name parts, and
 ///   Runestone breaks that tie by capture order — so a function's name could come out as a variable. A longer name always wins.
+/// - `field.key`: a YAML key. The YAML preset captures every scalar as `string` and then a key as `field`, the same text with the same number
+///   of name parts, and the tie goes to `string` — so a whole file came out in the string color. `field.key` is longer, so it wins.
 enum ExtraHighlights {
   static let queries: [String: String] = [
     "python": python,
@@ -20,7 +22,15 @@ enum ExtraHighlights {
     "jsx": javaScript,
     "typescript": typeScript,
     "tsx": typeScript,
+    "yaml": yaml,
   ]
+
+  private static let yaml = """
+  (block_mapping_pair key: (flow_node [(double_quote_scalar) (single_quote_scalar)] @field.key))
+  (block_mapping_pair key: (flow_node (plain_scalar (string_scalar) @field.key)))
+  (flow_mapping (_ key: (flow_node [(double_quote_scalar) (single_quote_scalar)] @field.key)))
+  (flow_mapping (_ key: (flow_node (plain_scalar (string_scalar) @field.key))))
+  """
 
   private static let python = """
   (import_statement "import" @keyword.import)

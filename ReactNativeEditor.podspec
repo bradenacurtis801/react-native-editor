@@ -62,11 +62,11 @@ Pod::Spec.new do |s|
   # query + a `TreeSitterLanguage` static preset, e.g. `.json`) via simonbs'
   # TreeSitterLanguages package — one SPM package, many products, matched to
   # the language ids `viewerUtils.getLanguage()` already produces app-side.
-  # Anything not in this list (e.g. kotlin, xml) falls back to plain text in
+  # Anything not in this list (e.g. kotlin) falls back to plain text in
   # HybridEditor.swift's language switch, not a build error.
   spm_dependency(s,
     url: "https://github.com/bradenacurtis801/TreeSitterLanguages",
-    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.2.0" },
+    requirement: { kind: "upToNextMajorVersion", minimumVersion: "0.3.0" },
     products: %w[
       TreeSitterJSONRunestone
       TreeSitterJavaScriptRunestone
@@ -91,6 +91,8 @@ Pod::Spec.new do |s|
       TreeSitterDockerfileRunestone
       TreeSitterHCLRunestone
       TreeSitterMakeRunestone
+      TreeSitterXMLRunestone
+      TreeSitterINIRunestone
     ])
 
   # React-Core / ReactCommon (turbomodule/core for ObjCTurboModule), Folly, etc.

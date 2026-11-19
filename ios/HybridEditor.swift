@@ -31,6 +31,8 @@ import TreeSitterTOMLRunestone
 import TreeSitterDockerfileRunestone
 import TreeSitterHCLRunestone
 import TreeSitterMakeRunestone
+import TreeSitterXMLRunestone
+import TreeSitterINIRunestone
 
 private extension UIColor {
   /// Parses `#rgb`/`#rrggbb`/`#rrggbbaa` — the same hex strings the JS side's
@@ -119,6 +121,8 @@ private func baseTreeSitterLanguage(for id: String) -> TreeSitterLanguage? {
   case "dockerfile": return .dockerfile
   case "hcl": return .hcl
   case "make": return .make
+  case "xml": return .xml
+  case "ini": return .ini
   default: return nil
   }
 }
